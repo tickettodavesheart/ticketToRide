@@ -14,11 +14,6 @@ public class Server implements ChatStub {
    private Vector<String> messages = new Vector<String>();
 
    /**
-    * Constructor for the Server class.
-    */
-   public Server() { }
-
-   /**
     * Method that returns a message.
     * @return String of the message.
     */

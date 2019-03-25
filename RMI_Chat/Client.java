@@ -24,13 +24,10 @@ public class Client extends JFrame {
    // For GUI
    private JTextArea chatArea;
    private JTextField inputField;
-   private JButton actionButton;
-   private Timer time;
 
    // For Client
    private String nickname;
    private String ipaddress;
-   private Vector<String> messages = new Vector<String>();
 
    /**
     * Constructor for the Client.
@@ -64,7 +61,7 @@ public class Client extends JFrame {
       JTextField txt = new JTextField(10);
       panel.add(lbl);
       panel.add(txt);
-      int ip = JOptionPane.showOptionDialog(null, panel, "Connect", 
+      JOptionPane.showOptionDialog(null, panel, "Connect", 
             JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE,
             null, options, options[0]);
       ipaddress = txt.getText();
@@ -75,7 +72,7 @@ public class Client extends JFrame {
       JTextField txtName = new JTextField(10);
       panelName.add(lblName);
       panelName.add(txtName);
-      int name = JOptionPane.showOptionDialog(null, panelName, "Nickname", 
+      JOptionPane.showOptionDialog(null, panelName, "Nickname", 
              JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE,
             null, optionsName, optionsName[0]);
       nickname = txtName.getText();
@@ -106,7 +103,7 @@ public class Client extends JFrame {
       inputArea.add(inputField);
 
       // Action button
-      actionButton = new JButton("Send");
+      JButton actionButton = new JButton("Send");
       inputArea.add(actionButton);
 
       // Action Listener
@@ -146,7 +143,7 @@ public class Client extends JFrame {
       chatArea.setCaretPosition(chatArea.getDocument().getLength());
 
       // Creating the timer to continually update the GUI
-      time = new Timer();
+      Timer time = new Timer();
       time.schedule(new MessageTimer(), 500, 1500);
 
       // Set JFrame sizing
@@ -180,7 +177,7 @@ public class Client extends JFrame {
       // Creating the registry
       try {
          // Sending the message to the server
-         messages = stub.getMessages();
+         Vector<String> messages = new Vector<String>(stub.getMessages());
 
          // Clearing the text
          chatArea.setText("");
