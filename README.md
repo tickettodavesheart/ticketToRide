@@ -6,3 +6,5 @@
 
 **0.01** Intial Release
 
+**0.015** Added the RMI Chat Server
+
