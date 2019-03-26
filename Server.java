@@ -1,7 +1,7 @@
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
-// import java.rmi.RemoteException;
+import java.rmi.RemoteException;
 import java.util.Vector;
       
 /**
@@ -9,7 +9,7 @@ import java.util.Vector;
  * @author Lucas Kohorst
  * @version 3/25/19
  */
-public class Server implements ChatStub {
+public class Server implements Stub {
         
    private Vector<String> messages = new Vector<String>();
 
@@ -47,7 +47,7 @@ public class Server implements ChatStub {
          Server obj = new Server();
 
          // Casting the stub class to a remote object on the server
-         ChatStub stub = (ChatStub) UnicastRemoteObject.exportObject(obj, 0);
+         Stub stub = (Stub) UnicastRemoteObject.exportObject(obj, 0);
 
          // Locating the registry on the machine
          Registry registry = LocateRegistry.getRegistry();
@@ -55,9 +55,12 @@ public class Server implements ChatStub {
          // "Hello" to the remote object's stub in that registry, 
          // what the Client can use to lookup the stub
          // Bind the remote object's stub in the registry
-         registry.bind("ChatStub", stub);
+         registry.bind("Stub", stub);
 
          System.err.println("Server ready");
+      } catch (RemoteException re) {
+         System.err.println("Server exception: " + re.toString());
+         re.printStackTrace();
       } catch (Exception e) {
          System.err.println("Server exception: " + e.toString());
          e.printStackTrace();

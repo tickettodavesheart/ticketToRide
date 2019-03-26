@@ -12,14 +12,14 @@ import java.util.Timer;
 import java.text.SimpleDateFormat;
 
 /**
- * Class for the Client.
+ * Class for the ChatClient.
  * @author Lucas Kohorst
  * @version 3/25/19
  */
-public class Client extends JFrame {
+public class ChatClient extends JFrame {
 
    // For RMI
-   private ChatStub stub;
+   private Stub stub;
 
    // For GUI
    private JTextArea chatArea;
@@ -30,9 +30,9 @@ public class Client extends JFrame {
    private String ipaddress;
 
    /**
-    * Constructor for the Client.
+    * Constructor for the ChatClient.
     */
-   private Client() { 
+   public ChatClient() { 
       super("Chat");
       makeGUI();
 
@@ -42,7 +42,7 @@ public class Client extends JFrame {
          Registry registry = LocateRegistry.getRegistry(ipaddress);
 
          // Looking up the Stub class
-         stub = (ChatStub) registry.lookup("ChatStub");
+         stub = (Stub) registry.lookup("Stub");
 
       } catch (Exception e) {
          System.err.println("Client exception: " + e.toString());
@@ -99,7 +99,7 @@ public class Client extends JFrame {
       inputArea.setLayout(new FlowLayout());
 
       // Input field
-      inputField = new JTextField(50);
+      inputField = new JTextField(20);
       inputArea.add(inputField);
 
       // Action button
@@ -147,11 +147,11 @@ public class Client extends JFrame {
       time.schedule(new MessageTimer(), 500, 1500);
 
       // Set JFrame sizing
-      setSize(250, 250);
-      pack();
-      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      setSize(350, 650);
+      // pack();
+      // setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       setVisible(true);
-      setLocationRelativeTo(null);
+      setLocation(1500, 300);
    } 
 
    /**
@@ -213,13 +213,5 @@ public class Client extends JFrame {
       String timeStamp = new SimpleDateFormat("HH:mm:ss").format(
              Calendar.getInstance().getTime());
       return timeStamp;
-   }
-
-   /**
-    * Main Method for the Client.
-    * @param args for command line input
-    */
-   public static void main(String[] args) {
-      new Client();
    }
 }
