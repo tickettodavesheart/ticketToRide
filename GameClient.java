@@ -13,7 +13,7 @@ public class GameClient {
    private String ipaddress;
 
    // For RMI
-   private Stub stub;
+   // private Stub stub;
 
    /**
     * Constructor for the ChatClient.
@@ -26,7 +26,7 @@ public class GameClient {
          Registry registry = LocateRegistry.getRegistry(ipaddress);
 
          // Looking up the Stub class
-         stub = (Stub) registry.lookup("Stub");
+         Stub stub = (Stub) registry.lookup("Stub");
 
       } catch (Exception e) {
          System.err.println("Client exception: " + e.toString());
