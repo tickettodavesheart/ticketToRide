@@ -6,3 +6,4 @@
 
 **0.01** Intial Release</br>
 **0.02** Added the RMI Chat Server
+**0.03** Created GameDocumentation.md and edited to include draft image of game board
