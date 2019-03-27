@@ -108,7 +108,7 @@ public class ChatClient extends JFrame {
 
       // Action Listener
       actionButton.addActionListener(e -> {
-         send("(" + getTime() + " " + nickname + ") " 
+         sendMessage("(" + getTime() + " " + nickname + ") " 
                 + inputField.getText());
          get();
       });
@@ -120,7 +120,7 @@ public class ChatClient extends JFrame {
       addWindowListener(new WindowAdapter() {
          @Override
          public void windowClosing(WindowEvent e) {
-            send(nickname + " has left the chat");
+            sendMessage(nickname + " has left the chat");
          }
       });
 
@@ -158,7 +158,7 @@ public class ChatClient extends JFrame {
     * Method to send a message to the server.
     * @param msg the message to send
     */
-   public void send(String msg) {
+   public void sendMessage(String msg) {
       // Creating the registry
       try {
          // Sending the message to the server
@@ -173,7 +173,7 @@ public class ChatClient extends JFrame {
    /**
     * Method to get messages from the server.
     */
-   public void get() {
+   public void getAllMessages() {
       // Creating the registry
       try {
          // Sending the message to the server
@@ -200,7 +200,7 @@ public class ChatClient extends JFrame {
        * The run method for the ColorTimer task.
        */
       public void run() {
-         get();
+         getAllMessages();
       }
    }
 
