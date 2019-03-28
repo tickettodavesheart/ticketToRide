@@ -27,7 +27,6 @@ public class ChatClient extends JFrame {
 
    // For Client
    private String nickname;
-   private String ipaddress;
 
    /**
     * Constructor for the ChatClient.

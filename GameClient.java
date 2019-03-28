@@ -28,7 +28,7 @@ public class GameClient {
                 portForRMIRegistry);
 
          // Looking up the Stub class
-         Stub stub = (Stub) registry.lookup("Stub");
+         // Stub stub = (Stub) registry.lookup("Stub");
 
       } catch (Exception e) {
          System.err.println("Client exception: " + e.toString());

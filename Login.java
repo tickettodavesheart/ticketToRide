@@ -2,8 +2,6 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 // RMI
 import java.rmi.registry.LocateRegistry;
@@ -31,7 +29,6 @@ public class Login extends JFrame {
 
    // Vectors locally
    private Vector<String> games;
-   private Vector<Integer> ports;
 
    // The game that the user selected to join
    private String selectedGame = null;
@@ -151,17 +148,6 @@ public class Login extends JFrame {
       } catch (RemoteException re) {
          System.out.println("Remote Exception: " +   re);
       }   
-   }
-
-   /**
-    * Method to get all of the ports of games on the server.
-    */
-   public void queryPorts() {
-      try {
-         ports = stub.getPorts();
-      } catch (RemoteException re) {
-         System.out.println("Remote Exception: " + re);
-      }
    }
    
    /**
