@@ -34,10 +34,32 @@ public interface ServerStub extends Remote {
    
    /**
     * Stub method for creating a new game on the server.
+    * @param name the name for the newe game
     * @return the status of the game's creation
     * @throws RemoteException when RMI does not work.
     */
-   String newGame() throws RemoteException;
+   String newGame(String name) throws RemoteException;
+
+   /**
+    * Stub method for getting the stubID for the last created game.
+    * @return the stubID for the newely created game
+    * @throws RemoteException when RMI does not work.
+    */
+   String getStubID() throws RemoteException;
+
+   /**
+    * Stub method for getting the server's IP.
+    * @return the server's IP
+    * @throws RemoteException when RMI does not work.
+    */
+   String getCurrentIP() throws RemoteException;
+
+   /**
+    * Stub method for getting the name for the last created game.
+    * @return the name for the newely created game
+    * @throws RemoteException when RMI does not work.
+    */
+   String getNameOfGame() throws RemoteException;
 
    /**
     * Stub method for joining a game on the server.

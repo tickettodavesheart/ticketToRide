@@ -35,6 +35,39 @@ public class Server implements ServerStub {
    // The starting object id for the game servers
    private int OBJ_ID = 0;
 
+   // The last created game's stub_id
+   private String stubID = "GameStub" + OBJ_ID;
+
+   // The IP address of the machine
+   private String CURRENT_IP = "localhost";
+
+   // The name of the last created game
+   private String nameOfGame = "New Ticket to Dave's Heart Game";
+
+   /**
+    * Method for getting the stubID for the last created game.
+    * @return the stubID for the newely created game
+    */
+   public String getStubID()  {
+      return stubID;
+   }
+
+   /**
+    * Method for getting the server's IP.
+    * @return the server's IP
+    */
+   public String getCurrentIP()  {
+      return CURRENT_IP;
+   }
+
+   /**
+    * Method for getting the name for the last created game.
+    * @return the name for the newely created game
+    */
+   public String getNameOfGame()  {
+      return nameOfGame;
+   }
+
    /**
     * Method that returns a game names on the server.
     * @return games the names of games on the server.
@@ -70,9 +103,9 @@ public class Server implements ServerStub {
     * @return if the creation of the games was successful
     */
    @Override
-   public String newGame() {
+   public String newGame(String name) {
       // Creating a new game using the inner class
-      ThreadServer ths = new ThreadServer();
+      ThreadServer ths = new ThreadServer(name);
 
       // Adding the game to the threads vector
       threads.add(ths);
@@ -134,17 +167,18 @@ public class Server implements ServerStub {
       // The port that the game is on
       private int port;
 
-      // The name of the game if they created one
-      private String nameOfGame;
-
       // If true bind the stub to the registry with
       // the unique stubID
       private boolean toBind = false;
 
       /**
        * Defualt Constructor for ThreadServer.
+       * @param name the name of the created game
        */
-      ThreadServer() { 
+      ThreadServer(String name) { 
+         // Setting the name of the game
+         nameOfGame = name;
+
          // Incrementing the OBJ_ID and GENERATED_PORT
          // Bc the user did not specifiy a port to 
          // connect to
@@ -153,17 +187,6 @@ public class Server implements ServerStub {
 
          port = GENERATED_PORT;
 
-         String[] options = {"Confirm"};
-         JPanel panel = new JPanel();
-         JLabel lbl = new JLabel("Name your game: ");
-         JTextField txt = new JTextField(10);
-         panel.add(lbl);
-         panel.add(txt);
-         JOptionPane.showOptionDialog(null, panel, 
-               "New Ticket to Dave's Heart Game", JOptionPane.NO_OPTION,
-               JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-         // Getting the name of the game created
-         nameOfGame = txt.getText();
          // Adding the name of the game and the port to the server
          games.add(nameOfGame);
          ports.add(port);
@@ -191,7 +214,7 @@ public class Server implements ServerStub {
       public void run() {
 
          // Creating the stubID
-         String stubID = "GameStub" + port;
+         stubID = "GameStub" + port;
 
          try {
             // If a new game is being created, bind a stub to a
@@ -218,10 +241,9 @@ public class Server implements ServerStub {
             System.out.println("New Game Created");
 
             InetAddress iAddress = InetAddress.getLocalHost();
-            String ip = iAddress.getHostAddress();
+            CURRENT_IP = iAddress.getHostAddress();
 
-            // Creating a new game
-            new ChatClient(ip, stubID, nameOfGame);
+            System.out.println("Everything set\nCURRENT_IP:" + CURRENT_IP + "\nstubID: " + stubID + "\nnameOfGame: " + nameOfGame);
 
             System.err.println("Threaded Server ready with GameStub");
          } catch (RemoteException re) {

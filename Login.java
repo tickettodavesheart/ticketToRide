@@ -155,7 +155,30 @@ public class Login extends JFrame {
     */
    public void createGame() {
       try {
-         System.out.println(stub.newGame());
+         String[] options = {"Confirm"};
+         JPanel panel = new JPanel();
+         JLabel lbl = new JLabel("Name your game: ");
+         JTextField txt = new JTextField(10);
+         panel.add(lbl);
+         panel.add(txt);
+         JOptionPane.showOptionDialog(null, panel, 
+               "New Ticket to Dave's Heart Game", JOptionPane.NO_OPTION,
+               JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+         // Getting the name of the game created
+         String nameOfGame = txt.getText();
+
+         // Creating the new game with the given name
+         System.out.println(stub.newGame(nameOfGame));
+
+         // Getting the server's IP
+         // the name and stubID for
+         // the last created game
+         String ipFromServer = stub.getCurrentIP();
+         String stubIDFromServer = stub.getStubID();
+         String nameFromServer = stub.getNameOfGame();
+
+         // Creating a new game client
+         new ChatClient(ipFromServer, stubIDFromServer, nameFromServer);
       } catch (RemoteException re) {
          System.out.println("Remote Exception: " + re);
       }
@@ -168,6 +191,16 @@ public class Login extends JFrame {
    public void joinGame(String gameToEnter) {
       try {
          System.out.println(stub.enterGame(gameToEnter));
+
+         // Getting the server's IP
+         // the name and stubID for
+         // the last created game
+         String ipFromServer = stub.getCurrentIP();
+         String stubIDFromServer = stub.getStubID();
+         String nameFromServer = stub.getNameOfGame();
+
+         // Creating a new game client
+         new ChatClient(ipFromServer, stubIDFromServer, nameFromServer);
       } catch (RemoteException re) {
          System.out.println("Remote Exception: " + re);
       }
