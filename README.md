@@ -6,4 +6,5 @@
 
 **0.01** Intial Release</br>
 **0.02** Added the RMI Chat Server</br>
-**0.03** Created GameDocumentation.md and edited to include draft image of game board
+**0.03** Created GameDocumentation.md and edited to include draft image of game board</br>
+**0.04** Added support for multiple game servers concurently, the user can either select active games or create a game
