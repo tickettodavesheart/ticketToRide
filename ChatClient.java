@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat;
 public class ChatClient extends JFrame {
 
    // For RMI
-   private Stub stub;
+   private GameStub stub;
 
    // For GUI
    private JTextArea chatArea;
@@ -31,18 +31,24 @@ public class ChatClient extends JFrame {
 
    /**
     * Constructor for the ChatClient.
+    * @param ip the IP adress for the main server
+    * @param stubID the id for the GameStub for the specific server
+    * @param name the name of the current game
     */
-   public ChatClient() { 
-      super("Chat");
+   public ChatClient(String ip, String stubID, String name) { 
+      super(name);
       makeGUI();
+
+      // Setting the ip address for the main server
+      ipaddress = ip;
 
       // Creating the registry
       try {
          // Creating the Registry
-         Registry registry = LocateRegistry.getRegistry(ipaddress);
+         Registry registry = LocateRegistry.getRegistry(ip);
 
          // Looking up the Stub class
-         stub = (Stub) registry.lookup("Stub");
+         stub = (GameStub) registry.lookup(stubID);
 
       } catch (Exception e) {
          System.err.println("Client exception: " + e.toString());
@@ -54,17 +60,6 @@ public class ChatClient extends JFrame {
     * Method to create the Client GUI.
     */
    public void makeGUI() {
-      // IP address input
-      String[] options = {"OK"};
-      JPanel panel = new JPanel();
-      JLabel lbl = new JLabel("Enter the server IP address: ");
-      JTextField txt = new JTextField(10);
-      panel.add(lbl);
-      panel.add(txt);
-      JOptionPane.showOptionDialog(null, panel, "Connect", 
-            JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE,
-            null, options, options[0]);
-      ipaddress = txt.getText();
 
       String[] optionsName = {"OK"};
       JPanel panelName = new JPanel();
@@ -110,7 +105,7 @@ public class ChatClient extends JFrame {
       actionButton.addActionListener(e -> {
          sendMessage("(" + getTime() + " " + nickname + ") " 
                 + inputField.getText());
-         get();
+         getAllMessages();
       });
 
       // Adding to the frame
@@ -129,9 +124,9 @@ public class ChatClient extends JFrame {
          public void keyPressed(KeyEvent ke) {
             int key = ke.getKeyCode();
             if (key == KeyEvent.VK_ENTER) {
-               send("(" + getTime() + " " + nickname + ") " 
+               sendMessage("(" + getTime() + " " + nickname + ") " 
                       + inputField.getText());
-               get();
+               getAllMessages();
             }
          }
       });

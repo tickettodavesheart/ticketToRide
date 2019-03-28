@@ -17,13 +17,15 @@ public class GameClient {
 
    /**
     * Constructor for the ChatClient.
+    * @param portForRMIRegistry the port for the game.
     */
-   public GameClient() {
+   public GameClient(int portForRMIRegistry) {
 
       // Creating the registry
       try {
-         // Creating the Registry
-         Registry registry = LocateRegistry.getRegistry(ipaddress);
+         // Creating the Registry with the specific port of the game
+         Registry registry = LocateRegistry.getRegistry(ipaddress, 
+                portForRMIRegistry);
 
          // Looking up the Stub class
          Stub stub = (Stub) registry.lookup("Stub");
@@ -36,10 +38,9 @@ public class GameClient {
 
    /**
     * The Main Method for the GameClient class.
-      * @param args for Command Line Input
-      */
+    * @param args for Command Line Input
+    */
    public static void main(String[] args) {
-      new GameClient();
       new ChatClient();
    }
 

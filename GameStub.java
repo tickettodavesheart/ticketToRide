@@ -7,7 +7,7 @@ import java.util.Vector;
  * @author Lucas Kohorst
  * @version 3/25/19
  */
-public interface Stub extends Remote {
+public interface GameStub extends Remote {
    /**
     * Stub method for the Server to send new messages to the Client.
     * @return Messages to the Client.
