@@ -38,9 +38,6 @@ public class ChatClient extends JFrame {
       super(name);
       makeGUI();
 
-      // Setting the ip address for the main server
-      ipaddress = ip;
-
       // Creating the registry
       try {
          // Creating the Registry
