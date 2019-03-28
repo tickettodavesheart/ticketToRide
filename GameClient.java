@@ -24,8 +24,8 @@ public class GameClient {
       // Creating the registry
       try {
          // Creating the Registry with the specific port of the game
-         Registry registry = LocateRegistry.getRegistry(ipaddress, 
-                portForRMIRegistry);
+         //Registry registry = LocateRegistry.getRegistry(ipaddress, 
+         //       portForRMIRegistry);
 
          // Looking up the Stub class
          // Stub stub = (Stub) registry.lookup("Stub");
