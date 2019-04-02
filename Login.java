@@ -1,6 +1,8 @@
 // GUI
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.ShortLookupTable;
+
 import javax.swing.*;
 
 // RMI
@@ -141,8 +143,26 @@ public class Login extends JFrame {
             games = new Vector<String>();
             games.addElement("No games available");
          } else {
-            // Creating the game list from the game Vector
-            jlstGame.setListData(games);
+            Vector<String> joinableGames = new Vector<String>();
+
+            // Checking if each game in the list is joinable
+            for (String game : games) {
+               // Checking if the game is joinable
+               int numberOfPlayers = stub.getNumPlayers(game);
+
+               System.out.println("\nGame: " + game + "\nNumber of Players: "
+                       + numberOfPlayers);
+
+               // If the result is -1 game is not joinable display a message
+               // to the user
+               if (numberOfPlayers != -1) {
+                  joinableGames.add(String.format(game));
+               }
+            }
+            System.out.println("");
+
+            // Creating the game list from the joinableGame Vector
+            jlstGame.setListData(joinableGames);
          }
 
       } catch (RemoteException re) {
@@ -177,11 +197,12 @@ public class Login extends JFrame {
          String stubIDFromServer = stub.getStubID();
          String nameFromServer = stub.getNameOfGame();
 
+         // Adding 1 player to the game
+         stub.addIntialPlayer();
+
          // Creating a new game client
          new ChatClient(ipFromServer, stubIDFromServer, nameFromServer);
-      } catch (RemoteException re) {
-         System.out.println("Remote Exception: " + re);
-      }
+      } catch (RemoteException re) { }
    }
    
    /**
@@ -190,17 +211,32 @@ public class Login extends JFrame {
     */
    public void joinGame(String gameToEnter) {
       try {
-         System.out.println(stub.enterGame(gameToEnter));
 
-         // Getting the server's IP
-         // the name and stubID for
-         // the last created game
-         String ipFromServer = stub.getCurrentIP();
-         String stubIDFromServer = stub.getStubID();
-         String nameFromServer = stub.getNameOfGame();
+         int playersInGame = stub.getNumPlayers(gameToEnter);
 
-         // Creating a new game client
-         new ChatClient(ipFromServer, stubIDFromServer, nameFromServer);
+         if (playersInGame != -1) {
+
+            // Entering the game
+            System.out.println(stub.enterGame(gameToEnter));
+
+            // Getting the server's IP
+            // the name and stubID for
+            // the last created game
+            String ipFromServer = stub.getCurrentIP();
+            String stubIDFromServer = stub.getStubID();
+            String nameFromServer = stub.getNameOfGame();
+
+            // Incrementing the number of players on the game
+            stub.incNumPlayers(nameFromServer);
+
+            // Creating a new game client
+            new ChatClient(ipFromServer, stubIDFromServer, nameFromServer);
+         } else {
+            JOptionPane.showMessageDialog(null, "Cannot join game to many " 
+                  + "players, either create or join another game", 
+                  "Cannot Join Game",
+                  JOptionPane.INFORMATION_MESSAGE);
+         }   
       } catch (RemoteException re) {
          System.out.println("Remote Exception: " + re);
       }

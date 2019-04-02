@@ -62,6 +62,27 @@ public interface ServerStub extends Remote {
    String getNameOfGame() throws RemoteException;
 
    /**
+    * Stub method for getting number of players in a game.
+    * @param gameName the name of the game to get the players
+    * @return the number of players in a game
+    * @throws RemoteException when RMI does not work.
+    */
+   int getNumPlayers(String gameName) throws RemoteException;
+
+   /**
+    * Stub method for incrementing number of players in a game.
+    * @param gameName the name of the game to get the players
+    * @throws RemoteException when RMI does not work.
+    */
+   void incNumPlayers(String gameName) throws RemoteException;
+
+   /**
+    * Stub method for adding number of players in a game.
+    * @throws RemoteException when RMI does not work.
+    */
+   void addIntialPlayer() throws RemoteException;
+
+   /**
     * Stub method for joining a game on the server.
     * @param gameToEnter the name of the game to join
     * @return the status of the joining of the game

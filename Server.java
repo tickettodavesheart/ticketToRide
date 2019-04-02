@@ -44,6 +44,9 @@ public class Server implements ServerStub {
    // The name of the last created game
    private String nameOfGame = "New Ticket to Dave's Heart Game";
 
+   // Holds the number of players on a given game
+   private Vector<Integer> numPlayers = new Vector<Integer>();
+
    /**
     * Method for getting the stubID for the last created game.
     * @return the stubID for the newely created game
@@ -74,17 +77,15 @@ public class Server implements ServerStub {
     */
    @Override
    public Vector<String> getGames() {
-      System.out.println("Games Sent out to Login");
       return games;
    }
 
    /**
-    * Method that returns the number a game on the server.
+    * Method that returns the number of game on the server.
     * @return games.size() the number of games on the server.
     */
    @Override
    public int getNumberActive() {
-      System.out.println("Games size Sent out to LogIn");
       return games.size();
    }
 
@@ -94,7 +95,6 @@ public class Server implements ServerStub {
     */
    @Override
    public Vector<Integer> getPorts() {
-      System.out.println("Ports Sent out to GameClient");
       return ports;
    }
 
@@ -121,6 +121,75 @@ public class Server implements ServerStub {
 
       return "Game Created";
 
+   }
+
+   /**
+    * Method for getting number of players in a game.
+    * @param gameName the name of the game
+    * @return the number of players in a game
+    */
+   @Override
+   public int getNumPlayers(String gameName) {
+      try {
+         // Getting the index of the game
+         int index = games.indexOf(gameName);
+         System.out.println("index: " + index);
+         // Using the index to get the number of players
+         // in that game
+         int players = numPlayers.get(index);
+
+         for (int i : numPlayers) {
+            System.out.println("GET Game: " + gameName + "\nNumber: " + players);
+         }
+
+         if (players == 4) {
+            // Resetting players to 4
+            players = 4;
+            numPlayers.set(index, players);
+            System.out.println("\n\n\nRESET at: " + players);
+            return -1;
+         } else {
+            return players;
+         }
+      } catch (Exception e) { 
+         System.err.println("Error on Get: " + e);
+         return -1;
+      }
+   }
+
+   /**
+    * Stub method for incrementing number of players in a game.
+    * @param gameName the name of the game
+    */
+   @Override
+   public void incNumPlayers(String gameName) {
+      try {
+         // Getting the index of the game
+         int index = games.indexOf(gameName);
+         // Using the index to get the number of players
+         // in that game
+         int players = numPlayers.get(index);
+
+         players++;
+
+         for (int i : numPlayers) {
+            System.out.println("SET Game: " + gameName + "\nNumber: " + players);
+         }
+
+         // Updating the value at the index, incremented
+         numPlayers.set(index, players);
+      } catch (Exception e) {
+         System.err.println("Error on Inc: " + e);
+       }
+   }
+
+
+   /**
+    * Method for adding number of players in a game.
+    */
+   public void addIntialPlayer() {
+      // Adding the intial player to the array of players
+      numPlayers.add(1);
    }
 
    /**
@@ -154,9 +223,7 @@ public class Server implements ServerStub {
             t.join();
          } catch (InterruptedException ie) { }
       }
-
       return "Game Joined";
-
    }
 
    /**
@@ -238,14 +305,11 @@ public class Server implements ServerStub {
                registry.bind("GameStub" + GENERATED_PORT, stub);
             }   
 
-            System.out.println("New Game Created");
+            System.out.println("New Game Created on port " + port);
 
             InetAddress iAddress = InetAddress.getLocalHost();
             CURRENT_IP = iAddress.getHostAddress();
 
-            System.out.println("Everything set\nCURRENT_IP:" + CURRENT_IP + "\nstubID: " + stubID + "\nnameOfGame: " + nameOfGame);
-
-            System.err.println("Threaded Server ready with GameStub");
          } catch (RemoteException re) {
             System.err.println("Server exception: " + re.toString());
             re.printStackTrace();
