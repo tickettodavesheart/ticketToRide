@@ -14,6 +14,8 @@
 
 <h1>Version History</h1>
 
+<p><a href="https://github.com/tickettodavesheart/ticketToRide/wiki">Read the Documentation</a></p>
+
 <p><strong>0.01</strong> Intial Release</p>
 <p><strong>0.02</strong> Added the RMI Chat Server</p>
 <p><strong>0.03</strong> Created GameDocumentation.md and edited to include draft image of game board</p>
