@@ -1,7 +1,6 @@
 // GUI
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.ShortLookupTable;
 
 import javax.swing.*;
 

@@ -138,10 +138,6 @@ public class Server implements ServerStub {
          // in that game
          int players = numPlayers.get(index);
 
-         for (int i : numPlayers) {
-            System.out.println("GET Game: " + gameName + "\nNumber: " + players);
-         }
-
          if (players == 4) {
             // Resetting players to 4
             players = 4;
@@ -172,15 +168,11 @@ public class Server implements ServerStub {
 
          players++;
 
-         for (int i : numPlayers) {
-            System.out.println("SET Game: " + gameName + "\nNumber: " + players);
-         }
-
          // Updating the value at the index, incremented
          numPlayers.set(index, players);
       } catch (Exception e) {
          System.err.println("Error on Inc: " + e);
-       }
+      }
    }
 
 
