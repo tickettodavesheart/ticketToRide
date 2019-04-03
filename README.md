@@ -14,8 +14,8 @@
 
 <p><a href="https://github.com/tickettodavesheart/ticketToRide/wiki">Read the Documentation</a></p>
 
-<p><strong>0.01</strong> Intial Release</p>
-<p><strong>0.02</strong> Added the RMI Chat Server</p>
-<p><strong>0.03</strong> Created GameDocumentation.md and edited to include draft image of game board</p>
-<p><strong>0.04</strong> Added support for multiple game servers concurently, the user can either select active games or create a game</p>
-<p><strong>0.05</strong> Limited each game to 4 players</p>
+<strong>0.01</strong> Intial Release<br>
+<strong>0.02</strong> Added the RMI Chat Server<br>
+<strong>0.03</strong> Created GameDocumentation.md and edited to include draft image of game board<br>
+<strong>0.04</strong> Added support for multiple game servers concurently, the user can either select active games or create a game<br>
+<strong>0.05</strong> Limited each game to 4 players<br>
