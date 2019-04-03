@@ -5,10 +5,10 @@
 <h1>Project Description</h1>
 
 <h1>Contributers</h1>
-<a href="https://github.com/bugryn-josh">Josh Bugryn</a>
-<a href="https://github.com/danielsause">Daniel Sause</a>
-<a href="https://github.com/michaelvasile">Michael Vasile</a>
-<a href="https://github.com/lucas-kohorst">Lucas Kohorst</a>
+<p><a href="https://github.com/bugryn-josh">Josh Bugryn</a></p>
+<p><a href="https://github.com/danielsause">Daniel Sause</a></p>
+<p><a href="https://github.com/michaelvasile">Michael Vasile</a></p>
+<p><a href="https://github.com/lucas-kohorst">Lucas Kohorst</a></p>
 
 <h1>Version History</h1>
 
