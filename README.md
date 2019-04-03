@@ -12,7 +12,8 @@
 
 <h1>Version History</h1>
 
-<p><a href="https://github.com/tickettodavesheart/ticketToRide/wiki">Read the Wiki</a></p>
+<a href="https://github.com/tickettodavesheart/ticketToRide/wiki">Read the Wiki</a><br>
+<a href="docs/allclasses-index.html">Read the Documentation</a>
 
 <strong>0.01</strong> Intial Release<br>
 <strong>0.02</strong> Added the RMI Chat Server<br>
