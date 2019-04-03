@@ -5,7 +5,7 @@
 <h1>Version History</h1>
 
 <p><strong>0.01</strong> Intial Release</p>
-<p>**0.02** Added the RMI Chat Server</p>
-<p>**0.03** Created GameDocumentation.md and edited to include draft image of game board</p>
-<p>**0.04** Added support for multiple game servers concurently, the user can either select active games or create a game</p>
-<p>**0.05** Limited each game to 4 players</p>
+<p><strong>0.02</strong> Added the RMI Chat Server</p>
+<p><strong>0.03</strong> Created GameDocumentation.md and edited to include draft image of game board</p>
+<p><strong>0.04</strong> Added support for multiple game servers concurently, the user can either select active games or create a game</p>
+<p><strong>0.05</strong> Limited each game to 4 players</p>
