@@ -2,18 +2,15 @@
 
 <a href="https://www.codacy.com/app/Lucas-Kohorst/ticketToRide?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=tickettodavesheart/ticketToRide&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/2ac0aae70b3a43779d96e53e8b02921c"/></a>
 
-<h1>Project Description</h1>
+<br><br><h1>Project Description</h1>
 
 <h1>Contributers</h1>
 <a href="https://github.com/bugryn-josh">Josh Bugryn</a><br>
 <a href="https://github.com/danielsause">Daniel Sause</a><br>
 <a href="https://github.com/michaelvasile">Michael Vasile</a><br>
-<a href="https://github.com/lucas-kohorst">Lucas Kohorst</a><br>
+<a href="https://github.com/lucas-kohorst">Lucas Kohorst</a>
 
-<h1>Version History</h1>
-
-<a href="https://github.com/tickettodavesheart/ticketToRide/wiki">Read the Wiki</a><br>
-<a href="docs/allclasses-index.html">Read the Documentation</a>
+<br><br><h1>Version History</h1>
 
 <strong>0.01</strong> Intial Release<br>
 <strong>0.02</strong> Added the RMI Chat Server<br>
