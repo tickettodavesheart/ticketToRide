@@ -5,7 +5,7 @@
 <br><br><h1>Project Description</h1>
 
 <h1>Contributers</h1>
-<a href="https://github.com/bugryn-josh">Josh Bugryn</a><br>
+<a href="https://github.com/bugryn-josh">Joshua Bugryn</a><br>
 <a href="https://github.com/danielsause">Daniel Sause</a><br>
 <a href="https://github.com/michaelvasile">Michael Vasile</a><br>
 <a href="https://github.com/lucas-kohorst">Lucas Kohorst</a>
@@ -17,3 +17,4 @@
 <strong>0.03</strong> Created GameDocumentation.md and edited to include draft image of game board<br>
 <strong>0.04</strong> Added support for multiple game servers concurently, the user can either select active games or create a game<br>
 <strong>0.05</strong> Limited each game to 4 players<br>
+<strong>0.06</strong> Functional GameBoard GUI added<br>
