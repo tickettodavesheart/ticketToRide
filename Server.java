@@ -29,6 +29,9 @@ public class Server implements ServerStub {
    // Vector of the ports for each game
    private Vector<Integer> ports = new Vector<Integer>();
 
+   // Vector of games that are active and available to join
+   private Vector<String> activeGames = new Vector<String>();
+
    // The starting port for the game servers
    private int GENERATED_PORT = 16789;
 
@@ -77,7 +80,7 @@ public class Server implements ServerStub {
     */
    @Override
    public Vector<String> getGames() {
-      return games;
+      return activeGames;
    }
 
    /**
@@ -86,7 +89,7 @@ public class Server implements ServerStub {
     */
    @Override
    public int getNumberActive() {
-      return games.size();
+      return activeGames.size();
    }
 
    /**
@@ -130,19 +133,27 @@ public class Server implements ServerStub {
     */
    @Override
    public int getNumPlayers(String gameName) {
+
+      System.out.println("\n\n\n");
+
+      for (String game : activeGames) {
+         System.out.println("game:" + game);
+      }
+
       try {
          // Getting the index of the game
-         int index = games.indexOf(gameName);
-         System.out.println("index: " + index);
+         int index = activeGames.indexOf(gameName);
+         System.out.println("Game: " + gameName);
          // Using the index to get the number of players
          // in that game
          int players = numPlayers.get(index);
 
          if (players == 4) {
-            // Resetting players to 4
-            players = 4;
-            numPlayers.set(index, players);
-            System.out.println("\n\n\nRESET at: " + players);
+            // Removing the number from the playerNumber list
+            // and removing the game from active games
+            System.out.println("\n\n\nRemoving Game\n\n\n");
+            activeGames.remove(index);
+            numPlayers.remove(index);
             return -1;
          } else {
             return players;
@@ -161,7 +172,7 @@ public class Server implements ServerStub {
    public void incNumPlayers(String gameName) {
       try {
          // Getting the index of the game
-         int index = games.indexOf(gameName);
+         int index = activeGames.indexOf(gameName);
          // Using the index to get the number of players
          // in that game
          int players = numPlayers.get(index);
@@ -194,7 +205,7 @@ public class Server implements ServerStub {
 
       for (String curGame : games) {
          if (curGame.equals(gameToEnter)) {
-            gameIndex = games.indexOf(curGame);
+            gameIndex = activeGames.indexOf(curGame);
          }
       }
 
@@ -216,6 +227,36 @@ public class Server implements ServerStub {
          } catch (InterruptedException ie) { }
       }
       return "Game Joined";
+   }
+
+   /**
+    * Called on shutdown of a client.
+    * @param game the game the client is running
+    * @return the status of thee shutdown
+    */
+   public String shutdownClient(String game) {
+      // getting the index of the game
+      int gameIndex = games.indexOf(game);
+      int playersInGame = numPlayers.get(gameIndex);
+      // check if the game has > 1 player
+      if (playersInGame > 1) {
+         // if it does decrease the number of  
+         // players in the game at that index
+         playersInGame--;
+         numPlayers.set(gameIndex, playersInGame);
+         // possibly send a message that _name_
+         // left the game
+         return "Decreased Players";
+      } else {
+         // if there is less than 1 player left
+         // use the index to delete the game in 
+         // active games and in the games vectors
+         activeGames.remove(game);
+         games.remove(game);
+         numPlayers.remove(gameIndex);
+         // return the status of the shutdown procedure
+         return "Shutdown";
+      }   
    }
 
    /**
@@ -248,6 +289,7 @@ public class Server implements ServerStub {
 
          // Adding the name of the game and the port to the server
          games.add(nameOfGame);
+         activeGames.add(nameOfGame);
          ports.add(port);
 
          // Making it so the stub is binded to the new port

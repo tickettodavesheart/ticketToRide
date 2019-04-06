@@ -90,4 +90,13 @@ public interface ServerStub extends Remote {
     */
    String enterGame(String gameToEnter) throws RemoteException;
 
+   /**
+    * Stub method that is implemented when a client is shutdown.
+    * 
+    * @param game the game in which the client is running
+    * @return the status of the termination
+    * @throws RemoteException when RMI does not work.
+    */
+   String shutdownClient(String game) throws RemoteException;
+
 }

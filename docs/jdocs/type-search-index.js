@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"<Unnamed>","l":"ChatClient"},{"p":"<Unnamed>","l":"GameClient"},{"p":"<Unnamed>","l":"GameServer"},{"p":"<Unnamed>","l":"GameStub"},{"p":"<Unnamed>","l":"Server"},{"p":"<Unnamed>","l":"ServerStub"}]
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"<Unnamed>","l":"ChatClient"},{"p":"<Unnamed>","l":"GameClient"},{"p":"<Unnamed>","l":"GameServer"},{"p":"<Unnamed>","l":"GameStub"},{"p":"<Unnamed>","l":"Login"},{"p":"<Unnamed>","l":"Server"},{"p":"<Unnamed>","l":"ServerStub"}]

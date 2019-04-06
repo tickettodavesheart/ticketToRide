@@ -95,7 +95,7 @@ public class Login extends JFrame {
       jlstGame.addListSelectionListener(e -> {
          try {
             selectedGame = jlstGame.getSelectedValue().toString();
-         } catch (ArrayIndexOutOfBoundsException aroobe) { }   
+         } catch (Exception se) { }   
       });
 
       // Adding the elements to the JPanel
@@ -110,6 +110,25 @@ public class Login extends JFrame {
       // Creating the timer to continually update the list of games
       Timer time = new Timer();
       time.schedule(new GameListTimer(), 50, 100);
+
+      Runtime.getRuntime().addShutdownHook(new Thread() {
+         public void run() {
+            System.out.println("Starting shutdown");
+            // Get the game that the client is running
+            // create registry and bind to the main server
+            // Creating the registry
+            try {
+               System.out.println("Connected to the server on Shutdown Hook");
+
+               // Calling the shutdown method on the server
+               System.out.println(stub.shutdownClient(selectedGame));
+
+            } catch (Exception oe) {
+               System.err.println("Login exception: " + oe.toString());
+               oe.printStackTrace();
+            }
+         }
+      });
 
       // Set JFrame sizing
       setSize(250, 250);
@@ -148,25 +167,17 @@ public class Login extends JFrame {
             for (String game : games) {
                // Checking if the game is joinable
                int numberOfPlayers = stub.getNumPlayers(game);
-
-               System.out.println("\nGame: " + game + "\nNumber of Players: "
-                       + numberOfPlayers);
-
-               // If the result is -1 game is not joinable display a message
-               // to the user
-               if (numberOfPlayers != -1) {
-                  joinableGames.add(String.format(game));
-               }
+               // Adding the game to the list on the lobby
+               joinableGames.add(game);
             }
-            System.out.println("");
 
             // Creating the game list from the joinableGame Vector
             jlstGame.setListData(joinableGames);
          }
 
       } catch (RemoteException re) {
-         System.out.println("Remote Exception: " +   re);
-      }   
+         System.out.println("Remote Exception: " + re);
+      }
    }
    
    /**

@@ -28,6 +28,10 @@ public class ChatClient extends JFrame {
    // For Client
    private String nickname;
 
+   // For the game
+   private String name = "";
+   private String ip = "localhost";
+
    /**
     * Constructor for the ChatClient.
     * @param ip the IP adress for the main server
@@ -38,9 +42,11 @@ public class ChatClient extends JFrame {
       super(name);
       makeGUI();
 
-      // Creating the registry
+      this.name = name;
+      this.ip = ip;
+
       try {
-         // Creating the Registry
+         // Locating the Registry
          Registry registry = LocateRegistry.getRegistry(ip);
 
          // Looking up the Stub class
@@ -112,6 +118,29 @@ public class ChatClient extends JFrame {
          @Override
          public void windowClosing(WindowEvent e) {
             sendMessage(nickname + " has left the chat");
+            System.out.println("Starting shutdown");
+            // Get the game that the client is running
+            // create registry and bind to the main server
+            // Creating the registry
+            try {
+               // Locating the Registry
+               Registry registry = LocateRegistry.getRegistry(ip);
+
+               // Looking up the ServerStub class
+               ServerStub serverStub = (ServerStub) registry.lookup("ServerStub");
+
+               System.out.println("Connected to the server");
+
+               // Calling the shutdown method on the server
+               System.out.println(serverStub.shutdownClient(name));
+
+               // Getting rid of the client
+               dispose();
+
+            } catch (Exception oe) {
+               System.err.println("Client exception: " + oe.toString());
+               oe.printStackTrace();
+            }
          }
       });
 
@@ -139,8 +168,7 @@ public class ChatClient extends JFrame {
 
       // Set JFrame sizing
       setSize(350, 650);
-      // pack();
-      // setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
       setVisible(true);
       setLocation(1500, 300);
    } 
