@@ -18,7 +18,7 @@ import java.util.Timer;
  * @author Lucas Kohorst
  * @version 3/25/19
  */
-public class Login extends JFrame {
+public class Lobby extends JFrame {
 
    // Global Variables
    // GUI
@@ -36,21 +36,28 @@ public class Login extends JFrame {
 
    /**
     * Main Constructor for the ClientGUI Class. Creates thee GUI window.
+    * @param sentIP the ip address sent back from the client
     */
-   public Login() {
+   public Lobby(String sentIP) {
+      // Setting the title of the frame
       super("Ticket to Ride");
-
-      // IP address input
-      String[] options = {"Connect"};
-      JPanel panel = new JPanel();
-      JLabel lbl = new JLabel("Enter the main server's IP address: ");
-      JTextField txt = new JTextField(10);
-      panel.add(lbl);
-      panel.add(txt);
-      JOptionPane.showOptionDialog(null, panel, "Connect", 
-            JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE,
-            null, options, options[0]);
-      String ip = txt.getText();
+      // Setting the intial IP 
+      String ip = "localhost";
+      if (sentIP.length() > 8) {
+         ip = sentIP;
+      } else {
+         // IP address input
+         String[] options = {"Connect"};
+         JPanel panel = new JPanel();
+         JLabel lbl = new JLabel("Enter the main server's IP address: ");
+         JTextField txt = new JTextField(10);
+         panel.add(lbl);
+         panel.add(txt);
+         JOptionPane.showOptionDialog(null, panel, "Connect", 
+               JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+               null, options, options[0]);
+         ip = txt.getText();
+      }   
 
       // Connecting to the main Server
       connectMainServer(ip);
@@ -58,6 +65,9 @@ public class Login extends JFrame {
       // Getting all of the names of games on the
       // main server
       queryGames();
+
+      // Creating the list
+      jlstGame = new JList(games);
 
       // Creating the JPanel then adding it to the frame
       JPanel jp = new JPanel();
@@ -69,7 +79,8 @@ public class Login extends JFrame {
       // Adding the action listener for the join button
       jbJoin.addActionListener(e -> {
          // Checking if the selected game is null or the intial message
-         if (selectedGame == null || selectedGame.equals("No games available")) {
+         if (selectedGame == null || selectedGame.equals(
+                "No games available")) {
             // Display a message to the user that there are no games
             // that they are able to join
             JOptionPane.showMessageDialog(null, "No games available to join");
@@ -87,9 +98,6 @@ public class Login extends JFrame {
          // Creating a new game on the server
          createGame();
       });
-
-      // Creating the list
-      jlstGame = new JList(games);
 
       // Adding the selection listener to the list
       jlstGame.addListSelectionListener(e -> {
@@ -157,22 +165,16 @@ public class Login extends JFrame {
       try {
          games = stub.getGames();
 
+         // If there are no active games
          if (stub.getNumberActive() < 1) {
             games = new Vector<String>();
             games.addElement("No games available");
          } else {
-            Vector<String> joinableGames = new Vector<String>();
-
-            // Checking if each game in the list is joinable
-            for (String game : games) {
-               // Checking if the game is joinable
-               int numberOfPlayers = stub.getNumPlayers(game);
-               // Adding the game to the list on the lobby
-               joinableGames.add(game);
-            }
-
-            // Creating the game list from the joinableGame Vector
-            jlstGame.setListData(joinableGames);
+            // Will go through try on the query games after the initial
+            try {
+               // Creating the game list from the joinableGame Vector
+               jlstGame.setListData(games);
+            } catch (Exception e) { } // Will be caught on first execution
          }
 
       } catch (RemoteException re) {
@@ -212,6 +214,9 @@ public class Login extends JFrame {
 
          // Creating a new game client
          new ChatClient(ipFromServer, stubIDFromServer, nameFromServer);
+
+         // Disposing the Lobby Window
+         dispose();
       } catch (RemoteException re) { }
    }
    
@@ -241,6 +246,9 @@ public class Login extends JFrame {
 
             // Creating a new game client
             new ChatClient(ipFromServer, stubIDFromServer, nameFromServer);
+
+            // Disposing the lobby window
+            dispose();
          } else {
             JOptionPane.showMessageDialog(null, "Cannot join game to many " 
                   + "players, either create or join another game", 
@@ -281,7 +289,7 @@ public class Login extends JFrame {
     * @param args for command line input.
     */
    public static void main(String[] args) {
-      new Login();
+      new Lobby("");
    }
 
 }

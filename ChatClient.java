@@ -127,7 +127,8 @@ public class ChatClient extends JFrame {
                Registry registry = LocateRegistry.getRegistry(ip);
 
                // Looking up the ServerStub class
-               ServerStub serverStub = (ServerStub) registry.lookup("ServerStub");
+               ServerStub serverStub = (ServerStub) registry.lookup(
+                      "ServerStub");
 
                System.out.println("Connected to the server");
 
@@ -136,6 +137,9 @@ public class ChatClient extends JFrame {
 
                // Getting rid of the client
                dispose();
+
+               // Creating the Lobby Again
+               new Lobby(ip);
 
             } catch (Exception oe) {
                System.err.println("Client exception: " + oe.toString());
