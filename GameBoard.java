@@ -14,7 +14,7 @@ import java.io.*;
  */
 public class GameBoard extends JPanel {
 
-    // Image to paint as background of pan
+    // Image to paint as background of panel
    private BufferedImage bgImage = null;  
      
      // Array of colors for each group of button
