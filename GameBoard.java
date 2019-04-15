@@ -24,10 +24,8 @@ public class GameBoard extends JPanel {
    private int[] loop = {7, 14, 58, 65, 72, 79, 86, 93, 100, 136};
     
     /**
-     * GameBoard constructor - accepts a background image, creates,
-     *                       then adds each button.
+     * GameBoard constructor - creates then adds each button to the panel.
      *
-     * @param bgPath - relative path to the background image file
      */  
    public GameBoard() {
       
