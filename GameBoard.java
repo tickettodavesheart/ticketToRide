@@ -26,7 +26,7 @@ public class GameBoard extends JFrame {
      // Array of ints to control color changing in loop
    private int[] loop = {6, 19, 50, 57, 64, 71, 78, 85, 92, 128};
       
-   public GameBoard() {
+   public GameBoard(String ip, String stubID, String name) {
       BufferedImage bgImage = null;
      
       // Width and Height of GameBoard window
@@ -56,8 +56,8 @@ public class GameBoard extends JFrame {
       int i = 0;
       int j = 0;
       for(Shape s : buttonList) {
-         String name = new String("" + i);
-         gamePanel.add(new CButton(s, name, colors[j]));
+         String nameButton = new String("" + i);
+         gamePanel.add(new CButton(s, nameButton, colors[j]));
          i++;
          if(i == loop[j] && j < 9) {
             j++;
@@ -230,8 +230,5 @@ public class GameBoard extends JFrame {
          g2d.drawImage(bgImage, 0 , 0, this);
       } // end paintComponent @Override
    } // end BGPanel class
-   
-   public static void main(String[] args) {
-      new GameBoard();
-   }
+
 } // end GameBoard class

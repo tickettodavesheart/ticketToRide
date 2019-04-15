@@ -213,7 +213,7 @@ public class Lobby extends JFrame {
          stub.addIntialPlayer();
 
          // Creating a new game client
-         new ChatClient(ipFromServer, stubIDFromServer, nameFromServer);
+         new GameClient(ipFromServer, stubIDFromServer, nameFromServer);
 
          // Disposing the Lobby Window
          dispose();
@@ -245,7 +245,7 @@ public class Lobby extends JFrame {
             stub.incNumPlayers(nameFromServer);
 
             // Creating a new game client
-            new ChatClient(ipFromServer, stubIDFromServer, nameFromServer);
+            new GameClient(ipFromServer, stubIDFromServer, nameFromServer);
 
             // Disposing the lobby window
             dispose();

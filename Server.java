@@ -365,9 +365,6 @@ public class Server implements ServerStub {
          // Creating a new Server
          Server serverObj = new Server();
 
-         // Pass IP address to GUI
-         serverObj.setServerAddress(InetAddress.getLocalHost());
-
          // Casting the stub class to a remote object on the server
          // Exporting the ServerStub
          ServerStub stub = (ServerStub) UnicastRemoteObject.exportObject(
