@@ -5,12 +5,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.rmi.RemoteException;
 import java.util.Vector;
 
-// For GUI
-import javax.swing.*;
-import java.awt.*;
-import java.util.*;
-import java.awt.event.*;
-
 import java.net.*;
 
 /**
@@ -41,7 +35,7 @@ public class Server implements ServerStub {
    // The last created game's stub_id
    private String stubID = "GameStub" + OBJ_ID;
 
-   // The IP address of the machine
+   // The pre-configured IP address of the machine
    private String CURRENT_IP = "localhost";
 
    // The name of the last created game
@@ -49,6 +43,9 @@ public class Server implements ServerStub {
 
    // Holds the number of players on a given game
    private Vector<Integer> numPlayers = new Vector<Integer>();
+
+   // Holds the localhost address of the Server
+   private InetAddress address;
 
    /**
     * Method for getting the stubID for the last created game.
@@ -361,11 +358,15 @@ public class Server implements ServerStub {
    public static void main(String[] args) {
 
       try {
+         
          // Starting the RMI registry at port 1099 (reserved)
          LocateRegistry.createRegistry(1099);
 
          // Creating a new Server
          Server serverObj = new Server();
+
+         // Pass IP address to GUI
+         serverObj.setServerAddress(InetAddress.getLocalHost());
 
          // Casting the stub class to a remote object on the server
          // Exporting the ServerStub
@@ -381,6 +382,10 @@ public class Server implements ServerStub {
          registry.bind("ServerStub", stub);
 
          System.err.println("Server ready");
+
+         ServerGUI gui = new ServerGUI(InetAddress.getLocalHost().toString());
+         
+         
       } catch (RemoteException re) {
          System.err.println("Server exception: " + re.toString());
          re.printStackTrace();
