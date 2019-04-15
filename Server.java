@@ -224,22 +224,6 @@ public class Server implements ServerStub {
    }
 
    /**
-    * Method that sets the localhost address of the Server for use by the GUI.
-    * @param addr - InetAddress to be passed through
-    */
-   public void setServerAddress(InetAddress addr) {
-      addr = address;
-   }
-
-   /**
-    * Method that returns the localhost address of the Server for use by the GUI. 
-    * @return the IPv4 address of the machine that the Server is running on.
-    */
-   public InetAddress getServerAddress() {
-      return address;
-   } 
-
-   /**
     * 
     */
    class ThreadServer extends Thread {
