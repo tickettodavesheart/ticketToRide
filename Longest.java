@@ -88,16 +88,22 @@ public class Longest {
       // The arraylist for the longest trail
       ArrayList<String> longestTrail = new ArrayList<String>();
       for (String key: keys) {
-         // Sending a city and it's citys to check if
-         // it is the longest trail
-         ArrayList<String> testtrail = findLongTrail(key);
-         System.out.printf("%nVisited the following trail: %s %n\t with the key: %s", testtrail, key);
-         // If the test trail is longer than the longest trail
-         // set the new trail to the longes
-         if (testtrail.size() > longestTrail.size()) {
-            // Setting the new trail to the longest trail
-            longestTrail = testtrail;
-         }
+         // Getting the list of destinations from the hash
+         ArrayList<String> visitedDestinations = hashedRoutes.get(key);
+         // Iterating over each destination
+         for (String dest : visitedDestinations) {
+            // Sending a city and it's citys to check if
+            // it is the longest trail
+            ArrayList<String> testtrail = findLongTrail(key, dest, 
+                   new ArrayList<String>());
+            System.out.printf("%nVisited the following trail: %s %n\t with the key: %s", testtrail, key);
+            // If the test trail is longer than the longest trail
+            // set the new trail to the longes
+            if (testtrail.size() > longestTrail.size()) {
+               // Setting the new trail to the longest trail
+               longestTrail = testtrail;
+            }
+         }   
       }
       // Returning the longest trail
       return longestTrail;
@@ -107,9 +113,20 @@ public class Longest {
     * Recurse each weight from citys from route
     * to find the longest route.
     * @param key the city name that is being started on
+    * @param dest the destination to check
+    * @param path an arraylist of the path
     * @return longestNewPath the longest path
     */
-   public ArrayList<String> findLongTrail(String key) {
+   public ArrayList<String> findLongTrail(String key, String dest, 
+          ArrayList<String> path) {
+      // ArryList that holds the path of the current path
+      ArrayList<String> currentPathPlaceholder = new ArrayList<String>();
+      // Adding all of the previous path to the current placeholder
+      for (String p : path) {
+         currentPathPlaceholder.add(p);
+      }
+      // Adding the given destination to the current path
+      currentPathPlaceholder.add(dest);
       // Getting the arraylist of values that a route stores
       ArrayList<String> currentRoutes = hashedRoutes.get(key);
       // The Arraylist of Keys for the longest NEW path
@@ -121,9 +138,10 @@ public class Longest {
          if (!edgeVisited(currentR)) {
             // Recursing all of the trails that have not been visited
             // to find the longest one
-            ArrayList<String> newtrail = findLongTrail(key);
+            ArrayList<String> newtrail = findLongTrail(key, currentR,
+                    currentPathPlaceholder);
             // Checking if the newtrail is longer than the longest path
-            if (newtrail.size() > longestNewPath.size()) {
+            if (!newtrail.isEmpty() && newtrail.size() > longestNewPath.size()) {
                // Setting the new trail to the longestnewpath
                longestNewPath = newtrail;
             }
