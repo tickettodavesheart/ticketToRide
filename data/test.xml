@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?dsd href="recipes.dsd"?>
+<routes>
+    <city>
+        <name> A </name>
+
+        <route>
+            <id> orange_1 </id>
+            <color> orange </color>
+            <weight> 5 </weight>
+            <destination> B </destination>
+        </route>
+    </city>
+
+    <city>
+        <name> B </name>
+
+        <route>
+            <id> orange_2 </id>
+            <color> orange </color>
+            <weight> 4 </weight>
+            <destination> D </destination>
+        </route>
+        <route>
+            <id> orange_1 </id>
+            <color> orange </color>
+            <weight> 5 </weight>
+            <destination> A </destination>
+        </route>
+        <route>
+            <id> purple_2 </id>
+            <color> purple </color>
+            <weight> 3 </weight>
+            <destination> C </destination>
+        </route>
+    </city>
+
+    <city>
+        <name> D </name>
+
+        <route>
+            <id> orange_2 </id>
+            <color> orange </color>
+            <weight> 4 </weight>
+            <destination> B </destination>
+        </route>
+        <route>
+            <id> grey_1 </id>
+            <color> grey </color>
+            <weight> 2 </weight>
+            <destination> C </destination>
+        </route>
+        <route>
+            <id> purple_1 </id>
+            <color> purple </color>
+            <weight> 1 </weight>
+            <destination> E </destination>
+        </route>
+    </city>
+
+    <city>
+        <name> C </name>
+
+        <route>
+            <id> grey_1 </id>
+            <color> grey </color>
+            <weight> 2 </weight>
+            <destination> D </destination>
+        </route>
+        <route>
+            <id> purple_2 </id>
+            <color> purple </color>
+            <weight> 3 </weight>
+            <destination> B </destination>
+        </route>
+    </city>
+
+    <city>
+        <name> E </name>
+
+        <route>
+            <id> purple_1 </id>
+            <color> purple </color>
+            <weight> 1 </weight>
+            <destination> D </destination>
+        </route>
+    </city>
+</routes>

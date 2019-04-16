@@ -1,1384 +1,1383 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?dsd href="recipes.dsd"?>
-<!-- This is a sample comment -->
 <routes>
-	<city>
+    <city>
         <name> San Francisco </name>
 
         <route>
             <id> orange_1 </id>
             <color> orange </color>
             <weight> 5 </weight>
-            <destination> Salt Lake City </destination> 
+            <destination> Salt Lake City </destination>
         </route>
         <route>
             <id> white_1 </id>
             <color> white </color>
             <weight> 5 </weight>
-            <destination> Salt Lake City </destination> 
+            <destination> Salt Lake City </destination>
         </route>
         <route>
             <id> green_1 </id>
             <color> green </color>
             <weight> 5 </weight>
-            <destination> Portland </destination> 
+            <destination> Portland </destination>
         </route>
         <route>
             <id> purple_2 </id>
             <color> purple </color>
             <weight> 5 </weight>
-            <destination> Portland </destination> 
+            <destination> Portland </destination>
         </route>
         <route>
             <id> yellow_1 </id>
             <color> yellow </color>
             <weight> 3 </weight>
-            <destination> Los Angeles </destination> 
+            <destination> Los Angeles </destination>
         </route>
         <route>
             <id> purple_1 </id>
             <color> purple </color>
             <weight> 3 </weight>
-            <destination> Los Angeles </destination> 
+            <destination> Los Angeles </destination>
         </route>
-	</city>
+    </city>
 
-	<city>
+    <city>
         <name> Salt Lake City </name>
-        
+
         <route>
             <id> orange_1 </id>
             <color> orange </color>
             <weight> 5 </weight>
-            <destination> San Francisco </destination> 
+            <destination> San Francisco </destination>
         </route>
         <route>
             <id> blue_1 </id>
             <color> blue </color>
             <weight> 6 </weight>
-            <destination> Portland </destination> 
+            <destination> Portland </destination>
         </route>
         <route>
             <id> purple_3 </id>
             <color> purple </color>
             <weight> 3 </weight>
-            <destination> Helena </destination> 
+            <destination> Helena </destination>
         </route>
         <route>
             <id> red_1 </id>
             <color> red </color>
             <weight> 3 </weight>
-            <destination> Denver </destination> 
+            <destination> Denver </destination>
         </route>
         <route>
             <id> yellow_3 </id>
             <color> yellow </color>
             <weight> 3 </weight>
-            <destination> Denver </destination> 
+            <destination> Denver </destination>
         </route>
         <route>
             <id> orange_2 </id>
             <color> orange </color>
             <weight> 3 </weight>
-            <destination> Las Vegas </destination> 
+            <destination> Las Vegas </destination>
         </route>
         <route>
             <id> white_1 </id>
             <color> white </color>
             <weight> 5 </weight>
-            <destination> San Francisco </destination> 
+            <destination> San Francisco </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Las Vegas </name>
-        
+
         <route>
             <id> orange_ </id>
             <color> orange </color>
             <weight> 3 </weight>
-            <destination> Salt Lake City </destination> 
+            <destination> Salt Lake City </destination>
         </route>
         <route>
             <id> grey_ </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Los Angeles </destination> 
+            <destination> Los Angeles </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Los Angeles </name>
-        
+
         <route>
             <id> yellow_1 </id>
             <color> yellow </color>
             <weight> 3 </weight>
-            <destination> San Francisco </destination> 
+            <destination> San Francisco </destination>
         </route>
         <route>
             <id> purple_1 </id>
             <color> purple </color>
             <weight> 3 </weight>
-            <destination> San Francisco </destination> 
+            <destination> San Francisco </destination>
         </route>
         <route>
             <id> grey_6 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Las Vegas </destination> 
+            <destination> Las Vegas </destination>
         </route>
         <route>
             <id> grey_5 </id>
             <color> grey </color>
             <weight> 3 </weight>
-            <destination> Phoenix </destination> 
+            <destination> Phoenix </destination>
         </route>
         <route>
             <id> black_1 </id>
             <color> black </color>
             <weight> 6 </weight>
-            <destination> El Paso </destination> 
+            <destination> El Paso </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Portland </name>
-        
+
         <route>
             <id> grey_1 </id>
             <color> grey </color>
             <weight> 1 </weight>
-            <destination> Seattle </destination> 
+            <destination> Seattle </destination>
         </route>
         <route>
             <id> grey_2 </id>
             <color> grey </color>
             <weight> 1 </weight>
-            <destination> Seattle </destination> 
+            <destination> Seattle </destination>
         </route>
         <route>
             <id> blue_1 </id>
             <color> blue </color>
             <weight> 6 </weight>
-            <destination> Salt Lake City </destination> 
+            <destination> Salt Lake City </destination>
         </route>
         <route>
             <id> purple_2 </id>
             <color> purple </color>
             <weight> 5 </weight>
-            <destination> San Francisco </destination> 
+            <destination> San Francisco </destination>
         </route>
         <route>
             <id> green_1 </id>
             <color> green </color>
             <weight> 5 </weight>
-            <destination> San Francisco </destination> 
+            <destination> San Francisco </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Seattle </name>
-        
+
         <route>
             <id> grey_1 </id>
             <color> grey </color>
             <weight> 1 </weight>
-            <destination> Portland </destination> 
+            <destination> Portland </destination>
         </route>
         <route>
             <id> grey_2 </id>
             <color> grey </color>
             <weight> 1 </weight>
-            <destination> Portland </destination> 
+            <destination> Portland </destination>
         </route>
         <route>
             <id> yellow_2 </id>
             <color> yellow </color>
             <weight> 6 </weight>
-            <destination> Helena </destination> 
+            <destination> Helena </destination>
         </route>
         <route>
             <id> grey_7 </id>
             <color> grey </color>
             <weight> 4 </weight>
-            <destination> Calgary </destination> 
+            <destination> Calgary </destination>
         </route>
         <route>
             <id> grey_4 </id>
             <color> grey </color>
             <weight> 1 </weight>
-            <destination> Vancouver </destination> 
+            <destination> Vancouver </destination>
         </route>
         <route>
             <id> grey_3 </id>
             <color> grey </color>
             <weight> 1 </weight>
-            <destination> Vancouver </destination> 
+            <destination> Vancouver </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Vancouver </name>
-        
+
         <route>
             <id> grey_3 </id>
             <color> grey </color>
             <weight> 1 </weight>
-            <destination> Seattle </destination> 
+            <destination> Seattle </destination>
         </route>
         <route>
             <id> grey_4 </id>
             <color> grey </color>
             <weight> 1 </weight>
-            <destination> Seattle </destination> 
+            <destination> Seattle </destination>
         </route>
         <route>
             <id> grey_8 </id>
             <color> grey </color>
             <weight> 3 </weight>
-            <destination> Calgary </destination> 
+            <destination> Calgary </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Calgary </name>
-        
+
         <route>
             <id> grey_8 </id>
             <color> grey </color>
             <weight> 3 </weight>
-            <destination> Vancouver </destination> 
+            <destination> Vancouver </destination>
         </route>
         <route>
             <id> white_3 </id>
             <color> white </color>
             <weight> 6 </weight>
-            <destination> Winnipeg </destination> 
+            <destination> Winnipeg </destination>
         </route>
         <route>
             <id> grey_11 </id>
             <color> grey </color>
             <weight> 4 </weight>
-            <destination> Helena </destination> 
+            <destination> Helena </destination>
         </route>
         <route>
             <id> grey_7 </id>
             <color> grey </color>
             <weight> 4 </weight>
-            <destination> Seattle </destination> 
+            <destination> Seattle </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Helena </name>
-        
+
         <route>
             <id> grey_11 </id>
             <color> grey </color>
             <weight> 4 </weight>
-            <destination> Calgary </destination> 
+            <destination> Calgary </destination>
         </route>
         <route>
             <id> blue_3 </id>
             <color> blue </color>
             <weight> 4 </weight>
-            <destination> Winnipeg </destination> 
+            <destination> Winnipeg </destination>
         </route>
         <route>
             <id> orange_4 </id>
             <color> orange </color>
             <weight> 6 </weight>
-            <destination> Duluth </destination> 
+            <destination> Duluth </destination>
         </route>
         <route>
             <id> red_4 </id>
             <color> red </color>
             <weight> 5 </weight>
-            <destination> Omaha </destination> 
+            <destination> Omaha </destination>
         </route>
         <route>
             <id> green_3 </id>
             <color> green </color>
             <weight> 4 </weight>
-            <destination> Denver </destination> 
+            <destination> Denver </destination>
         </route>
         <route>
             <id> purple_3 </id>
             <color> purple </color>
             <weight> 3 </weight>
-            <destination> Salt Lake City </destination> 
+            <destination> Salt Lake City </destination>
         </route>
         <route>
             <id> yellow_2 </id>
             <color> yellow </color>
             <weight> 6 </weight>
-            <destination> Seattle </destination> 
+            <destination> Seattle </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Denver </name>
-        
+
         <route>
             <id> yellow_3 </id>
             <color> yellow </color>
             <weight> 3 </weight>
-            <destination> Salt Lake City </destination> 
+            <destination> Salt Lake City </destination>
         </route>
         <route>
             <id> red_1 </id>
             <color> red </color>
             <weight> 3 </weight>
-            <destination> Salt Lake City </destination> 
+            <destination> Salt Lake City </destination>
         </route>
         <route>
             <id> green_3 </id>
             <color> green </color>
             <weight> 4 </weight>
-            <destination> Helena </destination> 
+            <destination> Helena </destination>
         </route>
         <route>
             <id> purple_4 </id>
             <color> purple </color>
             <weight> 4 </weight>
-            <destination> Omaha </destination> 
+            <destination> Omaha </destination>
         </route>
         <route>
             <id> black_2 </id>
             <color> black </color>
             <weight> 4 </weight>
-            <destination> Kansas City </destination> 
+            <destination> Kansas City </destination>
         </route>
         <route>
             <id> orange_3 </id>
             <color> orange </color>
             <weight> 4 </weight>
-            <destination> Kansas City </destination> 
+            <destination> Kansas City </destination>
         </route>
         <route>
             <id> red_3 </id>
             <color> red </color>
             <weight> 4 </weight>
-            <destination> Oklahoma City </destination> 
+            <destination> Oklahoma City </destination>
         </route>
         <route>
             <id> grey_13 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Santa Fe </destination> 
+            <destination> Santa Fe </destination>
         </route>
         <route>
             <id> white_2 </id>
             <color> white </color>
             <weight> 5 </weight>
-            <destination> Phoenix </destination> 
+            <destination> Phoenix </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Phoenix </name>
-        
+
         <route>
             <id> grey_5 </id>
             <color> grey </color>
             <weight> 3 </weight>
-            <destination> Los Angeles </destination> 
+            <destination> Los Angeles </destination>
         </route>
         <route>
             <id> white_2 </id>
             <color> white </color>
             <weight> 5 </weight>
-            <destination> Denver </destination> 
+            <destination> Denver </destination>
         </route>
         <route>
             <id> grey_10 </id>
             <color> grey </color>
             <weight> 3 </weight>
-            <destination> Santa Fe </destination> 
+            <destination> Santa Fe </destination>
         </route>
         <route>
             <id> grey_9 </id>
             <color> grey </color>
             <weight> 3 </weight>
-            <destination> El Paso </destination> 
+            <destination> El Paso </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Santa Fe </name>
-        
+
         <route>
             <id> grey_10 </id>
             <color> grey </color>
             <weight> 3 </weight>
-            <destination> Phoenix </destination> 
+            <destination> Phoenix </destination>
         </route>
         <route>
             <id> grey_13 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Denver </destination> 
+            <destination> Denver </destination>
         </route>
         <route>
             <id> blue_2 </id>
             <color> blue </color>
             <weight> 3 </weight>
-            <destination> Oklahoma City </destination> 
+            <destination> Oklahoma City </destination>
         </route>
         <route>
             <id> grey_12 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> El Paso </destination> 
+            <destination> El Paso </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> El Paso </name>
-        
+
         <route>
             <id> black_1 </id>
             <color> black </color>
             <weight> 6 </weight>
-            <destination> Los Angeles </destination> 
+            <destination> Los Angeles </destination>
         </route>
         <route>
             <id> grey_9 </id>
             <color> grey </color>
             <weight> 3 </weight>
-            <destination> Phoenix </destination> 
+            <destination> Phoenix </destination>
         </route>
         <route>
             <id> grey_12 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Santa Fe </destination> 
+            <destination> Santa Fe </destination>
         </route>
         <route>
             <id> yellow_4 </id>
             <color> yellow </color>
             <weight> 5 </weight>
-            <destination> Oklahoma City </destination> 
+            <destination> Oklahoma City </destination>
         </route>
         <route>
             <id> red_2 </id>
             <color> red </color>
             <weight> 4 </weight>
-            <destination> Dallas </destination> 
+            <destination> Dallas </destination>
         </route>
         <route>
             <id> green_2 </id>
             <color> green </color>
             <weight> 6 </weight>
-            <destination> Houston </destination> 
+            <destination> Houston </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Winnipeg </name>
-        
+
         <route>
             <id> white_3 </id>
             <color> white </color>
             <weight> 6 </weight>
-            <destination> Calgary </destination> 
+            <destination> Calgary </destination>
         </route>
         <route>
             <id> grey_19 </id>
             <color> grey </color>
             <weight> 6 </weight>
-            <destination> Sault St. Marie </destination> 
+            <destination> Sault St. Marie </destination>
         </route>
         <route>
             <id> black_3 </id>
             <color> black </color>
             <weight> 4 </weight>
-            <destination> Duluth </destination> 
+            <destination> Duluth </destination>
         </route>
         <route>
             <id> blue_3 </id>
             <color> blue </color>
             <weight> 4 </weight>
-            <destination> Helena </destination> 
+            <destination> Helena </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Duluth </name>
-        
+
         <route>
             <id> black_3 </id>
             <color> black </color>
             <weight> 4 </weight>
-            <destination> Winnipeg </destination> 
+            <destination> Winnipeg </destination>
         </route>
         <route>
             <id> grey_27 </id>
             <color> grey </color>
             <weight> 3 </weight>
-            <destination> Sault St. Marie </destination> 
+            <destination> Sault St. Marie </destination>
         </route>
         <route>
             <id> purple_6 </id>
             <color> purple </color>
             <weight> 6 </weight>
-            <destination> Toronto </destination> 
+            <destination> Toronto </destination>
         </route>
         <route>
             <id> red_5 </id>
             <color> red </color>
             <weight> 3 </weight>
-            <destination> Chicago </destination> 
+            <destination> Chicago </destination>
         </route>
         <route>
             <id> grey_26 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Omaha </destination> 
+            <destination> Omaha </destination>
         </route>
         <route>
             <id> grey_18 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Omaha </destination> 
+            <destination> Omaha </destination>
         </route>
         <route>
             <id> orange_4 </id>
             <color> orange </color>
             <weight> 6 </weight>
-            <destination> Helena </destination> 
+            <destination> Helena </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Omaha </name>
-        
+
         <route>
             <id> red_4 </id>
             <color> red </color>
             <weight> 5 </weight>
-            <destination> Helena </destination> 
+            <destination> Helena </destination>
         </route>
         <route>
             <id> grey_18 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Duluth </destination> 
+            <destination> Duluth </destination>
         </route>
         <route>
             <id> grey_26 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Duluth </destination> 
+            <destination> Duluth </destination>
         </route>
         <route>
             <id> blue_5 </id>
             <color> blue </color>
             <weight> 4 </weight>
-            <destination> Chicago </destination> 
+            <destination> Chicago </destination>
         </route>
         <route>
             <id> grey_25 </id>
             <color> grey </color>
             <weight> 1 </weight>
-            <destination> Kansas City </destination> 
+            <destination> Kansas City </destination>
         </route>
         <route>
             <id> grey_17 </id>
             <color> grey </color>
             <weight> 1 </weight>
-            <destination> Kansas City </destination> 
+            <destination> Kansas City </destination>
         </route>
         <route>
             <id> purple_4 </id>
             <color> purple </color>
             <weight> 4 </weight>
-            <destination> Denver </destination> 
+            <destination> Denver </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Kansas City </name>
-        
+
         <route>
             <id> grey_17 </id>
             <color> grey </color>
             <weight> 1 </weight>
-            <destination> Omaha </destination> 
+            <destination> Omaha </destination>
         </route>
         <route>
             <id> grey_25 </id>
             <color> grey </color>
             <weight> 1 </weight>
-            <destination> Omaha </destination> 
+            <destination> Omaha </destination>
         </route>
         <route>
             <id> blue_4 </id>
             <color> blue </color>
             <weight> 2 </weight>
-            <destination> Saint Louis </destination> 
+            <destination> Saint Louis </destination>
         </route>
         <route>
             <id> purple_5 </id>
             <color> purple </color>
             <weight> 2 </weight>
-            <destination> Saint Louis </destination> 
+            <destination> Saint Louis </destination>
         </route>
         <route>
             <id> grey_24 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Oklahoma City </destination> 
+            <destination> Oklahoma City </destination>
         </route>
         <route>
             <id> grey_16 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Oklahoma City </destination> 
+            <destination> Oklahoma City </destination>
         </route>
         <route>
             <id> orange_3 </id>
             <color> orange </color>
             <weight> 4 </weight>
-            <destination> Denver </destination> 
+            <destination> Denver </destination>
         </route>
         <route>
             <id> black_2 </id>
             <color> black </color>
             <weight> 4 </weight>
-            <destination> Denver </destination> 
+            <destination> Denver </destination>
         </route>
-	</city>
-  
-  <city>
+    </city>
+
+    <city>
         <name> Oklahoma City </name>
-        
+
         <route>
             <id> grey_16 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Kansas City </destination> 
+            <destination> Kansas City </destination>
         </route>
         <route>
             <id> grey_24 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Kansas City </destination> 
+            <destination> Kansas City </destination>
         </route>
         <route>
             <id> grey_23 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Little Rock </destination> 
+            <destination> Little Rock </destination>
         </route>
         <route>
             <id> grey_22 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Dallas </destination> 
+            <destination> Dallas </destination>
         </route>
         <route>
             <id> grey_15 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Dallas </destination> 
+            <destination> Dallas </destination>
         </route>
         <route>
             <id> yellow_4 </id>
             <color> yellow </color>
             <weight> 5 </weight>
-            <destination> El Paso </destination> 
+            <destination> El Paso </destination>
         </route>
         <route>
             <id> blue_2 </id>
             <color> blue </color>
             <weight> 3 </weight>
-            <destination> Santa Fe </destination> 
+            <destination> Santa Fe </destination>
         </route>
         <route>
             <id> red_3 </id>
             <color> red </color>
             <weight> 4 </weight>
-            <destination> Denver </destination> 
+            <destination> Denver </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Dallas </name>
-        
+
         <route>
             <id> grey_15 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Oklahoma City </destination> 
+            <destination> Oklahoma City </destination>
         </route>
         <route>
             <id> grey_22 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Oklahoma City </destination> 
+            <destination> Oklahoma City </destination>
         </route>
         <route>
             <id> grey_21 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Little Rock </destination> 
+            <destination> Little Rock </destination>
         </route>
         <route>
             <id> grey_20 </id>
             <color> grey </color>
             <weight> 1 </weight>
-            <destination> Houston </destination> 
+            <destination> Houston </destination>
         </route>
         <route>
             <id> grey_14 </id>
             <color> grey </color>
             <weight> 1 </weight>
-            <destination> Houston </destination> 
+            <destination> Houston </destination>
         </route>
         <route>
             <id> red_2 </id>
             <color> red </color>
             <weight> 4 </weight>
-            <destination> El Paso </destination> 
+            <destination> El Paso </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Houston </name>
-        
+
         <route>
             <id> green_2 </id>
             <color> green </color>
             <weight> 6 </weight>
-            <destination> El Paso </destination> 
+            <destination> El Paso </destination>
         </route>
         <route>
             <id> grey_14 </id>
             <color> grey </color>
             <weight> 1 </weight>
-            <destination> Dallas </destination> 
+            <destination> Dallas </destination>
         </route>
         <route>
             <id> grey_20 </id>
             <color> grey </color>
             <weight> 1 </weight>
-            <destination> Dallas </destination> 
+            <destination> Dallas </destination>
         </route>
         <route>
             <id> grey_28 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> New Orleans </destination> 
+            <destination> New Orleans </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> New Orleans </name>
-        
+
         <route>
             <id> grey_28 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Houston </destination> 
+            <destination> Houston </destination>
         </route>
         <route>
             <id> green_4 </id>
             <color> green </color>
             <weight> 4 </weight>
-            <destination> Little Rock </destination> 
+            <destination> Little Rock </destination>
         </route>
         <route>
             <id> yellow_5 </id>
             <color> yellow </color>
             <weight> 4 </weight>
-            <destination> Atlanta </destination> 
+            <destination> Atlanta </destination>
         </route>
         <route>
             <id> orange_5 </id>
             <color> orange </color>
             <weight> 4 </weight>
-            <destination> Atlanta </destination> 
+            <destination> Atlanta </destination>
         </route>
         <route>
             <id> red_6 </id>
             <color> red </color>
             <weight> 6 </weight>
-            <destination> Miami </destination> 
+            <destination> Miami </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Little Rock </name>
-        
+
         <route>
             <id> grey_23 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Oklahoma City </destination> 
+            <destination> Oklahoma City </destination>
         </route>
         <route>
             <id> grey_29 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Saint Louis </destination> 
+            <destination> Saint Louis </destination>
         </route>
         <route>
             <id> white_4 </id>
             <color> white </color>
             <weight> 3 </weight>
-            <destination> Nashville </destination> 
+            <destination> Nashville </destination>
         </route>
         <route>
             <id> green_4 </id>
             <color> green </color>
             <weight> 3 </weight>
-            <destination> New Orleans </destination> 
+            <destination> New Orleans </destination>
         </route>
         <route>
             <id> grey_21 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Dallas </destination> 
+            <destination> Dallas </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Saint Louis </name>
-        
+
         <route>
             <id> purple_5 </id>
             <color> purple </color>
             <weight> 2 </weight>
-            <destination> Kansas City </destination> 
+            <destination> Kansas City </destination>
         </route>
         <route>
             <id> blue_4 </id>
             <color> blue </color>
             <weight> 2 </weight>
-            <destination> Kansas City </destination> 
+            <destination> Kansas City </destination>
         </route>
         <route>
             <id> green_5 </id>
             <color> green </color>
             <weight> 2 </weight>
-            <destination> Chicago </destination> 
+            <destination> Chicago </destination>
         </route>
         <route>
             <id> white_5 </id>
             <color> white </color>
             <weight> 2 </weight>
-            <destination> Chicago </destination> 
+            <destination> Chicago </destination>
         </route>
         <route>
             <id> green_6 </id>
             <color> green </color>
             <weight> 5 </weight>
-            <destination> Pittsburgh </destination> 
+            <destination> Pittsburgh </destination>
         </route>
         <route>
             <id> grey_30 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Nashville </destination> 
+            <destination> Nashville </destination>
         </route>
         <route>
             <id> grey_29 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Little Rock </destination> 
+            <destination> Little Rock </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Chicago </name>
-        
+
         <route>
             <id> blue_5 </id>
             <color> blue </color>
             <weight> 4 </weight>
-            <destination> Omaha </destination> 
+            <destination> Omaha </destination>
         </route>
         <route>
             <id> red_5 </id>
             <color> red </color>
             <weight> 3 </weight>
-            <destination> Duluth </destination> 
+            <destination> Duluth </destination>
         </route>
         <route>
             <id> white_6 </id>
             <color> white </color>
             <weight> 4 </weight>
-            <destination> Toronto </destination> 
+            <destination> Toronto </destination>
         </route>
         <route>
             <id> orange_6 </id>
             <color> orange </color>
             <weight> 3 </weight>
-            <destination> Pittsburgh </destination> 
+            <destination> Pittsburgh </destination>
         </route>
         <route>
             <id> black_5 </id>
             <color> black </color>
             <weight> 3 </weight>
-            <destination> Pittsburgh </destination> 
+            <destination> Pittsburgh </destination>
         </route>
         <route>
             <id> white_5 </id>
             <color> white </color>
             <weight> 2 </weight>
-            <destination> Saint Louis </destination> 
+            <destination> Saint Louis </destination>
         </route>
         <route>
             <id> green_5 </id>
             <color> green </color>
             <weight> 2 </weight>
-            <destination> Saint Louis </destination> 
+            <destination> Saint Louis </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Sault St. Marie </name>
-        
+
         <route>
             <id> grey_19 </id>
             <color> grey </color>
             <weight> 6 </weight>
-            <destination> Winnipeg </destination> 
+            <destination> Winnipeg </destination>
         </route>
         <route>
             <id> black_6 </id>
             <color> black </color>
             <weight> 5 </weight>
-            <destination> Montreal </destination> 
+            <destination> Montreal </destination>
         </route>
         <route>
             <id> grey_32 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Toronto </destination> 
+            <destination> Toronto </destination>
         </route>
         <route>
             <id> grey_27 </id>
             <color> grey </color>
             <weight> 3 </weight>
-            <destination> Duluth </destination> 
+            <destination> Duluth </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Toronto </name>
-        
+
         <route>
             <id> purple_6 </id>
             <color> purple </color>
             <weight> 6 </weight>
-            <destination> Duluth </destination> 
+            <destination> Duluth </destination>
         </route>
         <route>
             <id> grey_32 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Sault St. Marie </destination> 
+            <destination> Sault St. Marie </destination>
         </route>
         <route>
             <id> grey_38 </id>
             <color> grey </color>
             <weight> 3 </weight>
-            <destination> Montreal </destination> 
+            <destination> Montreal </destination>
         </route>
         <route>
             <id> grey_37 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Pittsburgh </destination> 
+            <destination> Pittsburgh </destination>
         </route>
         <route>
             <id> white_6 </id>
             <color> white </color>
             <weight> 4 </weight>
-            <destination> Chicago </destination> 
+            <destination> Chicago </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Pittsburgh </name>
-        
+
         <route>
             <id> black_5 </id>
             <color> black </color>
             <weight> 3 </weight>
-            <destination> Chicago </destination> 
+            <destination> Chicago </destination>
         </route>
         <route>
             <id> orange_6 </id>
             <color> orange </color>
             <weight> 3 </weight>
-            <destination> Chicago </destination> 
+            <destination> Chicago </destination>
         </route>
         <route>
             <id> grey_37 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Toronto </destination> 
+            <destination> Toronto </destination>
         </route>
         <route>
             <id> white_7 </id>
             <color> white </color>
             <weight> 2 </weight>
-            <destination> New York </destination> 
+            <destination> New York </destination>
         </route>
         <route>
             <id> green_7 </id>
             <color> green </color>
             <weight> 2 </weight>
-            <destination> New York </destination> 
+            <destination> New York </destination>
         </route>
         <route>
             <id> grey_42 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Washington </destination> 
+            <destination> Washington </destination>
         </route>
         <route>
             <id> grey_36 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Raleigh </destination> 
+            <destination> Raleigh </destination>
         </route>
         <route>
             <id> yellow_6 </id>
             <color> yellow </color>
             <weight> 4 </weight>
-            <destination> Nashville </destination> 
+            <destination> Nashville </destination>
         </route>
         <route>
             <id> green_6 </id>
             <color> green </color>
             <weight> 5 </weight>
-            <destination> Saint Louis </destination> 
+            <destination> Saint Louis </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Nashville </name>
-        
+
         <route>
             <id> grey_30 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Saint Louis </destination> 
+            <destination> Saint Louis </destination>
         </route>
         <route>
             <id> yellow_6 </id>
             <color> yellow </color>
             <weight> 4 </weight>
-            <destination> Pittsburgh </destination> 
+            <destination> Pittsburgh </destination>
         </route>
         <route>
             <id> black_4 </id>
             <color> black </color>
             <weight> 3 </weight>
-            <destination> Raleigh </destination> 
+            <destination> Raleigh </destination>
         </route>
         <route>
             <id> grey_31 </id>
             <color> grey </color>
             <weight> 1 </weight>
-            <destination> Atlanta </destination> 
+            <destination> Atlanta </destination>
         </route>
         <route>
             <id> white_4 </id>
             <color> white </color>
             <weight> 3 </weight>
-            <destination> Little Rock </destination> 
+            <destination> Little Rock </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Atlanta </name>
-        
+
         <route>
             <id> grey_31 </id>
             <color> grey </color>
             <weight> 1 </weight>
-            <destination> Nashville </destination> 
+            <destination> Nashville </destination>
         </route>
         <route>
             <id> grey_35 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Raleigh </destination> 
+            <destination> Raleigh </destination>
         </route>
         <route>
             <id> grey_34 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Raleigh </destination> 
+            <destination> Raleigh </destination>
         </route>
         <route>
             <id> grey_33 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Charleston </destination> 
+            <destination> Charleston </destination>
         </route>
         <route>
             <id> blue_6 </id>
             <color> blue </color>
             <weight> 5 </weight>
-            <destination> Miami </destination> 
+            <destination> Miami </destination>
         </route>
         <route>
             <id> orange_5 </id>
             <color> orange </color>
             <weight> 4 </weight>
-            <destination> New Orleans </destination> 
+            <destination> New Orleans </destination>
         </route>
         <route>
             <id> yellow_5 </id>
             <color> yellow </color>
             <weight> 4 </weight>
-            <destination> New Orleans </destination> 
+            <destination> New Orleans </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Miami </name>
-        
+
         <route>
             <id> red_6 </id>
             <color> red </color>
             <weight> 6 </weight>
-            <destination> New Orleans </destination> 
+            <destination> New Orleans </destination>
         </route>
         <route>
             <id> blue_6 </id>
             <color> blue </color>
             <weight> 5 </weight>
-            <destination> Atlanta </destination> 
+            <destination> Atlanta </destination>
         </route>
         <route>
             <id> purple_7 </id>
             <color> purple </color>
             <weight> 4 </weight>
-            <destination> Charleston </destination> 
+            <destination> Charleston </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Charleston </name>
-        
+
         <route>
             <id> purple_7 </id>
             <color> purple </color>
             <weight> 4 </weight>
-            <destination> Miami </destination> 
+            <destination> Miami </destination>
         </route>
         <route>
             <id> grey_33 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Atlanta </destination> 
+            <destination> Atlanta </destination>
         </route>
         <route>
             <id> grey_39 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Raleigh </destination> 
+            <destination> Raleigh </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Raleigh </name>
-        
+
         <route>
             <id> black_4 </id>
             <color> black </color>
             <weight> 3 </weight>
-            <destination> Nashville </destination> 
+            <destination> Nashville </destination>
         </route>
         <route>
             <id> grey_36 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Pittsburgh </destination> 
+            <destination> Pittsburgh </destination>
         </route>
         <route>
             <id> grey_41 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Washington </destination> 
+            <destination> Washington </destination>
         </route>
         <route>
             <id> grey_40 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Washington </destination> 
+            <destination> Washington </destination>
         </route>
         <route>
             <id> grey_39 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Charleston </destination> 
+            <destination> Charleston </destination>
         </route>
         <route>
             <id> grey_34 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Atlanta </destination> 
+            <destination> Atlanta </destination>
         </route>
         <route>
             <id> grey_35 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Atlanta </destination> 
+            <destination> Atlanta </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Washington </name>
-        
+
         <route>
             <id> grey_40 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Raleigh </destination> 
+            <destination> Raleigh </destination>
         </route>
         <route>
             <id> grey_41 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Raleigh </destination> 
+            <destination> Raleigh </destination>
         </route>
         <route>
             <id> grey_42 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Pittsburgh </destination> 
+            <destination> Pittsburgh </destination>
         </route>
         <route>
             <id> orange_7 </id>
             <color> orange </color>
             <weight> 2 </weight>
-            <destination> New York </destination> 
+            <destination> New York </destination>
         </route>
         <route>
             <id> black_7 </id>
             <color> black </color>
             <weight> 2 </weight>
-            <destination> New York </destination> 
+            <destination> New York </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> New York </name>
-        
+
         <route>
             <id> black_7 </id>
             <color> black </color>
             <weight> 2 </weight>
-            <destination> Washington </destination> 
+            <destination> Washington </destination>
         </route>
         <route>
             <id> orange_7 </id>
             <color> orange </color>
             <weight> 2 </weight>
-            <destination> Washington </destination> 
+            <destination> Washington </destination>
         </route>
         <route>
             <id> green_7 </id>
             <color> green </color>
             <weight> 2 </weight>
-            <destination> Pittsburgh </destination> 
+            <destination> Pittsburgh </destination>
         </route>
         <route>
             <id> white_7 </id>
             <color> white </color>
             <weight> 2 </weight>
-            <destination> Pittsburgh </destination> 
+            <destination> Pittsburgh </destination>
         </route>
         <route>
             <id> blue_7 </id>
             <color> blue </color>
             <weight> 3 </weight>
-            <destination> Montreal </destination> 
+            <destination> Montreal </destination>
         </route>
         <route>
             <id> yellow_7 </id>
             <color> yellow </color>
             <weight> 2 </weight>
-            <destination> Boston </destination> 
+            <destination> Boston </destination>
         </route>
         <route>
             <id> red_7 </id>
             <color> red </color>
             <weight> 2 </weight>
-            <destination> Boston </destination> 
+            <destination> Boston </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Boston </name>
-        
+
         <route>
             <id> red_7 </id>
             <color> red </color>
             <weight> 2 </weight>
-            <destination> New York </destination> 
+            <destination> New York </destination>
         </route>
         <route>
             <id> yellow_7 </id>
             <color> yellow </color>
             <weight> 2 </weight>
-            <destination> New York </destination> 
+            <destination> New York </destination>
         </route>
         <route>
             <id> grey_43 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Montreal </destination> 
+            <destination> Montreal </destination>
         </route>
         <route>
             <id> grey_44 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Montreal </destination> 
+            <destination> Montreal </destination>
         </route>
-	</city>
+    </city>
 
-  <city>
+    <city>
         <name> Montreal </name>
-        
+
         <route>
             <id> black_6 </id>
             <color> black </color>
             <weight> 5 </weight>
-            <destination> Sault St. Marie </destination> 
+            <destination> Sault St. Marie </destination>
         </route>
         <route>
             <id> grey_38 </id>
             <color> grey </color>
             <weight> 3 </weight>
-            <destination> Toronto </destination> 
+            <destination> Toronto </destination>
         </route>
         <route>
             <id> blue_7 </id>
             <color> blue </color>
             <weight> 3 </weight>
-            <destination> New York </destination> 
+            <destination> New York </destination>
         </route>
         <route>
             <id> grey_43 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Boston </destination> 
+            <destination> Boston </destination>
         </route>
         <route>
             <id> grey_44 </id>
             <color> grey </color>
             <weight> 2 </weight>
-            <destination> Boston </destination> 
+            <destination> Boston </destination>
         </route>
-	</city>
+    </city>
 </routes>
