@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?dsd href="recipes.dsd"?>
+<routes>
+    <player>
+        <name> Player 1 </name>
+
+        <id> yellow_2 </id>
+        <id> orange_4 </id>
+        <id> purple_6 </id>
+        <id> grey_37 </id>
+        <id> red_4 </id>
+        <id> grey_17 </id>
+    </player>
+
+    <player>
+        <name> Player 2 </name>
+
+        <id> yellow_1 </id>
+        <id> black_1 </id>
+        <id> green_2 </id>
+        <id> grey_31 </id>
+        <id> blue_6 </id>
+        <id> white_4 </id>
+        <id> black_4 </id>
+        <id> grey_39 </id>
+        <id> grey_9 </id>
+    </player>
+</routes>
