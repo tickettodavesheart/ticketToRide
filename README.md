@@ -27,7 +27,7 @@
 <h3>Game Board</h3>
 <img src="https://user-images.githubusercontent.com/46905032/55049073-fddff800-5020-11e9-9ded-308f46cda8b9.png" alt="Game Board" width="500px">
 <h3>Game Lobby</h3>
-<img src="https://imgur.com/BTrDF6N" alt="Game Lobby" width="500px">
+<img src="https://imgur.com/BTrDF6N.png" alt="Game Lobby" width="500px">
 
 <br><br>
 <h1>Networking</h1>
