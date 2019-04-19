@@ -1,6 +1,7 @@
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.Vector;
+import java.util.*;
+import java.util.Hashtable;
 
 /**
  * The interface for RMI.
@@ -14,7 +15,7 @@ public interface GameStub extends Remote {
     * @throws RemoteException when RMI does not work.
     */
    Vector<String> getMessages() throws RemoteException;
-   
+
    /**
     * Stub method for the Client to send new messages to the Server.
     * @param message the msg to be added.
@@ -23,43 +24,17 @@ public interface GameStub extends Remote {
    void sendMessage(String message) throws RemoteException;
 
    /**
-    * Stub Method for getting all of the Clients playing.
+    * Stub method to add to the selected routes.
+    * @param route the route to be added.
     * @throws RemoteException when RMI does not work.
     */
+   void addRoute(String route) throws RemoteException;
 
    /**
-    * Stub Method for who's turn it is.
-    * @throws RemoteException when RMI does not work.
-    */
-
-   /**
-    * Stub Method for number and type of train each play has.
-    * @throws RemoteException when RMI does not work.
-    */
-
-   /**
-    * Stub Method for number and type of cards each person has.
-    * @throws RemoteException when RMI does not work.
-    */
-
-   /**
-    * Stub Method for the destination cards left.
-    * @throws RemoteException when RMI does not work.
-    */
-
-   /**
-    * Stub Method for destination cards avialable.
-    * @throws RemoteException when RMI does not work.
-    */
-
-   /**
-    * Stub Method for scores for each player.
-    * @throws RemoteException when RMI does not work.
-    */
-
-   /**
-    * Stub Method for name, type and location of available train spots.
-    * @throws RemoteException when RMI does not work.
-    */
+     * Method to change selected routes.
+     * @return selectedRoutes the route selected and it's color
+     * @throws RemoteException when RMI does not work.
+     */
+   Vector<String> updateRoutes() throws RemoteException;
 
 }
