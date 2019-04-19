@@ -6,6 +6,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.*;
+import java.util.Timer;
 
 // RMI
 import java.rmi.registry.LocateRegistry;
@@ -41,6 +42,9 @@ public class GameBoard extends JPanel {
    
    // player name
    private String name;
+   
+   // current player's name
+   private String currentPlayer;
 
    /**
     * GameBoard constructor - creates then adds each button to the panel.
@@ -49,9 +53,15 @@ public class GameBoard extends JPanel {
     * @param name   the name of the current game
     */
    public GameBoard(String ip, String stubID, String name) {
+      // Creating the timer to continually update the gameboard
+      Timer time = new Timer();
+      time.schedule(new GameboardUpdate(), 500, 1500);
+   
+      // set player name
+      this.name = name;
       // Bind to the GameServer
       
-      this.name = name;
+      
       try {
          // Locating the Registry
          Registry registry = LocateRegistry.getRegistry(ip);
@@ -147,23 +157,22 @@ public class GameBoard extends JPanel {
    public void endTurn() {
    
       try {
-         // grab the player name list from the server
-         Vector<String> playerNames = stub.getPlayerNames();
-         // find and store the current player's index in the list
-         int playerIndex = 0;
-         for(int i = 0; i < playerNames.size(); i++) {
-            if(playerNames.get(i).equals(name)) {
-               playerIndex = i;
+            // grab the player name list from the server
+            Vector<String> playerNames = stub.getPlayerNames();
+            // find and store the current player's index in the list
+            int playerIndex = 0;
+            for(int i = 0; i < playerNames.size(); i++) {
+               if(playerNames.get(i).equals(name)) {
+                  playerIndex = i;
+               }
             }
-         }
-         // set the token owner to the next player
-         if (playerIndex + 1 <= playerNames.size() - 1) {
-            stub.setTokenOwner(playerNames.get(playerIndex + 1));
-         } else {
-            stub.setTokenOwner(playerNames.get(0));
-         }
-      } catch (RemoteException re) { }
-      
+            // set the token owner to the next player
+            if (playerIndex + 1 <= playerNames.size() - 1) {
+               stub.setTokenOwner(playerNames.get(playerIndex + 1));
+            } else {
+               stub.setTokenOwner(playerNames.get(0));
+            }
+         } catch (RemoteException re) { }      
    }
 
    // Override paintComponent to draw BackGround image
@@ -174,4 +183,37 @@ public class GameBoard extends JPanel {
              RenderingHints.VALUE_ANTIALIAS_ON);
       g2d.drawImage(bgImage, 0, 0, this);
    } // end paintComponent @Override
+   
+   /**
+    * Class for the gameboard update timer.
+    */
+   class GameboardUpdate extends TimerTask {
+      /**
+       * The run method for the GameboardUpdate task.
+       */
+      public void run() {
+         try {         
+            // check the server's account of the current player
+            String serverCurrentPlayer = stub.getTockenOwner();
+            
+            // compare the server's account of the current player to your own
+            if (!currentPlayer.equals(serverCurrentPlayer)) {
+               // update current player
+               currentPlayer = serverCurrentPlayer;
+               
+               //----------------------- INSERT UPDATING GAME BOARD CODE HERE-------------------------------//
+               //                                                                                           //
+               //                                                                                           //
+               //                                                                                           //
+               //                                                                                           //
+               //-------------------------------------------------------------------------------------------//
+               
+               // if the current player is now you, start your turn
+               if (currentPlayer.equals(name)) {
+                  startTurn();
+               }
+            }
+         } catch (RemoteException re) { }
+      }
+   }
 } // end GameBoard class
