@@ -37,7 +37,8 @@ public class GameClient extends JFrame {
       });
       Thread gameThread = new Thread(new Runnable() {
          public void run() {
-            add(new GameBoard(ip, stubID, name), BorderLayout.EAST);
+            //add(new GameBoard(ip, stubID, name), BorderLayout.EAST);
+            add(new GameBoard(), BorderLayout.EAST);
          }
       });
 
