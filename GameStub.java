@@ -22,10 +22,27 @@ public interface GameStub extends Remote {
     * @throws RemoteException when RMI does not work.
     */
    void sendMessage(String message) throws RemoteException;
+    
+   /**
+    * Stub Method for returning the playerlist
+    * @throws RemoteException when RMI does not work.
+    */
+   Vector<String> getPlayerNames() throws RemoteException;
+   
+   /**
+    * Stub Method for returning the tocken owner
+    * @throws RemoteException when RMI does not work.
+    */
+   String getTockenOwner() throws RemoteException;
+   
+   /**
+    * Stub Method for setting the tocken owner
+    * @throws RemoteException when RMI does not work.
+    */
+   void setTockenOwner(String username) throws RemoteException;
 
    /**
-    * Stub method to add to the selected routes.
-    * @param route the route to be added.
+    * Stub Method for number and type of train each play has.
     * @throws RemoteException when RMI does not work.
     */
    void addRoute(String route) throws RemoteException;
