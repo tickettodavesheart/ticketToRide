@@ -10,6 +10,7 @@ import java.io.*;
 // RMI
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.RemoteException;
 
 /**
  * GameBoard Class.
@@ -37,6 +38,9 @@ public class GameBoard extends JPanel {
 
    // For RMI
    private GameStub stub;
+   
+   // player name
+   private String name;
 
    /**
     * GameBoard constructor - creates then adds each button to the panel.
@@ -46,6 +50,8 @@ public class GameBoard extends JPanel {
     */
    public GameBoard(String ip, String stubID, String name) {
       // Bind to the GameServer
+      
+      this.name = name;
       try {
          // Locating the Registry
          Registry registry = LocateRegistry.getRegistry(ip);
@@ -139,22 +145,24 @@ public class GameBoard extends JPanel {
    }
    
    public void endTurn() {
-      // grab the player name list from the server
-      Vector<String> playerNames = stub.getPlayerNames();
-      // find and store the current player's index in the list
-      int playerIndex;
-      for(int i = 0; i < playerNames.size(); i++) {
-         if(playerNames.get(i).equals(name)) {
-            playerIndex = i;
+   
+      try {
+         // grab the player name list from the server
+         Vector<String> playerNames = stub.getPlayerNames();
+         // find and store the current player's index in the list
+         int playerIndex = 0;
+         for(int i = 0; i < playerNames.size(); i++) {
+            if(playerNames.get(i).equals(name)) {
+               playerIndex = i;
+            }
          }
-      }
-      // set the token owner to the next player
-      if (playerIndex + 1 <= playerNames.getSize()-1) {
-         stub.setTokenOwner(playerNames.get(playerIndex + 1));
-      } else {
-         stub.setTokenOwner(playerNames.get(0));
-      }
-      
+         // set the token owner to the next player
+         if (playerIndex + 1 <= playerNames.size() - 1) {
+            stub.setTokenOwner(playerNames.get(playerIndex + 1));
+         } else {
+            stub.setTokenOwner(playerNames.get(0));
+         }
+      } catch (RemoteException re) { }
       
    }
 
