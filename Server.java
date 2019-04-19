@@ -130,9 +130,6 @@ public class Server implements ServerStub {
     */
    @Override
    public int getNumPlayers(String gameName) {
-
-      System.out.println("\n\n\n");
-
       for (String game : activeGames) {
          System.out.println("game:" + game);
       }

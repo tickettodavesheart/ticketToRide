@@ -1,5 +1,4 @@
 // RMI
-import java.awt.BorderLayout;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
@@ -30,14 +29,15 @@ public class GameClient extends JFrame {
     */
    public GameClient(String ip, String stubID, String name) { 
 
+      setLayout(new GridLayout(0, 2));
       Thread chatThread = new Thread(new Runnable() {
          public void run() {
-            add(new ChatClient(ip, stubID, name), BorderLayout.WEST);
+            add(new ChatClient(ip, stubID, name));
          }
       });
       Thread gameThread = new Thread(new Runnable() {
          public void run() {
-            add(new GameBoard(ip, stubID, name), BorderLayout.EAST);
+            add(new GameBoard(ip, stubID, name));
          }
       });
 

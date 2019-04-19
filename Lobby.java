@@ -59,6 +59,8 @@ public class Lobby extends JFrame {
          ip = txt.getText();
       }   
 
+      System.out.println(ip);
+
       // Connecting to the main Server
       connectMainServer(ip);
 
@@ -270,8 +272,13 @@ public class Lobby extends JFrame {
          // Creating the Registry with the specific port of the game
          Registry registry = LocateRegistry.getRegistry(ip);
 
+         System.out.println("Locating Registry");
+
+         System.out.println("Looking up Stub");
+
          // Looking up the Stub class
          stub = (ServerStub) registry.lookup("ServerStub");
+         System.out.println(stub);
 
          System.out.println("Connected to Main Server");
 
