@@ -12,7 +12,7 @@ public class GameServer implements GameStub {
    // Vector for the messages on the server
    private Vector<String> messages = new Vector<String>();
    private Vector<String> playerNames = new Vector<String>();
-   private String tockenOwner = "";
+   private String tokenOwner = "";
    // Vector of arraylists with each route and color that it takes
    private Vector<String> selectedRoutes =
           new Vector<String>();
@@ -45,20 +45,29 @@ public class GameServer implements GameStub {
    }
    
    /**
-    * Method that returns the tocken owner.
+    * Method that returns the token owner.
     */
    @Override
-   public String getTockenOwner() {
-      return tockenOwner;
+   public String getTokenOwner() {
+      return tokenOwner;
    }
    
    /**
     * Method that returns the player names.
-    * @param username the player that will hold the tocken.
+    * @param username the player that will hold the token.
     */
    @Override
-   public void setTockenOwner(String username) {
-      tockenOwner = username;
+   public void setTokenOwner(String username) {
+      tokenOwner = username;
+   }
+   
+   /**
+    * Method that returns the player names.
+    * @param username the player that will hold the token.
+    */
+   @Override
+   public void addName(String nickname) {
+      playerNames.add(nickname);
    }
 
    /**

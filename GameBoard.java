@@ -137,6 +137,26 @@ public class GameBoard extends JPanel {
          System.out.println("Exception: " + startTurne);
       }
    }
+   
+   public void endTurn() {
+      // grab the player name list from the server
+      Vector<String> playerNames = stub.getPlayerNames();
+      // find and store the current player's index in the list
+      int playerIndex;
+      for(int i = 0; i < playerNames.size(); i++) {
+         if(playerNames.get(i).equals(name)) {
+            playerIndex = i;
+         }
+      }
+      // set the token owner to the next player
+      if (playerIndex + 1 <= playerNames.getSize()-1) {
+         stub.setTokenOwner(playerNames.get(playerIndex + 1));
+      } else {
+         stub.setTokenOwner(playerNames.get(0));
+      }
+      
+      
+   }
 
    // Override paintComponent to draw BackGround image
    @Override
