@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Vector;
+import java.util.Hashtable;
 
 /**
  * GameServer Class.
@@ -7,9 +9,13 @@ import java.util.Vector;
  */
 public class GameServer implements GameStub {
 
+   // Vector for the messages on the server
    private Vector<String> messages = new Vector<String>();
    private Vector<String> playerNames = new Vector<String>();
    private String tockenOwner = "";
+   // Vector of arraylists with each route and color that it takes
+   private Vector<String> selectedRoutes =
+          new Vector<String>();
 
    /**
     * Method that returns a message.
@@ -17,7 +23,6 @@ public class GameServer implements GameStub {
     */
    @Override
    public Vector<String> getMessages() {
-      System.out.println("Messages sent out");
       return messages;
    }
 
@@ -54,6 +59,25 @@ public class GameServer implements GameStub {
    @Override
    public void setTockenOwner(String username) {
       tockenOwner = username;
+   }
+
+   /**
+   * Method to add a new route to paint to the Server.
+   * @param route, the route to paintColor
+   */
+   @Override
+   public void addRoute(String route) {
+      // Adding the route and color to the selected routes.
+      selectedRoutes.add(route);
+   }
+
+   /**
+    * Method to change selected routes.
+    * @return selectedRoutes the route selected and it's color
+    */
+   @Override
+   public Vector<String> updateRoutes() {
+      return selectedRoutes;
    }
 
    /**
