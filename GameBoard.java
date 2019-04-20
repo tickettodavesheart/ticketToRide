@@ -52,15 +52,27 @@ public class GameBoard extends JPanel {
       int j = 0;
       int suff = 1;
       for(Shape s : buttonList) {
-         String name = new String(prefix[j] + suff++);
+         String btnName = new String(prefix[j] + suff++);
          
-         add(new CButton(s, name, colors[j]));
+         add(new CButton(s, btnName, colors[j]));
          i++;
          if(i == loop[j] && j < 9) {
             suff = 1;
             j++;
          }
       } // End button creation loop
+
+      
+      // Add End Turn Button
+      JButton endTurn = new JButton("End Turn");
+      
+      // Sizing requirements for Button
+      Insets insets = getInsets();
+      Dimension size = endTurn.getPreferredSize();
+      endTurn.setBounds(25 + insets.left, 5 + insets.top, size.width, size.height);
+      
+      add(endTurn);
+
    } // End GameBoard constructor
    
    // Override paintComponent to draw BackGround image
