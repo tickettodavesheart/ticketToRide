@@ -48,7 +48,7 @@ public class GameServer implements GameStub {
     * Method that returns the token owner.
     */
    @Override
-   public String getTokenOwner() {
+   public String getTockenOwner() {
       return tokenOwner;
    }
    
@@ -63,7 +63,7 @@ public class GameServer implements GameStub {
    
    /**
     * Method that returns the player names.
-    * @param username the player that will hold the token.
+    * @param nickname the player that will hold the token.
     */
    @Override
    public void addName(String nickname) {
@@ -71,9 +71,9 @@ public class GameServer implements GameStub {
    }
 
    /**
-   * Method to add a new route to paint to the Server.
-   * @param route, the route to paintColor
-   */
+    * Method to add a new route to paint to the Server.
+    * @param route, the route to paintColor
+    */
    @Override
    public void addRoute(String route) {
       // Adding the route and color to the selected routes.

@@ -32,18 +32,18 @@ public class GameClient extends JFrame {
     */
    public GameClient(String ip, String stubID, String name) { 
 
-      setLayout(new BorderLayout(10,10));
+      setLayout(new BorderLayout(10, 10));
 
       // JPanel for Sidebar
 
       Thread chatThread = new Thread(new Runnable() {
-          public void run() {
+         public void run() {
             add(new ChatClient(ip, stubID, name), BorderLayout.EAST);
-          }
+         }
       });
       Thread gameThread = new Thread(new Runnable() {
          public void run() {
-            GameBoard gb = new GameBoard();
+            GameBoard gb = new GameBoard(ip, stubID, name);
             add(gb, BorderLayout.CENTER);
             gb.revalidate();
          }
@@ -71,13 +71,14 @@ public class GameClient extends JFrame {
       setVisible(true);
       setLocationRelativeTo(null);
 
-      String[] optionsName = { "OK" };
+      String[] optionsName = {"OK"};
       JPanel panelName = new JPanel();
       JLabel lblName = new JLabel("Enter your nickname: ");
       JTextField txtName = new JTextField(10);
       panelName.add(lblName);
       panelName.add(txtName);
-      JOptionPane.showOptionDialog(null, panelName, "Nickname", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+      JOptionPane.showOptionDialog(null, panelName, 
+            "Nickname", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE,
             null, optionsName, optionsName[0]);
       nickname = txtName.getText();
 
@@ -102,7 +103,8 @@ public class GameClient extends JFrame {
                Registry registry = LocateRegistry.getRegistry(ip);
 
                // Looking up the ServerStub class
-               ServerStub serverStub = (ServerStub) registry.lookup("ServerStub");
+               ServerStub serverStub = (ServerStub) 
+                      registry.lookup("ServerStub");
 
                System.out.println("Connected to the server");
 

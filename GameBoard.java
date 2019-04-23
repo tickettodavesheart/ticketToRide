@@ -59,9 +59,8 @@ public class GameBoard extends JPanel {
    
       // set player name
       this.name = name;
+
       // Bind to the GameServer
-      
-      
       try {
          // Locating the Registry
          Registry registry = LocateRegistry.getRegistry(ip);
@@ -81,10 +80,12 @@ public class GameBoard extends JPanel {
 
       // Tries to load provided background image and button list vector object
       try {
-         this.bgImage = ImageIO.read(getClass().getResource("resources/map.png"));
+         this.bgImage = ImageIO.read(getClass().getResource(
+                "resources/map.png"));
 
-         ObjectInputStream ois = new ObjectInputStream(getClass().getResourceAsStream("resources/buttonlist.dat"));
-         buttonList = (Vector<Shape>)ois.readObject();
+         ObjectInputStream ois = new ObjectInputStream(
+                getClass().getResourceAsStream("resources/buttonlist.dat"));
+         buttonList = (Vector<Shape>) ois.readObject();
          ois.close();
       } catch (IOException ioe) {
          ioe.printStackTrace();
@@ -98,13 +99,14 @@ public class GameBoard extends JPanel {
       int suff = 1;
 
       for (Shape s : buttonList) {
-        // Creating the name of the button
+         // Creating the name of the button
          String buttonName = new String(prefix[j] + suff++);
          // Adding the buttonname to the vector
          namePaintList.add(buttonName);
 
          // Creating a new CButton for the game board
-         CButton cButton= new CButton(s, buttonName, colors[j], ip, stubID, name);
+         CButton cButton = new CButton(
+                s, buttonName, colors[j], ip, stubID, name);
          // Adding the CButton to the vector for buttonList
          buttonPaintList.add(cButton);
          // Adding to the JPanel
@@ -123,7 +125,8 @@ public class GameBoard extends JPanel {
       // Sizing requirements for Button
       Insets insets = getInsets();
       Dimension size = endTurn.getPreferredSize();
-      endTurn.setBounds(25 + insets.left, 5 + insets.top, size.width, size.height);
+      endTurn.setBounds(25 + insets.left, 5 + insets.top, 
+             size.width, size.height);
       
       add(endTurn);
 
@@ -164,25 +167,29 @@ public class GameBoard extends JPanel {
       }
    }
    
+   /**
+    * Run at end of each users turn to send 
+    * updates to the server.
+    */
    public void endTurn() {
    
       try {
-            // grab the player name list from the server
-            Vector<String> playerNames = stub.getPlayerNames();
-            // find and store the current player's index in the list
-            int playerIndex = 0;
-            for(int i = 0; i < playerNames.size(); i++) {
-               if(playerNames.get(i).equals(name)) {
-                  playerIndex = i;
-               }
+         // grab the player name list from the server
+         Vector<String> playerNames = stub.getPlayerNames();
+         // find and store the current player's index in the list
+         int playerIndex = 0;
+         for (int i = 0; i < playerNames.size(); i++) {
+            if (playerNames.get(i).equals(name)) {
+               playerIndex = i;
             }
-            // set the token owner to the next player
-            if (playerIndex + 1 <= playerNames.size() - 1) {
-               stub.setTokenOwner(playerNames.get(playerIndex + 1));
-            } else {
-               stub.setTokenOwner(playerNames.get(0));
-            }
-         } catch (RemoteException re) { }      
+         }
+         // set the token owner to the next player
+         if (playerIndex + 1 <= playerNames.size() - 1) {
+            stub.setTokenOwner(playerNames.get(playerIndex + 1));
+         } else {
+            stub.setTokenOwner(playerNames.get(0));
+         }
+      } catch (RemoteException re) { }      
    }
 
    // Override paintComponent to draw BackGround image

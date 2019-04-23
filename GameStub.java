@@ -1,7 +1,6 @@
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.*;
-import java.util.Hashtable;
 
 /**
  * The interface for RMI.
@@ -24,31 +23,36 @@ public interface GameStub extends Remote {
    void sendMessage(String message) throws RemoteException;
     
    /**
-    * Stub Method for returning the playerlist
-    * @throws RemoteException when RMI does not work.
-    */
+     * Stub Method for returning the playerlist.
+     * @return player names in the given game
+     * @throws RemoteException when RMI does not work.
+     */
    Vector<String> getPlayerNames() throws RemoteException;
    
    /**
-    * Stub Method for returning the tocken owner
+    * Stub Method for returning the token owner.
+    * @return the owner of the token
     * @throws RemoteException when RMI does not work.
     */
    String getTockenOwner() throws RemoteException;
    
    /**
-    * Stub Method for setting the tocken owner
+    * Stub Method for setting the token owner.
+    * @param username, the user to set the token to
     * @throws RemoteException when RMI does not work.
     */
    void setTokenOwner(String username) throws RemoteException;
 
    /**
-    * Stub Method for setting the name of player
+    * Stub Method for setting the name of player.
+    * @param nickname the name of the player
     * @throws RemoteException when RMI does not work.
     */
    void addName(String nickname) throws RemoteException;
    
    /**
     * Stub Method for number and type of train each play has.
+    * @param route, the route to add
     * @throws RemoteException when RMI does not work.
     */
    void addRoute(String route) throws RemoteException;

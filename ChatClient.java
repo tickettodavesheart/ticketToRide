@@ -62,33 +62,10 @@ public class ChatClient extends JPanel {
     * Method to create the Client GUI.
     */
    public void makeGUI() {
-
-
-      setLayout(new BorderLayout(5,10));
-
-      // Matt's Code
-      // Add validation to the names
-      // make sure its not already on the server
-      String[] optionsName = {"OK"};
-      JPanel panelName = new JPanel();
-      JLabel lblName = new JLabel("Enter your nickname: ");
-      JTextField txtName = new JTextField(10);
-      panelName.add(lblName);
-      panelName.add(txtName);
-      JOptionPane.showOptionDialog(null, panelName, "Nickname", 
-             JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE,
-            null, optionsName, optionsName[0]);
-      nickname = txtName.getText();
-      // gameStub.addName(nickname);
-
-      // Getting the username
-      if (nickname.length() < 1) {
-         nickname = "Anonymous";
-      }
-
+      setLayout(new BorderLayout(5, 10));
 
       // JTextArea for Chat
-      chatArea = new JTextArea(30,20);
+      chatArea = new JTextArea(30, 20);
       chatArea.setLineWrap(true);
       chatArea.setEditable(false);
 
