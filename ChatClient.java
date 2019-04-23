@@ -39,6 +39,7 @@ public class ChatClient extends JPanel {
     * @param name the name of the current game
     */
    public ChatClient(String ip, String stubID, String name) { 
+      // Creating the Gameboard GUI
       makeGUI();
 
       this.name = name;
@@ -62,9 +63,12 @@ public class ChatClient extends JPanel {
     */
    public void makeGUI() {
 
+
+      setLayout(new BorderLayout(5,10));
+
       // Matt's Code
       // Add validation to the names
-   // make sure its not already on the server
+      // make sure its not already on the server
       String[] optionsName = {"OK"};
       JPanel panelName = new JPanel();
       JLabel lblName = new JLabel("Enter your nickname: ");
@@ -82,17 +86,18 @@ public class ChatClient extends JPanel {
          nickname = "Anonymous";
       }
 
+
       // JTextArea for Chat
-      chatArea = new JTextArea(20, 50);
+      chatArea = new JTextArea(30,20);
       chatArea.setLineWrap(true);
       chatArea.setEditable(false);
 
       // Adding the chat area to the frame
-      add(chatArea, "Center");
+      add(chatArea, BorderLayout.NORTH);
 
       // JScrollPane for ChatArea
       JScrollPane jsp = new JScrollPane(chatArea);
-      add(jsp, "Center");
+      add(jsp, BorderLayout.NORTH);
 
       // JPanel for input field and action button
       JPanel inputArea = new JPanel();
@@ -114,39 +119,7 @@ public class ChatClient extends JPanel {
       });
 
       // Adding to the frame
-      add(inputArea, "South");
-
-      // // Send exit message
-      // addWindowListener(new WindowAdapter() {
-      //    @Override
-      //    public void windowClosing(WindowEvent e) {
-      //       sendMessage(nickname + " has left the chat");
-      //       System.out.println("Starting shutdown");
-      //       // Get the game that the client is running
-      //       // create registry and bind to the main server
-      //       // Creating the registry
-      //       try {
-      //          // Locating the Registry
-      //          Registry registry = LocateRegistry.getRegistry(ip);
-
-      //          // Looking up the ServerStub class
-      //          ServerStub serverStub = (ServerStub) registry.lookup(
-      //                 "ServerStub");
-
-      //          System.out.println("Connected to the server");
-
-      //          // Calling the shutdown method on the server
-      //          System.out.println(serverStub.shutdownClient(name));
-
-      //          // Creating the Lobby Again
-      //          new Lobby(ip);
-
-      //       } catch (Exception oe) {
-      //          System.err.println("Client exception: " + oe.toString());
-      //          oe.printStackTrace();
-      //       }
-      //    }
-      // });
+      add(inputArea, BorderLayout.CENTER);
 
       // Adding the keylistener
       inputField.addKeyListener(new KeyAdapter() {

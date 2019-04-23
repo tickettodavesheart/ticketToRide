@@ -96,6 +96,7 @@ public class GameBoard extends JPanel {
       int i = 0;
       int j = 0;
       int suff = 1;
+
       for (Shape s : buttonList) {
         // Creating the name of the button
          String buttonName = new String(prefix[j] + suff++);
@@ -115,8 +116,17 @@ public class GameBoard extends JPanel {
             j++;
          }
       } // End button creation loop
-      // Running the start of turn method
-      startTurn();
+
+      // Add End Turn Button
+      JButton endTurn = new JButton("End Turn");
+      
+      // Sizing requirements for Button
+      Insets insets = getInsets();
+      Dimension size = endTurn.getPreferredSize();
+      endTurn.setBounds(25 + insets.left, 5 + insets.top, size.width, size.height);
+      
+      add(endTurn);
+
    } // End GameBoard constructor
 
    /**
