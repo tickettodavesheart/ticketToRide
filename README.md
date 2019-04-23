@@ -21,9 +21,9 @@
 <strong>0.04</strong> Added support for multiple game servers concurently, the user can either select active games or create a game<br>
 <strong>0.05</strong> Limited each game to 4 players<br>
 <strong>0.06</strong> Functional GameBoard GUI added<br>
-<strong>0.073</strong> Started to add start and end of turn sequences<br>
-<strong>0.076</strong> Calculated the longest path for the end of game<br>
-<strong>0.08</strong> A gameboard in a single JFrame<br>
+<strong>0.07</strong> Started to add start and end of turn sequences<br>
+<strong>0.07</strong> Calculated the longest path for the end of game<br>
+<strong>0.07</strong> A gameboard in a single JFrame<br>
 
 <br><br>
 <h1>Screenshots</h1>
