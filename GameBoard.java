@@ -13,6 +13,9 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.RemoteException;
 
+// Lock resource
+import java.util.concurrent.locks.ReentrantLock; 
+
 /**
  * GameBoard Class.
  * @author Joshua Bugryn
@@ -46,20 +49,17 @@ public class GameBoard extends JPanel {
    // current player's name
    private String currentPlayer;
 
+   // Lock for resources
+   private ReentrantLock reLock; 
+
    /**
     * GameBoard constructor - creates then adds each button to the panel.
-    * @param ip     the IP adress for the main server
-    * @param stubID the id for the GameStub for the specific server
-    * @param name   the name of the current game
+    * @param ip       the IP adress for the main server
+    * @param stubID   the id for the GameStub for the specific server
+    * @param name     the name of the current game
+    * @param nickname the name of the player 
     */
-   public GameBoard(String ip, String stubID, String name) {
-      // Creating the timer to continually update the gameboard
-      Timer time = new Timer();
-      time.schedule(new GameboardUpdate(), 500, 1500);
-   
-      // set player name
-      this.name = name;
-
+   public GameBoard(String ip, String stubID, String name, String nickname) {
       // Bind to the GameServer
       try {
          // Locating the Registry
@@ -72,6 +72,29 @@ public class GameBoard extends JPanel {
          System.err.println("Client exception: " + e.toString());
          e.printStackTrace();
       }
+
+      // Setting the currentPlayer to their nickname
+      currentPlayer = nickname;
+
+      try {  
+        // Checking if they are the first player
+        // if they are starting the token with them
+        if (stub.getPlayerNames().size() == 0) {
+            stub.setTokenOwner(currentPlayer);
+            System.out.println("Set token owner: " + stub.getTockenOwner());
+        } else {
+            System.out.println("Current token owner: " + stub.getTockenOwner());
+        }
+        // Adding the player to the list of players on the server
+        stub.addName(nickname);
+      } catch (RemoteException re) { }
+
+      // Creating the timer to continually update the gameboard
+      Timer time = new Timer();
+      time.schedule(new GameboardUpdate(), 500, 1500);
+   
+      // set player name
+      this.name = name;
 
       // Vector<Shape> to hold input from buttonlist.dat
       Vector<Shape> buttonList = null;
@@ -120,15 +143,21 @@ public class GameBoard extends JPanel {
       } // End button creation loop
 
       // Add End Turn Button
-      JButton endTurn = new JButton("End Turn");
-      
+      JButton jbEndTurn = new JButton("End Turn");
+
+      // Action listener for the end turn button
+      jbEndTurn.addActionListener(e -> {
+        // Calling the end turn method
+        endTurn();
+      });
+
       // Sizing requirements for Button
       Insets insets = getInsets();
-      Dimension size = endTurn.getPreferredSize();
-      endTurn.setBounds(25 + insets.left, 5 + insets.top, 
+      Dimension size = jbEndTurn.getPreferredSize();
+      jbEndTurn.setBounds(25 + insets.left, 5 + insets.top, 
              size.width, size.height);
       
-      add(endTurn);
+      add(jbEndTurn);
 
    } // End GameBoard constructor
 
@@ -139,6 +168,8 @@ public class GameBoard extends JPanel {
     * button
     */
    public void startTurn() {
+      // During turn lock the resources
+      reLock.lock();
       System.out.println("In start turn");
       try {
          // Getting all the newely selected routes and setting them
@@ -183,12 +214,18 @@ public class GameBoard extends JPanel {
                playerIndex = i;
             }
          }
+
+         System.out.println("End turn current player: " + currentPlayer);
+
          // set the token owner to the next player
          if (playerIndex + 1 <= playerNames.size() - 1) {
             stub.setTokenOwner(playerNames.get(playerIndex + 1));
          } else {
             stub.setTokenOwner(playerNames.get(0));
          }
+         System.out.println("End turn new player:" + stub.getTockenOwner());
+         // Releasing the lock at the end of the turn
+         reLock.unlock();
       } catch (RemoteException re) { }      
    }
 
@@ -213,7 +250,7 @@ public class GameBoard extends JPanel {
             // check the server's account of the current player
             String serverCurrentPlayer = stub.getTockenOwner();
             
-            // compare the server's account of the current player to your own
+            // If it is not your turn
             if (!currentPlayer.equals(serverCurrentPlayer)) {
                // update current player
                currentPlayer = serverCurrentPlayer;
@@ -224,11 +261,11 @@ public class GameBoard extends JPanel {
                //                                                                                           //
                //                                                                                           //
                //-------------------------------------------------------------------------------------------//
-               
-               // if the current player is now you, start your turn
-               if (currentPlayer.equals(name)) {
-                  startTurn();
-               }
+            } 
+
+            // if the current player is now you, start your turn
+            if (currentPlayer.equals(serverCurrentPlayer)) {
+                startTurn();
             }
          } catch (RemoteException re) { }
       }

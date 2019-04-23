@@ -32,9 +32,24 @@ public class GameClient extends JFrame {
     */
    public GameClient(String ip, String stubID, String name) { 
 
-      setLayout(new BorderLayout(10, 10));
+      // Getting the players name
+      String[] optionsName = {"OK"};
+      JPanel panelName = new JPanel();
+      JLabel lblName = new JLabel("Enter your nickname: ");
+      JTextField txtName = new JTextField(10);
+      panelName.add(lblName);
+      panelName.add(txtName);
+      JOptionPane.showOptionDialog(null, panelName, 
+            "Nickname", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+            null, optionsName, optionsName[0]);
+      nickname = txtName.getText();
 
-      // JPanel for Sidebar
+      // Getting the username
+      if (nickname.length() < 1) {
+         nickname = "Anonymous";
+      }
+
+      setLayout(new BorderLayout(10, 10));
 
       Thread chatThread = new Thread(new Runnable() {
          public void run() {
@@ -43,7 +58,7 @@ public class GameClient extends JFrame {
       });
       Thread gameThread = new Thread(new Runnable() {
          public void run() {
-            GameBoard gb = new GameBoard(ip, stubID, name);
+            GameBoard gb = new GameBoard(ip, stubID, name, nickname);
             add(gb, BorderLayout.CENTER);
             gb.revalidate();
          }
@@ -70,22 +85,6 @@ public class GameClient extends JFrame {
       setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
       setVisible(true);
       setLocationRelativeTo(null);
-
-      String[] optionsName = {"OK"};
-      JPanel panelName = new JPanel();
-      JLabel lblName = new JLabel("Enter your nickname: ");
-      JTextField txtName = new JTextField(10);
-      panelName.add(lblName);
-      panelName.add(txtName);
-      JOptionPane.showOptionDialog(null, panelName, 
-            "Nickname", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE,
-            null, optionsName, optionsName[0]);
-      nickname = txtName.getText();
-
-      // Getting the username
-      if (nickname.length() < 1) {
-         nickname = "Anonymous";
-      }
 
       // Send exit message
       addWindowListener(new WindowAdapter() {

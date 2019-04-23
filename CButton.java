@@ -141,6 +141,8 @@ public class CButton extends JButton {
          case "blue":
             paintColor = colors[3];
       }
+      // If it gets repainted it should be disabled as it is already selected
+      setEnabled(false);
       // repainting the string
       repaint();
       System.out.println("Repainted");
