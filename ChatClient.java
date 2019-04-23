@@ -39,7 +39,7 @@ public class ChatClient extends JPanel {
     * @param name the name of the current game
     */
    public ChatClient(String ip, String stubID, String name) { 
-
+      // Creating the Gameboard GUI
       makeGUI();
 
       this.name = name;
@@ -63,7 +63,29 @@ public class ChatClient extends JPanel {
     */
    public void makeGUI() {
 
+
       setLayout(new BorderLayout(5,10));
+
+      // Matt's Code
+      // Add validation to the names
+      // make sure its not already on the server
+      String[] optionsName = {"OK"};
+      JPanel panelName = new JPanel();
+      JLabel lblName = new JLabel("Enter your nickname: ");
+      JTextField txtName = new JTextField(10);
+      panelName.add(lblName);
+      panelName.add(txtName);
+      JOptionPane.showOptionDialog(null, panelName, "Nickname", 
+             JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+            null, optionsName, optionsName[0]);
+      nickname = txtName.getText();
+      // gameStub.addName(nickname);
+
+      // Getting the username
+      if (nickname.length() < 1) {
+         nickname = "Anonymous";
+      }
+
 
       // JTextArea for Chat
       chatArea = new JTextArea(30,20);
