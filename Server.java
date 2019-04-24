@@ -30,7 +30,7 @@ public class Server implements ServerStub {
    private int GENERATED_PORT = 16789;
 
    // The starting object id for the game servers
-   private int OBJ_ID = 0;
+   private int OBJ_ID = 16789;
 
    // The last created game's stub_id
    private String stubID = "GameStub" + OBJ_ID;
@@ -315,6 +315,7 @@ public class Server implements ServerStub {
             // If a new game is being created, bind a stub to a
             // new port
             if (toBind) {
+                System.out.println("\n\n\nPort: " + port);
                // Starting the RMI registry at port as generated
                LocateRegistry.createRegistry(port);
 

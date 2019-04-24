@@ -46,6 +46,9 @@ public class GameBoard extends JPanel {
    // current player's name
    private String currentPlayer;
 
+   // For sending who's turn it is intially
+   boolean sendPlayer = true;
+
    /**
     * GameBoard constructor - creates then adds each button to the panel.
     * @param ip       the IP adress for the main server
@@ -166,9 +169,11 @@ public class GameBoard extends JPanel {
       // Toggling the compenents on 
       toggleComponents(true);
       try {
-         // Sending a message out who's turn it is
-         stub.sendMessage("<html><font color=red>" + currentPlayer 
-                + " is playing</font></html>");
+         if (sendPlayer) {
+            // Sending a message out who's turn it is
+            stub.sendMessage(currentPlayer + " is playing");
+            sendPlayer = false;
+         }
          // Getting all the newely selected routes and setting them
          Vector<String> selectedFromServer = stub.updateRoutes();
          System.out.println("Routes from server: " + selectedFromServer);
