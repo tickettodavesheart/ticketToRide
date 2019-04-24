@@ -82,6 +82,7 @@ public class GameClient extends JFrame {
 
       // Set JFrame sizing
       setSize(1180, 680);
+      setResizable(false);
       setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
       setVisible(true);
       setLocationRelativeTo(null);

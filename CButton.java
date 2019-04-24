@@ -127,7 +127,6 @@ public class CButton extends JButton {
     * @param color the color to paing the button
     */
    public void colorButton(String color) {
-      System.out.println("In the CButton colorButton method");
       // Creating a switch for the colors
       switch (color) {
          // gray
@@ -166,7 +165,6 @@ public class CButton extends JButton {
       setEnabled(false);
       // repainting the string
       repaint();
-      System.out.println("Repainted");
    }
 
    // Hit detection for mouse actions
