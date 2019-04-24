@@ -42,7 +42,7 @@ public class ChatClient extends JPanel {
       // Creating the Gameboard GUI
       makeGUI();
 
-      this.name = name;
+      nickname = name;
       this.ip = ip;
 
       try {
