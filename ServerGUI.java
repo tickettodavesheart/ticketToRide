@@ -3,14 +3,19 @@ import java.awt.*;
 import java.util.*;
 import java.awt.event.*;
 
+/**
+ * The GUI interface for the server.
+ * @author Micheal Vasile
+ * @version 4/19/19
+ */
 public class ServerGUI extends JFrame {
-
-   /**
-    * ServerGUI Constructor
-    */
 
    private JLabel localHostInfo;
 
+   /**
+    * ServerGUI Constructor.
+    * @param localhost the connection
+    */
    public ServerGUI(String localhost) {
 
       System.out.println(localhost);

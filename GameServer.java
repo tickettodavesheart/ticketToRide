@@ -1,6 +1,4 @@
-import java.util.ArrayList;
 import java.util.Vector;
-import java.util.Hashtable;
 
 /**
  * GameServer Class.
@@ -72,7 +70,7 @@ public class GameServer implements GameStub {
 
    /**
     * Method to add a new route to paint to the Server.
-    * @param route, the route to paintColor
+    * @param route the route to paintColor
     */
    @Override
    public void addRoute(String route) {

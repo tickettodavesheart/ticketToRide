@@ -14,7 +14,8 @@ import java.util.*;
 public class Longest {
 
    // Generate a Hashtable from the XML
-   private Hashtable<String, Hashtable<String, ArrayList<String>>> hashedRoutes = new
+   private Hashtable<String, Hashtable<String, 
+          ArrayList<String>>> hashedRoutes = new
           Hashtable<String, Hashtable<String, ArrayList<String>>>();
    // Document builders for XML parsing
    private DocumentBuilder builder;
@@ -35,17 +36,17 @@ public class Longest {
       ArrayList<String> finalTrail = iterateTrails();
       System.out.println("\n\n------------ Results ------------");
       System.out.println("Trail: " + finalTrail);
-      System.out.println("Length: " + finalTrail.size()/2);
+      System.out.println("Length: " + finalTrail.size() / 2);
 
       int weight = 0;
-      for(int i = 0; i < finalTrail.size() - 1; i++) {
-         if(i % 2 == 1) {
-           try {
-             weight += Integer.parseInt(finalTrail.get(i));
-           } catch (NumberFormatException nfe) {
-             System.err.println("---------- End ----------");
-             System.exit(0);
-           }
+      for (int i = 0; i < finalTrail.size() - 1; i++) {
+         if (i % 2 == 1) {
+            try {
+               weight += Integer.parseInt(finalTrail.get(i));
+            } catch (NumberFormatException nfe) {
+               System.err.println("---------- End ----------");
+               System.exit(0);
+            }
          }
       }
       System.out.println("Weight: " + weight);
@@ -101,19 +102,16 @@ public class Longest {
             currentDest = path.evaluate("/routes/city[" + i + "]"
                    + "/route[" + j + "]/destination", doc);
 
-            //System.out.printf("C:%s%nR:%s%n",name, currentRoute);
             destWeight = new ArrayList<String>();
             destWeight.add(currentDest);
             destWeight.add(currentWeight);
-            //System.out.println(destWeight + "\n");
             values.put(currentRoute, destWeight);
          }
 
-         //System.out.println(values + "\n");
-
          hashedRoutes.put(name, values);
+
       }
-      //System.out.println("\n" + hashedRoutes);
+
    }
 
    /**
@@ -126,28 +124,19 @@ public class Longest {
 
       for (String key: hashedRoutes.keySet()) {
          // Getting the list of destinations from the hash
-         Hashtable<String, ArrayList<String>> visitedDestinations = hashedRoutes.get(key);
+         Hashtable<String, ArrayList<String>> visitedDestinations 
+                = hashedRoutes.get(key);
 
-
-         //System.out.println("vD: " + visitedDestinations);
-         //System.out.println("visitedDestinations" + visitedDestinations);
-         // Iterating over each destination
-         //for (String dest : visitedDestinations.keySet()) {
-         //System.out.println(key);
-
-
-            // Sending a city and it's routes to check if
-            // it is the longest trail
+         // Sending a city and it's routes to check if
+         // it is the longest trail
          ArrayList<String> testtrail = findLongTrail(hashedRoutes, key,
                    new ArrayList<String>());
-         //System.out.printf("%nVisited the following trail: %s %n\t with the key: %s", testtrail, key);
-            // If the test trail is longer than the longest trail
-            // set the new trail to the longes
+         // If the test trail is longer than the longest trail
+         // set the new trail to the longest
          if (testtrail.size() > longestTrail.size()) {
-               // Setting the new trail to the longest trail
             longestTrail = testtrail;
          }
-         //}
+
       }
       // Returning the longest trail
       return longestTrail;
@@ -156,8 +145,8 @@ public class Longest {
    /**
     * Recurse each weight from citys from route
     * to find the longest route.
-    * @param key the city name that is being started on
-    * @param dest the destination to check
+    * @param graph the graph to check
+    * @param start where to start on the graph
     * @param path an arraylist of the path
     * @return longestNewPath the longest path
     */
@@ -166,21 +155,15 @@ public class Longest {
       // ArryList that holds the path of the current path
       ArrayList<String> currentPathPlaceholder = path;
       // Adding all of the previous path to the current placeholder
-
-      //currentPathPlaceholder = path;
-
-      System.out.println("Currt Path" +path);
+      System.out.println("Currt Path" + path);
       // Adding the given destination to the current path
-      //currentPathPlaceholder.add();
 
-      //System.out.println("\nCurrent Path Holder from " + start + ": " + currentPathPlaceholder + "\n");
       // Getting the Hashtable of routes that a city node stores
-      Hashtable<String, ArrayList<String>> currentRoutes = hashedRoutes.get(start);
+      Hashtable<String, ArrayList<String>> currentRoutes 
+             = hashedRoutes.get(start);
 
-      //System.out.println("Routes :" + currentRoutes);
       // The Arraylist of Routes for the longest NEW path
       ArrayList<String> longestNewPath = new ArrayList<String>();
-
 
       // Iterating over the current routes on the city
       for (String currentR : currentRoutes.keySet()) {
@@ -204,12 +187,9 @@ public class Longest {
             ArrayList<String> newtrail = findLongTrail(hashedRoutes, dest,
                     currentPathPlaceholder);
 
-
-            //System.out.println("NT: " + newtrail);
-
-
             // Checking if the newtrail is longer than the longest path
-            if (!newtrail.isEmpty() && newtrail.size() > longestNewPath.size()) {
+            if (!newtrail.isEmpty() && newtrail.size() 
+                   > longestNewPath.size()) {
                // Setting the new trail to the longestnewpath
                longestNewPath = newtrail;
             }
@@ -221,14 +201,14 @@ public class Longest {
          // make this return the path that was traveresd
          return currentPathPlaceholder;
       }
-
       return longestNewPath;
    }
 
    /**
     * Helper method to check if route and city has been
     * visited.
-    * @param id the id of the current city
+    * @param path the current path
+    * @param route the route to visit
     * @return visited returns true if the edge has been visited.
     */
    public boolean edgeVisited(ArrayList<String> path, String route) {
@@ -238,12 +218,8 @@ public class Longest {
       // Iterating over all of the elements in the list
 
       if (path.indexOf(route) >= 0) {
-         //System.out.println("Route already used");
-            // Returning true if the edge has been visited.
          return true;
       } else {
-      // Returning false if the edge has not been visited.
-         //System.out.println("New route adding to path");
          return false;
       }
    }

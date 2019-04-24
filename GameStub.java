@@ -38,7 +38,7 @@ public interface GameStub extends Remote {
    
    /**
     * Stub Method for setting the token owner.
-    * @param username, the user to set the token to
+    * @param username the user to set the token to
     * @throws RemoteException when RMI does not work.
     */
    void setTokenOwner(String username) throws RemoteException;
@@ -52,7 +52,7 @@ public interface GameStub extends Remote {
    
    /**
     * Stub Method for number and type of train each play has.
-    * @param route, the route to add
+    * @param route the route to add
     * @throws RemoteException when RMI does not work.
     */
    void addRoute(String route) throws RemoteException;

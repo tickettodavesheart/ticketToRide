@@ -1,7 +1,4 @@
 import javax.swing.*;
-
-import com.sun.javafx.scene.control.SelectedCellsMap;
-
 import java.util.*;
 import java.awt.*;
 import java.awt.geom.*;
@@ -12,14 +9,15 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 /**
  * CButton - A custom button that accepts a shape and creates a JButton
- *             of the given shape.
+ * of the given shape.
  * @author Joshua Bugryn
  * @version 4/15/2019
  */
+
 public class CButton extends JButton {
-  // Shape object the button will use
+   // Shape object the button will use
    private Shape shape = null;
-  // Area object for hit detection
+   // Area object for hit detection
    private Area area = null;
    // name of the button
    private String nameButton = "color_#";
@@ -46,13 +44,14 @@ public class CButton extends JButton {
    /**
     * CButton constructor.
     * @param button - A shape object to draw the button
-    * @param name - A string to assign a name to the button
+    * @param nameButton - A string to assign a name to the button
     * @param trainColor - The color the button will be filled
-    * @param ip the IP adress for the main server
+    * @param ip the IP address for the main server
     * @param stubID the id for the GameStub for the specific server
     * @param name the name of the current game
     */
-   public CButton(Shape button, String nameButton, Color trainColor, String ip, String stubID, String name) {
+   public CButton(Shape button, String nameButton, Color trainColor, 
+          String ip, String stubID, String name) {
       this.shape = button;
       this.area = new Area(shape);
       this.nameButton = nameButton;
@@ -64,7 +63,7 @@ public class CButton extends JButton {
       setBorderPainted(false);
 
       // set bounds for null layout
-      setBounds(0,0,850,618);
+      setBounds(0, 0, 850, 618);
 
       // Bind to the GameServer
       try {
@@ -83,18 +82,19 @@ public class CButton extends JButton {
       addMouseListener(
             new MouseAdapter() {
                public void mouseEntered(MouseEvent e) {
-                  //System.out.println(name + " entered");
                   entered = true;
                   repaint();
-               }
+               } 
+
                public void mouseExited(MouseEvent e) {
-                  //System.out.println(name + " exited");
                   entered = false;
                   repaint();
                }
+
                public void mouseClicked(MouseEvent e) {
-                  JOptionPane.showMessageDialog(null, nameButton, "Clicked", JOptionPane.INFORMATION_MESSAGE);
-                  if(!selected) {
+                  JOptionPane.showMessageDialog(null, nameButton, 
+                          "Clicked", JOptionPane.INFORMATION_MESSAGE);
+                  if (!selected) {
                      try {
                         // Giving it the name and color
                         selectedName = nameButton;
@@ -171,20 +171,23 @@ public class CButton extends JButton {
    */
    @Override
    public void paintComponent(Graphics g) {
-      Graphics2D g2d = (Graphics2D)g;
-      g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-      //g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-      g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-      g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-      g2d.setStroke(new BasicStroke(1.5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+      Graphics2D g2d = (Graphics2D) g;
+      g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
+             RenderingHints.VALUE_ANTIALIAS_ON);
+      g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, 
+            RenderingHints.VALUE_STROKE_PURE);
+      g2d.setRenderingHint(RenderingHints.KEY_RENDERING, 
+             RenderingHints.VALUE_RENDER_QUALITY);
+      g2d.setStroke(new BasicStroke(1.5f, 
+             BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
 
       // if block to check if mouse has entered the button
       // changes outline color to highlight button if true
-      if(entered) {
+      if (entered) {
          g2d.setPaint(Color.YELLOW.brighter());
       } else {
-         if(trainColor != Color.BLACK) {
+         if (trainColor != Color.BLACK) {
             g2d.setPaint(Color.BLACK);
          } else {
             g2d.setPaint(Color.WHITE);
@@ -206,7 +209,7 @@ public class CButton extends JButton {
       // a client already has it selected on the server
       // display a message to the user they cannot click it
       // FIXME: commented out so that the button is not repainted over in else
-      if(selected) {
+      if (selected) {
          // TODO: will be the color of the player
          g2d.setPaint(Color.BLACK);
       } else {
@@ -219,8 +222,7 @@ public class CButton extends JButton {
    } // end paintComponent @Override
 
    /**
-    * getButtonID - returns button ID name
-    *
+    * getButtonID - returns button ID name.
     * @return nameButton - String of button ID
     */
    public String getButtonID() {

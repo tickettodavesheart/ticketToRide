@@ -13,9 +13,6 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.RemoteException;
 
-// Lock resource
-import java.util.concurrent.locks.ReentrantLock; 
-
 /**
  * GameBoard Class.
  * @author Joshua Bugryn
@@ -49,9 +46,6 @@ public class GameBoard extends JPanel {
    // current player's name
    private String currentPlayer;
 
-   // Lock for resources
-   private ReentrantLock reLock; 
-
    /**
     * GameBoard constructor - creates then adds each button to the panel.
     * @param ip       the IP adress for the main server
@@ -77,16 +71,16 @@ public class GameBoard extends JPanel {
       currentPlayer = nickname;
 
       try {  
-        // Checking if they are the first player
-        // if they are starting the token with them
-        if (stub.getPlayerNames().size() == 0) {
+         // Checking if they are the first player
+         // if they are starting the token with them
+         if (stub.getPlayerNames().size() == 0) {
             stub.setTokenOwner(currentPlayer);
             System.out.println("Set token owner: " + stub.getTockenOwner());
-        } else {
+         } else {
             System.out.println("Current token owner: " + stub.getTockenOwner());
-        }
-        // Adding the player to the list of players on the server
-        stub.addName(nickname);
+         }
+         // Adding the player to the list of players on the server
+         stub.addName(nickname);
       } catch (RemoteException re) { }
 
       // Creating the timer to continually update the gameboard
@@ -145,12 +139,6 @@ public class GameBoard extends JPanel {
       // Add End Turn Button
       JButton jbEndTurn = new JButton("End Turn");
 
-      // Action listener for the end turn button
-      jbEndTurn.addActionListener(e -> {
-        // Calling the end turn method
-        endTurn();
-      });
-
       // Sizing requirements for Button
       Insets insets = getInsets();
       Dimension size = jbEndTurn.getPreferredSize();
@@ -158,6 +146,12 @@ public class GameBoard extends JPanel {
              size.width, size.height);
       
       add(jbEndTurn);
+
+      // Action listener for the end turn button
+      jbEndTurn.addActionListener(e -> {
+         // Calling the end turn method
+         endTurn();
+      });
 
    } // End GameBoard constructor
 
@@ -168,10 +162,13 @@ public class GameBoard extends JPanel {
     * button
     */
    public void startTurn() {
-      // During turn lock the resources
-      reLock.lock();
       System.out.println("In start turn");
+      // Toggling the compenents on 
+      toggleComponents(true);
       try {
+         // Sending a message out who's turn it is
+         stub.sendMessage("<html><font color=red>" + currentPlayer 
+                + " is playing</font></html>");
          // Getting all the newely selected routes and setting them
          Vector<String> selectedFromServer = stub.updateRoutes();
          System.out.println("Routes from server: " + selectedFromServer);
@@ -193,8 +190,8 @@ public class GameBoard extends JPanel {
             buttonToPaint.colorButton(colorToPaint);
             System.out.println("Called the method on the button");
          }
-      } catch (Exception startTurne) { 
-         System.out.println("Exception: " + startTurne);
+      } catch (Exception e) { 
+         System.out.println("Exception: " + e);
       }
    }
    
@@ -203,7 +200,8 @@ public class GameBoard extends JPanel {
     * updates to the server.
     */
    public void endTurn() {
-   
+      // Turning the components off
+      toggleComponents(false);
       try {
          // grab the player name list from the server
          Vector<String> playerNames = stub.getPlayerNames();
@@ -224,9 +222,19 @@ public class GameBoard extends JPanel {
             stub.setTokenOwner(playerNames.get(0));
          }
          System.out.println("End turn new player:" + stub.getTockenOwner());
-         // Releasing the lock at the end of the turn
-         reLock.unlock();
       } catch (RemoteException re) { }      
+   }
+
+   /**
+    * Used to toggle the components on or off
+    * at the start or end of turn.
+    * @param state true or false to toggle
+    */
+   public void toggleComponents(boolean state) {
+      Component[] components = getComponents();
+      for (Component c : components) {
+         c.setEnabled(state);
+      }
    }
 
    // Override paintComponent to draw BackGround image
@@ -252,20 +260,13 @@ public class GameBoard extends JPanel {
             
             // If it is not your turn
             if (!currentPlayer.equals(serverCurrentPlayer)) {
-               // update current player
-               currentPlayer = serverCurrentPlayer;
-               
-               //----------------------- INSERT UPDATING GAME BOARD CODE HERE-------------------------------//
-               //                                                                                           //
-               //                                                                                           //
-               //                                                                                           //
-               //                                                                                           //
-               //-------------------------------------------------------------------------------------------//
+               // Turning off the components
+               toggleComponents(false);
             } 
 
             // if the current player is now you, start your turn
             if (currentPlayer.equals(serverCurrentPlayer)) {
-                startTurn();
+               startTurn();
             }
          } catch (RemoteException re) { }
       }
