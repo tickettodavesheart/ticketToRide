@@ -37,12 +37,13 @@ public class ChatClient extends JPanel {
     * @param ip the IP adress for the main server
     * @param stubID the id for the GameStub for the specific server
     * @param name the name of the current game
+    * @param nickname the user's name
     */
-   public ChatClient(String ip, String stubID, String name) { 
+   public ChatClient(String ip, String stubID, String name, String nickname) { 
       // Creating the Gameboard GUI
       makeGUI();
 
-      this.name = name;
+      this.nickname = nickname;
       this.ip = ip;
 
       try {

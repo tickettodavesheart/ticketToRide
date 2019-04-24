@@ -1,6 +1,7 @@
 // RMI
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.RemoteException;
 
 // GUI
 import javax.swing.*;
@@ -39,21 +40,45 @@ public class GameClient extends JFrame {
       JTextField txtName = new JTextField(10);
       panelName.add(lblName);
       panelName.add(txtName);
-      JOptionPane.showOptionDialog(null, panelName, 
-            "Nickname", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE,
-            null, optionsName, optionsName[0]);
-      nickname = txtName.getText();
+      
+      try {
+         Vector<String> playerNames = new Vector<String>();
+         try {
+            playerNames = stub.getPlayerNames();
+         } catch(NullPointerException npe) { 
+            System.out.println("null pointer caught in GameClient name selection");
+         }
+          
+         boolean repeatPrompt = false;
+         do {
+            JOptionPane.showOptionDialog(null, panelName, 
+                  "Nickname", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                  null, optionsName, optionsName[0]);
+            nickname = txtName.getText();
+            
+            // Getting the username
+            if (nickname.length() < 1) {
+               nickname = "Anonymous";
+            }
+            
+            for (String player: playerNames) {
+               if (player.equals(nickname)) {
+                  System.out.println("ArrayList player: " + player);
+                  repeatPrompt = true;
+               } 
+            }
+            System.out.println("The name given is: " + nickname);
+         } while (repeatPrompt);
+      } catch (RemoteException re) { 
+      } 
 
-      // Getting the username
-      if (nickname.length() < 1) {
-         nickname = "Anonymous";
-      }
+      
 
       setLayout(new BorderLayout(10, 10));
 
       Thread chatThread = new Thread(new Runnable() {
          public void run() {
-            add(new ChatClient(ip, stubID, name), BorderLayout.EAST);
+            add(new ChatClient(ip, stubID, name, nickname), BorderLayout.EAST);
          }
       });
       Thread gameThread = new Thread(new Runnable() {
