@@ -209,12 +209,12 @@ public class GameBoard extends JPanel {
          // find and store the current player's index in the list
          int playerIndex = 0;
          for (int i = 0; i < playerNames.size(); i++) {
-            if (playerNames.get(i).equals(name)) {
+            if (playerNames.get(i).equals(currentPlayer)) {
                playerIndex = i;
             }
          }
 
-         System.out.println("End turn current player: " + currentPlayer);
+         System.out.println("End turn current player: " + currentPlayer + " index: " + playerIndex);
 
          // set the token owner to the next player
          if (playerIndex + 1 <= playerNames.size() - 1) {
@@ -222,7 +222,7 @@ public class GameBoard extends JPanel {
          } else {
             stub.setTokenOwner(playerNames.get(0));
          }
-         System.out.println("End turn new player:" + stub.getTockenOwner());
+         System.out.println("New player:" + stub.getTockenOwner());
       } catch (RemoteException re) { }      
    }
 
