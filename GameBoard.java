@@ -165,35 +165,31 @@ public class GameBoard extends JPanel {
     * button
     */
    public void startTurn() {
-      System.out.println("In start turn");
       // Toggling the compenents on 
       toggleComponents(true);
       try {
          if (sendPlayer) {
             // Sending a message out who's turn it is
             stub.sendMessage(currentPlayer + " is playing");
+            // Getting all the newely selected routes and setting them
+            Vector<String> selectedFromServer = stub.updateRoutes();
+            System.out.println("Routes from server: " + selectedFromServer);
+            // Iterating over the vector to see which ones need to be repainted
+            for (String key : selectedFromServer) {
+                // Parsing the id into color and names
+                // 0 is the color
+                String[] parsed = key.split("_");
+                // Finding the index of the button first using the
+                // namePaintList
+                int indexOfButton = namePaintList.indexOf(key);
+                // Getting the correct butotn in the buttonPaintList
+                CButton buttonToPaint = buttonPaintList.elementAt(indexOfButton);
+                // Setting the color to paint
+                String colorToPaint = parsed[0];
+                // Calling the method to paint the color on the given CButton
+                buttonToPaint.colorButton(colorToPaint);
+            }
             sendPlayer = false;
-         }
-         // Getting all the newely selected routes and setting them
-         Vector<String> selectedFromServer = stub.updateRoutes();
-         System.out.println("Routes from server: " + selectedFromServer);
-         // Iterating over the vector to see which ones need to be repainted
-         for (String key : selectedFromServer) {
-            System.out.println("In for loop");
-            // Parsing the id into color and names
-            // 0 is the color
-            String[] parsed = key.split("_");
-            // Finding the index of the button first using the
-            // namePaintList
-            int indexOfButton = namePaintList.indexOf(key);
-            // Getting the correct butotn in the buttonPaintList
-            CButton buttonToPaint = buttonPaintList.elementAt(indexOfButton);
-            // Setting the color to paint
-            String colorToPaint = parsed[0];
-            System.out.println("Color to paint: " + colorToPaint);
-            // Calling the method to paint the color on the given CButton
-            buttonToPaint.colorButton(colorToPaint);
-            System.out.println("Called the method on the button");
          }
       } catch (Exception e) { 
          System.out.println("Exception: " + e);
