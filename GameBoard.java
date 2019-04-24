@@ -176,18 +176,18 @@ public class GameBoard extends JPanel {
             System.out.println("Routes from server: " + selectedFromServer);
             // Iterating over the vector to see which ones need to be repainted
             for (String key : selectedFromServer) {
-                // Parsing the id into color and names
-                // 0 is the color
-                String[] parsed = key.split("_");
-                // Finding the index of the button first using the
-                // namePaintList
-                int indexOfButton = namePaintList.indexOf(key);
-                // Getting the correct butotn in the buttonPaintList
-                CButton buttonToPaint = buttonPaintList.elementAt(indexOfButton);
-                // Setting the color to paint
-                String colorToPaint = parsed[0];
-                // Calling the method to paint the color on the given CButton
-                buttonToPaint.colorButton(colorToPaint);
+               // Parsing the id into color and names
+               // 0 is the color
+               String[] parsed = key.split("_");
+               // Finding the index of the button first using the
+               // namePaintList
+               int indexOfButton = namePaintList.indexOf(key);
+               // Getting the correct butotn in the buttonPaintList
+               CButton buttonToPaint = buttonPaintList.elementAt(indexOfButton);
+               // Setting the color to paint
+               String colorToPaint = parsed[0];
+               // Calling the method to paint the color on the given CButton
+               buttonToPaint.colorButton(colorToPaint);
             }
             sendPlayer = false;
          }
@@ -219,6 +219,7 @@ public class GameBoard extends JPanel {
          // set the token owner to the next player
          if (playerIndex + 1 <= playerNames.size() - 1) {
             stub.setTokenOwner(playerNames.get(playerIndex + 1));
+            System.out.println("Set token owner to:");
          } else {
             stub.setTokenOwner(playerNames.get(0));
          }
