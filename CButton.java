@@ -7,6 +7,7 @@ import java.awt.event.*;
 // RMI
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.RemoteException;
 /**
  * CButton - A custom button that accepts a shape and creates a JButton
  * of the given shape.
@@ -77,7 +78,7 @@ public class CButton extends JButton {
          System.err.println("Client exception: " + e.toString());
          e.printStackTrace();
       }
-
+      
       // Anonymous inner class for mouse events
       addMouseListener(
             new MouseAdapter() {
@@ -128,18 +129,38 @@ public class CButton extends JButton {
    public void colorButton(String color) {
       System.out.println("In the CButton colorButton method");
       // Creating a switch for the colors
-      switch (color.toLowerCase()) {
+      switch (color) {
+         // gray
          case "gray":
             paintColor = colors[0];
             break;
+         // green
          case "green":
             paintColor = colors[1];
             break;
+         // red
          case "red":
             paintColor = colors[2];
             break;
+         // blue
          case "blue":
             paintColor = colors[3];
+         // color1
+         case "color0":
+            paintColor = colors[0];
+            break;
+         // color2
+         case "color1":
+            paintColor = colors[1];
+            break;
+         // color3
+         case "color2":
+            paintColor = colors[2];
+            break;
+         // color4
+         case "color3":
+            paintColor = colors[3];
+            break;
       }
       // If it gets repainted it should be disabled as it is already selected
       setEnabled(false);
@@ -211,7 +232,25 @@ public class CButton extends JButton {
       // FIXME: commented out so that the button is not repainted over in else
       if (selected) {
          // TODO: will be the color of the player
-         g2d.setPaint(Color.BLACK);
+         try {
+            // grab the player names from the GameServer stub
+            Vector<String> playerNames = stub.getPlayerNames();
+            // find the current player
+            String currentPlayer = stub.getTockenOwner();
+            // iterate through the player names list to find the index 
+            // of the current player, and set the color of the road 
+            // to the corresponding color
+            for (int i = 0; i < playerNames.size(); i++) {
+               if (playerNames.get(i).equals(currentPlayer)) {
+                  // sets paintColor to the correct color
+                  colorButton(new String("color"+i));
+               } else {
+                  System.out.println("No color found!");
+               }
+            } 
+            // set the color to the new color
+            g2d.setPaint(paintColor);
+         } catch (RemoteException re) { }
       } else {
          g2d.setPaint(trainColor);
       }
