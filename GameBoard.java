@@ -97,20 +97,60 @@ public class GameBoard extends JPanel {
             System.out.println("Card: " + card);
          }
 
-         // Asking what destination cards the user wants to have
-         JPanel panel = new JPanel();
-
          // Getting the destination cards from the server
          try {
+            JFrame jfDest = new JFrame();
+            // Asking what destination cards the user wants to have
+            JPanel panel = new JPanel();
+            JPanel txtPanel = new JPanel();
+            JPanel buttonPanel = new JPanel();
+            // Array of checkboxes for validation
+            ArrayList<JCheckBox> checkBoxList = new ArrayList<JCheckBox>();
+            
+            JButton jbOK = new JButton("Select");
+            buttonPanel.add(jbOK);
+            jbOK.addActionListener(e -> {
+               // Making sure at least one button is selected
+               boolean oneSelected = false;
+               for (JCheckBox box : checkBoxList) {
+                  if (box.isSelected()) {
+                     oneSelected = true;
+                  }
+               }
+               if (oneSelected) {
+                  jfDest.dispose();
+                  // Removing choosen cards from the server
+                  try {
+                     for (String s : destinationList) {
+                        stub.removeDestinationCard(s);
+                     }
+                  } catch (RemoteException re) { }
+               }
+            });
+
             ArrayList<String> dCardsFromServer = stub.getDestinationCards();
+
+            txtPanel.add(new JLabel(
+                   "Select one or more destination card(s)"));
 
             // Adding the cards to the panel of options
             for (String dCard : dCardsFromServer) {
-               panel.add(new JButton(dCard));
-               System.out.println(dCard);
+               JCheckBox jcb = new JCheckBox(dCard);
+               // Adding to the list
+               checkBoxList.add(jcb);
+               panel.add(jcb, BorderLayout.CENTER);
+               jcb.addActionListener(new RadioActionListener());
             }
 
-            JOptionPane.showMessageDialog(null, panel);
+            jfDest.add(txtPanel, BorderLayout.NORTH);
+            jfDest.add(panel, BorderLayout.CENTER);
+            jfDest.add(buttonPanel, BorderLayout.SOUTH);
+
+            jfDest.pack();
+            jfDest.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            jfDest.setVisible(true);
+            jfDest.setLocationRelativeTo(null);
+            
          } catch (RemoteException re) { }
 
       } catch (RemoteException re) { }
@@ -313,15 +353,22 @@ public class GameBoard extends JPanel {
     * Action Listener for the destination chooser.
     */
    public class RadioActionListener implements ActionListener {
+      // for when a button is deselected
+      private boolean turn = true;
+
       @Override
       public void actionPerformed(ActionEvent e) {
-         JRadioButton jrb = (JRadioButton) e.getSource();
-         // Adding the destination to the destination list
-         destinationList.add(jrb.getText());
-         // Removing the destination card from the server
-         try {
-            stub.removeDestinationCard(jrb.getText());
-         } catch (RemoteException re) { }
+         if (turn) {
+            JCheckBox jrb = (JCheckBox) e.getSource();
+            // Adding the destination to the destination list
+            destinationList.add(jrb.getText());
+            turn = false;
+         } else {
+            JCheckBox jrb = (JCheckBox) e.getSource();
+            // Adding the destination to the destination list
+            destinationList.remove(jrb.getText());
+            turn = true;
+         }
       }
    }
 } // end GameBoard class
