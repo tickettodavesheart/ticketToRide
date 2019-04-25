@@ -121,7 +121,6 @@ public class CButton extends JButton {
          addMouseListener(ml);
       } else {
          removeMouseListener(ml);
-         System.out.println("Buttons disabled");
       }
    }
 
