@@ -49,6 +49,9 @@ public class GameBoard extends JPanel {
    // For sending who's turn it is intially
    private boolean sendPlayer = true;
 
+   // Cards that the player has
+   private ArrayList<String> cardsList = new ArrayList<String>();
+
    /**
     * GameBoard constructor - creates then adds each button to the panel.
     * @param ip       the IP adress for the main server
@@ -84,6 +87,12 @@ public class GameBoard extends JPanel {
          }
          // Adding the player to the list of players on the server
          stub.addName(nickname);
+
+         // Getting their starting cards
+         for (String card : stub.dealCards()) {
+            cardsList.add(card);
+            System.out.println("Card: " + card);
+         }
       } catch (RemoteException re) { }
 
       // Creating the timer to continually update the gameboard

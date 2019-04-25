@@ -64,4 +64,11 @@ public interface GameStub extends Remote {
      */
    Vector<String> updateRoutes() throws RemoteException;
 
+   /**
+    * Stub method to deal out cards to the player.
+    * @return starting cards the starting cards a player holds
+    * @throws RemoteException when RMI does not work.
+    */
+   ArrayList<String> dealCards() throws RemoteException;
+
 }

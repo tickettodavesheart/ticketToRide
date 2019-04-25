@@ -1,6 +1,7 @@
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * The interface for ServerStub so the LogIn can view all of the
@@ -98,5 +99,4 @@ public interface ServerStub extends Remote {
     * @throws RemoteException when RMI does not work.
     */
    String shutdownClient(String game) throws RemoteException;
-
 }
