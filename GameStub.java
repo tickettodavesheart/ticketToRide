@@ -71,4 +71,18 @@ public interface GameStub extends Remote {
     */
    ArrayList<String> dealCards() throws RemoteException;
 
+   /**
+    * Stub method to get random destination cards from the server.
+    * @return destination cards
+    * @throws RemoteException when RMI does not work
+    */
+   ArrayList<String> getDestinationCards() throws RemoteException;
+
+   /**
+    * Stub method to remove the destination card because it has been claimed.
+    * @param choosenCard the cards that were selected
+    * @throws RemoteException when RMI does not work
+    */
+   void removeDestinationCard(String choosenCard) throws RemoteException;
+
 }

@@ -52,6 +52,9 @@ public class GameBoard extends JPanel {
    // Cards that the player has
    private ArrayList<String> cardsList = new ArrayList<String>();
 
+   // Destination Cards that the player has
+   private ArrayList<String> destinationList = new ArrayList<String>();
+
    /**
     * GameBoard constructor - creates then adds each button to the panel.
     * @param ip       the IP adress for the main server
@@ -93,6 +96,23 @@ public class GameBoard extends JPanel {
             cardsList.add(card);
             System.out.println("Card: " + card);
          }
+
+         // Asking what destination cards the user wants to have
+         JPanel panel = new JPanel();
+
+         // Getting the destination cards from the server
+         try {
+            ArrayList<String> dCardsFromServer = stub.getDestinationCards();
+
+            // Adding the cards to the panel of options
+            for (String dCard : dCardsFromServer) {
+               panel.add(new JButton(dCard));
+               System.out.println(dCard);
+            }
+
+            JOptionPane.showMessageDialog(null, panel);
+         } catch (RemoteException re) { }
+
       } catch (RemoteException re) { }
 
       // Creating the timer to continually update the gameboard
@@ -285,6 +305,22 @@ public class GameBoard extends JPanel {
             if (currentPlayer.equals(serverCurrentPlayer)) {
                startTurn();
             }
+         } catch (RemoteException re) { }
+      }
+   }
+   
+   /**
+    * Action Listener for the destination chooser.
+    */
+   public class RadioActionListener implements ActionListener {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+         JRadioButton jrb = (JRadioButton) e.getSource();
+         // Adding the destination to the destination list
+         destinationList.add(jrb.getText());
+         // Removing the destination card from the server
+         try {
+            stub.removeDestinationCard(jrb.getText());
          } catch (RemoteException re) { }
       }
    }

@@ -17,7 +17,7 @@ public class GameServer implements GameStub {
    // Vector of arraylists with each route and color that it takes
    private Vector<String> selectedRoutes =
           new Vector<String>();
-   // Vector of all cards available at the start of the game
+   // ArrayList of all cards available at the start of the game
    private ArrayList<String> cardsLeft = new ArrayList<String>(
        Arrays.asList("BLACK", "BLACK", "BLACK", "BLACK", "BLACK", "BLACK", 
              "BLACK", "BLACK", "BLACK", "BLACK", "BLACK", "BLACK", "BLUE", 
@@ -39,6 +39,31 @@ public class GameServer implements GameStub {
              "YELLOW", "YELLOW", "YELLOW", "YELLOW", "YELLOW",
               "YELLOW", "YELLOW", 
              "YELLOW", "YELLOW", "YELLOW", "YELLOW" 
+   ));
+
+   // ArrayList of available destination cards
+   private ArrayList<String> destinationCardsLeft = new ArrayList<String>(
+       Arrays.asList("Los Angeles to New York City (21)", 
+       "Duluth to Houston (8)", 
+       "Sault Ste Marie to Nashville (8)", 
+       "New York to Atlanta (6)", 
+       "Portland to Nashville (17)", "Vancouver to Montréal (20)", 
+       "Duluth to El Paso (10)", "Toronto to Miami (10)", 
+       "Portland to Phoenix (11)",
+       "Dallas to New York City (11)", "Calgary to Salt Lake City (7)", 
+       "Calgary to Phoenix (13)", 
+       "Los Angeles to Miami (20)", "Winnipeg to Little Rock (11)", 
+       "San Francisco to Atlanta (17)", 
+       "Kansas City to Houston (5)", "Los Angeles to Chicago (16)", 
+       "Denver to Pittsburgh (11)", 
+       "Chicago to Santa Fe (9)", "Vancouver to Santa Fe (13)", 
+       "Boston to Miami (12)", 
+       "Chicago to New Orleans (7)", "Montreal to Atlanta (9)", 
+       "Seattle to New York (22)", 
+       "Denver to El Paso (4)", "Helena to Los Angeles (8)", 
+       "Winnipeg to Houston (12)", 
+       "Montreal to New Orleans (13)", "Sault Ste. Marie to Oklahoma City (9)", 
+       "Seattle to Los Angeles (9))"
    ));
 
    /**
@@ -152,6 +177,42 @@ public class GameServer implements GameStub {
 
       return dealtCards;
 
+   }
+
+   /**
+    * Returns random destination cards the user can choose from.
+    * @return destination cards the user can choose from
+    */
+   public ArrayList<String> getDestinationCards() {
+      ArrayList<String> destinationCards = new ArrayList<String>();
+      Random rand2 = new Random();
+      // Generate the number in the range of the indicies
+      int d1 = rand2.nextInt(destinationCardsLeft.size() - 1);
+      // Adding the card
+      destinationCards.add(destinationCardsLeft.get(d1));
+      // Removing the dealt card from the cardsLeft
+      destinationCardsLeft.remove(d1);
+      int d2 = rand2.nextInt(destinationCardsLeft.size() - 1);
+      // Adding the card
+      destinationCards.add(destinationCardsLeft.get(d2));
+      // Removing the dealt card from the cardsLeft
+      destinationCardsLeft.remove(d2);
+      int d3 = rand2.nextInt(destinationCardsLeft.size() - 1);
+      // Adding the card
+      destinationCards.add(destinationCardsLeft.get(d3));
+      // Removing the dealt card from the cardsLeft
+      destinationCardsLeft.remove(d3);
+
+      return destinationCards;
+   }
+
+   /**
+    * Removes the choosen destination cards from the 
+    * destination cards left. 
+    * @param choosenCard the cards that were selected
+    */
+   public void removeDestinationCard(String choosenCard) {
+      destinationCardsLeft.remove(choosenCard);
    }
 
    /**
