@@ -42,6 +42,9 @@ public class CButton extends JButton {
    // For RMI
    private GameStub stub;
 
+   // The mouse listner for custom button handling
+   private MouseListener ml = null;
+
    /**
     * CButton constructor.
     * @param button - A shape object to draw the button
@@ -78,39 +81,49 @@ public class CButton extends JButton {
          System.err.println("Client exception: " + e.toString());
          e.printStackTrace();
       }
+
+      ml = new MouseAdapter() {
+         public void mouseEntered(MouseEvent e) {
+            entered = true;
+            repaint();
+         } 
+
+         public void mouseExited(MouseEvent e) {
+            entered = false;
+            repaint();
+         }
+
+         public void mouseClicked(MouseEvent e) {
+            if (!selected) {
+               try {
+                  // Giving it the name and color
+                  selectedName = nameButton;
+                  selected = true;
+                  // Ending the turn
+                  endTurn();
+               } catch (Exception re) { }
+            } else {
+               // If the route is deselected then remove it from the list
+               selected = false;
+            }
+            repaint();
+         }
+      }; // end MouseListener
       
-      // Anonymous inner class for mouse events
-      addMouseListener(
-            new MouseAdapter() {
-               public void mouseEntered(MouseEvent e) {
-                  entered = true;
-                  repaint();
-               } 
-
-               public void mouseExited(MouseEvent e) {
-                  entered = false;
-                  repaint();
-               }
-
-               public void mouseClicked(MouseEvent e) {
-                  JOptionPane.showMessageDialog(null, nameButton, 
-                          "Clicked", JOptionPane.INFORMATION_MESSAGE);
-                  if (!selected) {
-                     try {
-                        // Giving it the name and color
-                        selectedName = nameButton;
-                        selected = true;
-                        // Ending the turn
-                        endTurn();
-                     } catch (Exception re) { }
-                  } else {
-                     // If the route is deselected then remove it from the list
-                     selected = false;
-                  }
-                  repaint();
-               }
-            }); // end MouseListener
    } // end CButton constructor
+
+   /**
+    * Toggles the buttons custom handlers on or off.
+    * @param state if they are on or off
+    */
+   public void toggleButton(boolean state) {
+      if (state) {
+         addMouseListener(ml);
+      } else {
+         removeMouseListener(ml);
+         System.out.println("Buttons disabled");
+      }
+   }
 
    /**
     * Method that is called when the user's turn is over.
@@ -241,7 +254,7 @@ public class CButton extends JButton {
             for (int i = 0; i < playerNames.size(); i++) {
                if (playerNames.get(i).equals(currentPlayer)) {
                   // sets paintColor to the correct color
-                  colorButton(new String("color"+i));
+                  colorButton(new String("color" + i));
                } else {
                   System.out.println("No color found!");
                }

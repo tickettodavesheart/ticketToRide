@@ -245,6 +245,12 @@ public class GameBoard extends JPanel {
       Component[] components = getComponents();
       for (Component c : components) {
          c.setEnabled(state);
+         // If the component is a CButton
+         if (c instanceof CButton) {
+            // Toggling the buttons on or off
+            CButton cb = (CButton) c;
+            cb.toggleButton(state);
+         }
       }
    }
 
