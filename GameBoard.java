@@ -47,7 +47,7 @@ public class GameBoard extends JPanel {
    private String currentPlayer;
 
    // For sending who's turn it is intially
-   boolean sendPlayer = true;
+   private boolean sendPlayer = true;
 
    /**
     * GameBoard constructor - creates then adds each button to the panel.
@@ -165,6 +165,7 @@ public class GameBoard extends JPanel {
     * button
     */
    public void startTurn() {
+      System.out.println("Start of turn");
       // Toggling the compenents on 
       toggleComponents(true);
       try {
@@ -203,6 +204,8 @@ public class GameBoard extends JPanel {
    public void endTurn() {
       // Turning the components off
       toggleComponents(false);
+      // Setting sendPlayer to true for the next turn
+      sendPlayer = true;
       try {
          // grab the player name list from the server
          Vector<String> playerNames = stub.getPlayerNames();
@@ -214,16 +217,13 @@ public class GameBoard extends JPanel {
             }
          }
 
-         System.out.println("End turn current player: " + currentPlayer + " index: " + playerIndex);
-
          // set the token owner to the next player
          if (playerIndex + 1 <= playerNames.size() - 1) {
             stub.setTokenOwner(playerNames.get(playerIndex + 1));
-            System.out.println("Set token owner to:");
          } else {
             stub.setTokenOwner(playerNames.get(0));
          }
-         System.out.println("New player:" + stub.getTockenOwner());
+         System.out.println("Token changed to: " + stub.getTockenOwner());
       } catch (RemoteException re) { }      
    }
 
