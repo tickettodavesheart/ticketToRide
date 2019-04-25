@@ -111,13 +111,13 @@ public class GameBoard extends JPanel {
             buttonPanel.add(jbOK);
             jbOK.addActionListener(e -> {
                // Making sure at least one button is selected
-               boolean oneSelected = false;
+               int twoSelected = 0;
                for (JCheckBox box : checkBoxList) {
                   if (box.isSelected()) {
-                     oneSelected = true;
+                     twoSelected++;
                   }
                }
-               if (oneSelected) {
+               if (twoSelected == 2) {
                   jfDest.dispose();
                   // Removing choosen cards from the server
                   try {
@@ -131,7 +131,7 @@ public class GameBoard extends JPanel {
             ArrayList<String> dCardsFromServer = stub.getDestinationCards();
 
             txtPanel.add(new JLabel(
-                   "Select one or more destination card(s)"));
+                   "Select two or more destination card(s)"));
 
             // Adding the cards to the panel of options
             for (String dCard : dCardsFromServer) {
