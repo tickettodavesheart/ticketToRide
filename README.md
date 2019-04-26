@@ -57,5 +57,5 @@
 <h1>Unresolved Issues</h1>
 <form>
     <input type="checkbox" name="1">
-    <label for="1">Limiting to 4 players per game</label>
+    <label for="1">Limiting to 4 players per game</label><br>
 </form>
