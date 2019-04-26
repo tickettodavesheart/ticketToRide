@@ -5,6 +5,11 @@ import org.w3c.dom.*;
 import org.xml.sax.*;
 import java.util.*;
 
+// RMI
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.RemoteException;
+
 /**
  * Method to find the longest path.
  * @author Lucas Kohorst
@@ -29,13 +34,22 @@ public class RouteCheck {
    private Route routeCard;
    // boolean for route completion
    private boolean completed;
+   // For RMI
+   private GameStub stub;
+   private String ip;
+   private String stubID;
 
    /**
-    * Defualt Constructor for the LongestV2 Class.
+    * Default Constructor for the LongestV2 Class.
+    * @param routeCard the card to check
+    * @param ip        the IP adress for the main server
+    * @param stubID    the id for the GameStub for the specific server
     * @throws Exception all Exceptions
     */
-   public RouteCheck(Route routeCard) throws Exception {
+   public RouteCheck(Route routeCard, String ip, String stubID) throws Exception {
       this.routeCard = routeCard;
+      this.ip = ip;
+      this.stubID = stubID;
    
       // Creating the hashtable from the XML file
       generateHash();
@@ -87,6 +101,19 @@ public class RouteCheck {
       // Getting the XML to build the DOM
       File f = new File("data/routes.xml");
       Document doc = builder.parse(f);
+
+      // Connect to GameServer to check the routes
+      try {
+         // Locating the Registry
+         Registry registry = LocateRegistry.getRegistry(ip);
+
+         // Looking up the Stub class
+         stub = (GameStub) registry.lookup(stubID);
+
+      } catch (Exception e) {
+         System.err.println("Client exception: " + e.toString());
+         e.printStackTrace();
+      }
    
       // Getting the city count
       int cityCount = Integer.parseInt(path.evaluate(
@@ -112,26 +139,47 @@ public class RouteCheck {
          int routeCount = Integer.parseInt(path.evaluate(
                 "count(/routes/city[" + i + "]/route)", doc));
          for (int j = 1; j <= routeCount; j++) {
-            // TODO: add logic here to check if it was a city on the server 
+            // Logic here to check if it was a city on the server 
             // that was claimed
-            currentCity = path.evaluate("/routes/city[" + i + "]" + "/name", doc);
-            System.out.println(currentCity);
-            currentRoute = path.evaluate("/routes/city[" + i + "]"
-                   + "/route[" + j + "]/id", doc);
-            currentWeight = path.evaluate("/routes/city[" + i + "]"
-                   + "/route[" + j + "]/weight", doc);
-            // TODO: add logic to check if that destination was on the given city
-            currentDest = path.evaluate("/routes/city[" + i + "]"
-                   + "/route[" + j + "]/destination", doc);
-         
-            destWeight = new ArrayList<String>();
-            destWeight.add(currentDest);
-            destWeight.add(currentWeight);
-            values.put(currentRoute, destWeight);
-            
+            try {
+               // Getting the claimed routes from the server
+               Hashtable<String, ArrayList<String>> 
+                      claimedRoutes = stub.getClaimedRoutes();
+               // Getting the keys of this
+               Set<String> keys = claimedRoutes.keySet();
+               // Getting the id in the XML to check
+               currentRoute = path.evaluate("/routes/city[" + i + "]" 
+                      + "/route[" + j + "]/id", doc);
+               // Iterating over each name in the hastable
+               for (String key: keys) {
+                  // Iterating over the arraylists of the current name
+                  for (String r : claimedRoutes.get(key)) {
+                     // Checking if the current iterative route is 
+                     // equal in the XML
+                     if (currentRoute.equals(r)) {
+                        // Getting the rest of the data and 
+                        // adding it to the built hashtable
+                        currentCity = path.evaluate("/routes/city[" + i + "]" 
+                               + "/name", doc);
+                        System.out.println(currentCity);
+                        currentWeight = path.evaluate("/routes/city[" + i + "]" 
+                               + "/route[" + j + "]/weight", doc);
+                        currentDest = path.evaluate("/routes/city[" + i + "]" 
+                               + "/route[" + j + "]/destination", doc);
+
+                        destWeight = new ArrayList<String>();
+                        destWeight.add(currentDest);
+                        destWeight.add(currentWeight);
+                        values.put(currentRoute, destWeight);
+
+                        hashedRoutes.put(name, values);
+                     }
+                  }   
+               }
+
+            } catch (RemoteException re) { }
+
          }
-      
-         hashedRoutes.put(name, values);
       
       }
    
@@ -257,7 +305,17 @@ public class RouteCheck {
     * @throws Exception for all exception
     */
    public static void main(String[] args) throws Exception {
-      new RouteCheck(new Route("A", "E"));
+      // WHEN we start using this it will be called as a 
+      // new object with the IP and stubID so that it can 
+      // connect to the server right now these are just test 
+      // vars and the Hashtable should contain nothing 
+      // if it is not apart of a current game
+
+      // This will also only run if you start the initial server on localhost
+      // and create a new game
+      // the gamestub: GameStub16790 is the starting game stub for the 
+      // first game created
+      new RouteCheck(new Route("A", "E"), "localhost", "GameStub16790");
    }
 
 }

@@ -44,6 +44,13 @@ public class CButton extends JButton {
 
    // The mouse listner for custom button handling
    private MouseListener ml = null;
+   
+   // Current players name
+   private String currentPlayer;
+
+   // boolean that is set to false after first on the timer
+   // so that sending route to server only happens once
+   private boolean sendRoutes = true;
 
    /**
     * CButton constructor.
@@ -76,6 +83,9 @@ public class CButton extends JButton {
 
          // Looking up the Stub class
          stub = (GameStub) registry.lookup(stubID);
+
+         // find the current player
+         currentPlayer = stub.getTockenOwner();
 
       } catch (Exception e) {
          System.err.println("Client exception: " + e.toString());
@@ -119,8 +129,11 @@ public class CButton extends JButton {
    public void toggleButton(boolean state) {
       if (state) {
          addMouseListener(ml);
+         // Setting the boolean to send routes for the new turn to true
+         sendRoutes = true;
       } else {
          removeMouseListener(ml);
+         sendRoutes = false;
       }
    }
 
@@ -128,10 +141,15 @@ public class CButton extends JButton {
     * Method that is called when the user's turn is over.
     */
    public void endTurn() {
-      try {
-         // Sending the selected route to the server
-         stub.addRoute(selectedName);
-      } catch (Exception endTurnE) { }
+      if (sendRoutes) {
+         try {
+            // Sending the selected route and name to the 
+            // server to paint on the next client
+            stub.addRoute(currentPlayer, selectedName);
+            System.out.println("Added: " + currentPlayer + " to route: " + selectedName);
+            sendRoutes = false;
+         } catch (Exception endTurnE) { }
+      }
    }
 
    /**
@@ -245,8 +263,6 @@ public class CButton extends JButton {
          try {
             // grab the player names from the GameServer stub
             Vector<String> playerNames = stub.getPlayerNames();
-            // find the current player
-            String currentPlayer = stub.getTockenOwner();
             // iterate through the player names list to find the index 
             // of the current player, and set the color of the road 
             // to the corresponding color

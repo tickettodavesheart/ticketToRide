@@ -234,7 +234,6 @@ public class GameBoard extends JPanel {
     * button
     */
    public void startTurn() {
-      System.out.println("Start of turn");
       // Toggling the compenents on 
       toggleComponents(true);
       try {

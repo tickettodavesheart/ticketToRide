@@ -51,11 +51,12 @@ public interface GameStub extends Remote {
    void addName(String nickname) throws RemoteException;
    
    /**
-    * Stub Method for number and type of train each play has.
-    * @param route the route to add
-    * @throws RemoteException when RMI does not work.
-    */
-   void addRoute(String route) throws RemoteException;
+   * Stub Method for number and type of train each play has.
+   * @param name  the current players name
+   * @param route the route to add
+   * @throws RemoteException when RMI does not work.
+   */
+   void addRoute(String name, String route) throws RemoteException;
 
    /**
      * Method to change selected routes.
@@ -84,5 +85,14 @@ public interface GameStub extends Remote {
     * @throws RemoteException when RMI does not work
     */
    void removeDestinationCard(String choosenCard) throws RemoteException;
+
+   /**
+     * Stub method to get all of the claimed routes in the hashtable
+     * with the key being the player and the value their routes.
+     * @return claimedRoutes the routes that were taken in a game
+     * @throws RemoteException if RMI does not work
+     */
+   Hashtable<String, ArrayList<String>> getClaimedRoutes() 
+       throws RemoteException;
 
 }

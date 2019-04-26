@@ -2,6 +2,7 @@ import java.util.Vector;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Arrays;
+import java.util.Hashtable;
 
 /**
  * GameServer Class.
@@ -66,6 +67,10 @@ public class GameServer implements GameStub {
        "Seattle to Los Angeles (9))"
    ));
 
+   // Hashtable to hold the given players claimed routes
+   private Hashtable<String, ArrayList<String>> playerClaimedRoutes = 
+          new Hashtable<String, ArrayList<String>>();
+
    /**
     * Method that returns a message.
     * @return String of the message.
@@ -121,12 +126,25 @@ public class GameServer implements GameStub {
 
    /**
     * Method to add a new route to paint to the Server.
+    * @param name the name of the current player
     * @param route the route to paintColor
     */
    @Override
-   public void addRoute(String route) {
+   public void addRoute(String name, String route) {
       // Adding the route and color to the selected routes.
       selectedRoutes.add(route);
+      
+      ArrayList<String> newRoutes;
+      if (playerClaimedRoutes.get(name) != null) {
+         newRoutes = playerClaimedRoutes.get(name);
+      } else {
+         newRoutes = new ArrayList<String>();
+      }
+      // Adding the new route to the previous list
+      newRoutes.add(route);
+      // Adding the route and name to the Hashtable of players
+      // and routes
+      playerClaimedRoutes.put(name, newRoutes);
    }
 
    /**
@@ -213,6 +231,16 @@ public class GameServer implements GameStub {
     */
    public void removeDestinationCard(String choosenCard) {
       destinationCardsLeft.remove(choosenCard);
+   }
+
+   /**
+    * Gets all of the claimed routes in the hashtable with the key
+    * being the player and the value their routes.
+    * @return claimedRoutes the routes that were taken in a game
+    * @throws RemoteException if RMI does not work
+    */
+   public Hashtable<String, ArrayList<String>> getClaimedRoutes()  {
+      return playerClaimedRoutes;
    }
 
    /**
