@@ -35,7 +35,7 @@
 <br><br>
 <h1>Screenshots</h1>
 <h3>Game Board</h3>
-<a href="https://ncdn0.daysofwonder.com/tickettoride/en/img/tt_rules_2015_en.pdf"><img src="https://imgur.com/FnWNDkf.png" alt="Game Board" width="500px"></a>
+<a href="https://ncdn0.daysofwonder.com/tickettoride/en/img/tt_rules_2015_en.pdf" target="_blank"><img src="https://imgur.com/FnWNDkf.png" alt="Game Board" width="500px"></a>
 <h3>Game Lobby</h3>
 <img src="https://imgur.com/BTrDF6N.png" alt="Game Lobby" width="500px">
 
