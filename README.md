@@ -29,9 +29,9 @@
 <h1>Todo</h1>
 <form>
     <input type="checkbox" name="1">
-    <label for="1">Add ticket and destination cards</label>
+    <label for="1">Add ticket and destination cards</label><br>
     <input type="checkbox" name="2">
-    <label for="2">Calculate points for each player</label>
+    <label for="2">Calculate points for each player</label><br>
     <input type="checkbox" name="3">
     <label for="3">Add game logs</label>
 </form>
