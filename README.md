@@ -27,14 +27,9 @@
 
 <br><br>
 <h1>Todo</h1>
-<form>
-    <input type="checkbox" name="1">
-    <label for="1">Add ticket and destination cards</label>
-    <input type="checkbox" name="2">
-    <label for="2">Calculate points for each player</label>
-    <input type="checkbox" name="3">
-    <label for="3">Add game logs</label>
-</form>
+<p>☐ Add ticket and destination cards</p>
+<p>☐ Calculate points for each player</p>
+<p>☐ Add game logs</p>
 
 
 <br><br>
@@ -55,7 +50,4 @@
 
 <br><br>
 <h1>Unresolved Issues</h1>
-<form>
-    <input type="checkbox" name="1">
-    <label for="1">Limiting to 4 players per game</label>
-</form>
+<p>☐ Limiting to four players per game</p>
