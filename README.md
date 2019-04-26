@@ -35,7 +35,7 @@
 <br><br>
 <h1>Screenshots</h1>
 <h3>Game Board</h3>
-<img src="https://imgur.com/FnWNDkf" alt="Game Board" width="500px">
+<img src="https://imgur.com/FnWNDkf.png" alt="Game Board" width="500px">
 <h3>Game Lobby</h3>
 <img src="https://imgur.com/BTrDF6N.png" alt="Game Lobby" width="500px">
 
