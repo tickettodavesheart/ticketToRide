@@ -85,7 +85,7 @@ public class RouteCheck {
       path = xpfactory.newXPath();
    
       // Getting the XML to build the DOM
-      File f = new File("data/test.xml");
+      File f = new File("data/routes.xml");
       Document doc = builder.parse(f);
    
       // Getting the city count
@@ -112,12 +112,15 @@ public class RouteCheck {
          int routeCount = Integer.parseInt(path.evaluate(
                 "count(/routes/city[" + i + "]/route)", doc));
          for (int j = 1; j <= routeCount; j++) {
+            // TODO: add logic here to check if it was a city on the server 
+            // that was claimed
             currentCity = path.evaluate("/routes/city[" + i + "]" + "/name", doc);
             System.out.println(currentCity);
             currentRoute = path.evaluate("/routes/city[" + i + "]"
                    + "/route[" + j + "]/id", doc);
             currentWeight = path.evaluate("/routes/city[" + i + "]"
                    + "/route[" + j + "]/weight", doc);
+            // TODO: add logic to check if that destination was on the given city
             currentDest = path.evaluate("/routes/city[" + i + "]"
                    + "/route[" + j + "]/destination", doc);
          
