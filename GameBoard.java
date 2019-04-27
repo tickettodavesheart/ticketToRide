@@ -117,7 +117,7 @@ public class GameBoard extends JPanel {
                      twoSelected++;
                   }
                }
-               if (twoSelected == 2) {
+               if (twoSelected >= 2) {
                   jfDest.dispose();
                   // Removing choosen cards from the server
                   try {
@@ -255,8 +255,41 @@ public class GameBoard extends JPanel {
                CButton buttonToPaint = buttonPaintList.elementAt(indexOfButton);
                // Setting the color to paint
                String colorToPaint = parsed[0];
-               // Calling the method to paint the color on the given CButton
-               buttonToPaint.colorButton(colorToPaint);
+
+
+               // TODO: 
+               /**************************/
+               /* Need to use a hashtable with the route */
+               /* and the correct player's index so that */
+               /* the colors are approperiatly painted   */
+               /* right now it works properly just needs */
+               /* the correct index                      */
+               /**************************/
+
+
+               // getting the current players index for painting
+               try {
+                    // grab the player names from the GameServer stub     
+                    Vector<String> playerNames = stub.getPlayerNames();
+                    // iterate through the player names list to find the index 
+                    // of the current player, and set the color of the road 
+                    // to the corresponding color
+                    for (int i = 0; i < playerNames.size(); i++) {
+                        if (playerNames.get(i).equals(currentPlayer)) {
+                            int previousPlayerIndex = 0;
+                            // Need to paint the color with the previous players color
+                            try {
+                                playerNames.get(i - 1);
+                                previousPlayerIndex = i - 1;
+                            } catch (ArrayIndexOutOfBoundsException aroobe) {
+                                previousPlayerIndex = playerNames.size() - 1;
+                            }
+                            System.out.println("Previopus player index: " + previousPlayerIndex);
+                            // Calling the method to paint the color on the given CButton
+                            buttonToPaint.colorButton("color" + previousPlayerIndex);
+                        } 
+                    }
+                } catch (RemoteException re) { }
             }
             sendPlayer = false;
          }

@@ -105,18 +105,34 @@ public class CButton extends JButton {
 
          public void mouseClicked(MouseEvent e) {
             if (!selected) {
+					System.out.println("Mouse clickd in if");
                try {
                   // Giving it the name and color
                   selectedName = nameButton;
-                  selected = true;
+						selected = true;
+						// Giving it the name and color
+						// getting the current players index for painting
+						// grab the player names from the GameServer stub     
+						Vector<String> playerNames = stub.getPlayerNames();
+						// iterate through the player names list to find the index 
+						// of the current player, and set the color of the road 
+						// to the corresponding color
+						for (int i = 0; i < playerNames.size(); i++) {
+								if (playerNames.get(i).equals(currentPlayer)) {
+									// Calling the method to paint the color on the given CButton
+									colorButton("color" + i);
+									System.out.println("\n\n\n\n Using color: " + i);
+								} 
+						}
+                  // Ending
                   // Ending the turn
                   endTurn();
                } catch (Exception re) { }
             } else {
+					System.out.println("Mouse in else");
                // If the route is deselected then remove it from the list
                selected = false;
             }
-            repaint();
          }
       }; // end MouseListener
       
@@ -147,7 +163,9 @@ public class CButton extends JButton {
             // server to paint on the next client
             stub.addRoute(currentPlayer, selectedName);
             System.out.println("Added: " + currentPlayer + " to route: " + selectedName);
-            sendRoutes = false;
+				sendRoutes = false;
+				// No longer can select a route
+				toggleButton(false);
          } catch (Exception endTurnE) { }
       }
    }
@@ -159,21 +177,6 @@ public class CButton extends JButton {
    public void colorButton(String color) {
       // Creating a switch for the colors
       switch (color) {
-         // gray
-         case "gray":
-            paintColor = colors[0];
-            break;
-         // green
-         case "green":
-            paintColor = colors[1];
-            break;
-         // red
-         case "red":
-            paintColor = colors[2];
-            break;
-         // blue
-         case "blue":
-            paintColor = colors[3];
          // color1
          case "color0":
             paintColor = colors[0];
@@ -191,10 +194,10 @@ public class CButton extends JButton {
             paintColor = colors[3];
             break;
       }
-      // If it gets repainted it should be disabled as it is already selected
-      setEnabled(false);
+      selected = true;
       // repainting the string
       repaint();
+      System.out.println("Color: " + paintColor);
    }
 
    // Hit detection for mouse actions
@@ -248,35 +251,15 @@ public class CButton extends JButton {
       // if block to check if mouse click has selected or deselected button
       // changes fill color to highlight button selection or deselection
       // @param trainColor - Default color of the train route
-
-      // FIXME: add the logic
-      // TODO: remove this, put somewhere else
-      // for when a user needs to repaint with the paintColor
-      g2d.setPaint(paintColor);
+      
 
       // TODO: need to disable the selection of buttons if
       // a client already has it selected on the server
       // display a message to the user they cannot click it
       // FIXME: commented out so that the button is not repainted over in else
       if (selected) {
-         // TODO: will be the color of the player
-         try {
-            // grab the player names from the GameServer stub
-            Vector<String> playerNames = stub.getPlayerNames();
-            // iterate through the player names list to find the index 
-            // of the current player, and set the color of the road 
-            // to the corresponding color
-            for (int i = 0; i < playerNames.size(); i++) {
-               if (playerNames.get(i).equals(currentPlayer)) {
-                  // sets paintColor to the correct color
-                  colorButton(new String("color" + i));
-               } else {
-                  System.out.println("No color found!");
-               }
-            } 
-            // set the color to the new color
-            g2d.setPaint(paintColor);
-         } catch (RemoteException re) { }
+         // set the color to the new color
+         g2d.setPaint(paintColor);
       } else {
          g2d.setPaint(trainColor);
       }
