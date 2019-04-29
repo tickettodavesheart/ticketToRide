@@ -16,8 +16,8 @@ public class GameServer implements GameStub {
    private Vector<String> playerNames = new Vector<String>();
    private String tokenOwner = "";
    // Vector of arraylists with each route and color that it takes
-   private Vector<String> selectedRoutes =
-          new Vector<String>();
+   private Hashtable<String, String> selectedRoutes =
+          new Hashtable<String, String>();
    // ArrayList of all cards available at the start of the game
    private ArrayList<String> cardsLeft = new ArrayList<String>(
        Arrays.asList("BLACK", "BLACK", "BLACK", "BLACK", "BLACK", "BLACK", 
@@ -132,7 +132,7 @@ public class GameServer implements GameStub {
    @Override
    public void addRoute(String name, String route) {
       // Adding the route and color to the selected routes.
-      selectedRoutes.add(route);
+      selectedRoutes.put(route, name);
       
       ArrayList<String> newRoutes;
       if (playerClaimedRoutes.get(name) != null) {
@@ -152,7 +152,7 @@ public class GameServer implements GameStub {
     * @return selectedRoutes the route selected and it's color
     */
    @Override
-   public Vector<String> updateRoutes() {
+   public Hashtable<String, String> updateRoutes() {
       return selectedRoutes;
    }
 

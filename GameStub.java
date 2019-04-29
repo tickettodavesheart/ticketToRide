@@ -63,7 +63,7 @@ public interface GameStub extends Remote {
      * @return selectedRoutes the route selected and it's color
      * @throws RemoteException when RMI does not work.
      */
-   Vector<String> updateRoutes() throws RemoteException;
+   Hashtable<String, String> updateRoutes() throws RemoteException;
 
    /**
     * Stub method to deal out cards to the player.
