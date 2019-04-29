@@ -248,15 +248,6 @@ public class CButton extends JButton {
       // draw outline
       g2d.draw(shape);
 
-      // if block to check if mouse click has selected or deselected button
-      // changes fill color to highlight button selection or deselection
-      // @param trainColor - Default color of the train route
-      
-
-      // TODO: need to disable the selection of buttons if
-      // a client already has it selected on the server
-      // display a message to the user they cannot click it
-      // FIXME: commented out so that the button is not repainted over in else
       if (selected) {
          // set the color to the new color
          g2d.setPaint(paintColor);

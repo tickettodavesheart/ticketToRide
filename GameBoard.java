@@ -234,62 +234,50 @@ public class GameBoard extends JPanel {
     * button
     */
    public void startTurn() {
-      // Toggling the compenents on 
+      // Toggling the components on 
       toggleComponents(true);
       try {
          if (sendPlayer) {
             // Sending a message out who's turn it is
             stub.sendMessage(currentPlayer + " is playing");
-            // Getting all the newely selected routes and setting them
-            Vector<String> selectedFromServer = stub.updateRoutes();
-            System.out.println("Routes from server: " + selectedFromServer);
+            // Getting all the new selected routes and setting them
+            Hashtable<String, String> selectedFromServer = stub.updateRoutes();
+            Set<String> keys = selectedFromServer.keySet();
+            System.out.println("Routes from server: " 
+                  + selectedFromServer.toString());
             // Iterating over the vector to see which ones need to be repainted
-            for (String key : selectedFromServer) {
+            for (String key : keys) {
                // Parsing the id into color and names
                // 0 is the color
                String[] parsed = key.split("_");
                // Finding the index of the button first using the
                // namePaintList
                int indexOfButton = namePaintList.indexOf(key);
-               // Getting the correct butotn in the buttonPaintList
+               // Getting the correct button in the buttonPaintList
                CButton buttonToPaint = buttonPaintList.elementAt(indexOfButton);
                // Setting the color to paint
                String colorToPaint = parsed[0];
 
-
-               // TODO: 
-               /**************************/
-               /* Need to use a hashtable with the route */
-               /* and the correct player's index so that */
-               /* the colors are approperiatly painted   */
-               /* right now it works properly just needs */
-               /* the correct index                      */
-               /**************************/
-
+               // Creating the default player index
+               int currentPlayerIndex = 0;
 
                // getting the current players index for painting
-               try {
-                    // grab the player names from the GameServer stub     
-                    Vector<String> playerNames = stub.getPlayerNames();
-                    // iterate through the player names list to find the index 
-                    // of the current player, and set the color of the road 
-                    // to the corresponding color
-                    for (int i = 0; i < playerNames.size(); i++) {
-                        if (playerNames.get(i).equals(currentPlayer)) {
-                            int previousPlayerIndex = 0;
-                            // Need to paint the color with the previous players color
-                            try {
-                                playerNames.get(i - 1);
-                                previousPlayerIndex = i - 1;
-                            } catch (ArrayIndexOutOfBoundsException aroobe) {
-                                previousPlayerIndex = playerNames.size() - 1;
-                            }
-                            System.out.println("Previopus player index: " + previousPlayerIndex);
-                            // Calling the method to paint the color on the given CButton
-                            buttonToPaint.colorButton("color" + previousPlayerIndex);
-                        } 
-                    }
-                } catch (RemoteException re) { }
+               Vector<String> players = stub.getPlayerNames();
+               for (int j = 0; j < players.size(); j++) {
+                  if (players.get(j).equals(selectedFromServer.get(key))) {
+                     currentPlayerIndex = j;
+                  }
+               }
+
+               // iterate through the player names list to find the index 
+               // of the current player, and set the color of the road 
+               // to the corresponding color
+               System.out.println("Printing w player index: " 
+                     + selectedFromServer.get(key));
+               // Calling the method to paint the color
+               // on the given CButton
+               buttonToPaint.colorButton("color" 
+                        + currentPlayerIndex);
             }
             sendPlayer = false;
          }
