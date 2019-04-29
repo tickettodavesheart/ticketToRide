@@ -377,7 +377,8 @@ public class GameBoard extends JPanel {
             if (currentPlayer.equals(serverCurrentPlayer)) {
                startTurn();
             }
-         } catch (RemoteException re) { }
+         } catch (RemoteException re) { 
+         } catch (NullPointerException npe) { }
       }
    }
    

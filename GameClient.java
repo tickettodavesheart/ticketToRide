@@ -36,18 +36,32 @@ public class GameClient extends JFrame {
       // Getting the players name
       String[] optionsName = {"OK"};
       JPanel panelName = new JPanel();
-      JLabel lblName = new JLabel("Enter your nickname: ");
+      JLabel lblName = new JLabel("Enter your unique nickname: ");
       JTextField txtName = new JTextField(10);
       panelName.add(lblName);
       panelName.add(txtName);
-      
+
       try {
-         Vector<String> playerNames = new Vector<String>();
-         try {
-            playerNames = stub.getPlayerNames();
-         } catch(NullPointerException npe) { 
-            System.out.println("null pointer caught in GameClient name selection");
-         }
+         // Locating the Registry
+         Registry registry = LocateRegistry.getRegistry(ip);
+
+         // Looking up the Stub class
+         stub = (GameStub) registry.lookup(stubID);
+
+      } catch (Exception e) {
+         System.err.println("Client exception: " + e.toString());
+         e.printStackTrace();
+      }
+
+      try {
+         Vector<String> playerNames = stub.getPlayerNames();
+         // try {
+         //    playerNames = stub.getPlayerNames();
+         //    System.out.println("Vector successfully passed");
+         // } catch(NullPointerException npe) { 
+         //    System.out.println("null pointer caught in GameClient name selection- created empty vecotr");
+         //    playerNames = new Vector<String>();
+         // }
           
          boolean repeatPrompt = false;
          do {
@@ -55,6 +69,7 @@ public class GameClient extends JFrame {
                   "Nickname", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE,
                   null, optionsName, optionsName[0]);
             nickname = txtName.getText();
+            System.out.println("Name Panel has been made. Nickname inputted: " + nickname);
             
             // Getting the username
             if (nickname.length() < 1) {
@@ -62,17 +77,17 @@ public class GameClient extends JFrame {
             }
             
             for (String player: playerNames) {
+               System.out.println("Printing out the player names in for loop: "+player);
                if (player.equals(nickname)) {
-                  System.out.println("ArrayList player: " + player);
+                  System.out.println("When equal, repeat. player: " + player);
                   repeatPrompt = true;
-               } 
+               } else {
+                  repeatPrompt = false;
+               }
             }
-            System.out.println("The name given is: " + nickname);
          } while (repeatPrompt);
       } catch (RemoteException re) { 
-      } 
-
-      
+      } //catch (NullPointerException npe) { }
 
       setLayout(new BorderLayout(10, 10));
 
@@ -93,17 +108,9 @@ public class GameClient extends JFrame {
       chatThread.start();
       gameThread.start();
 
-      try {
-         // Locating the Registry
-         Registry registry = LocateRegistry.getRegistry(ip);
 
-         // Looking up the Stub class
-         stub = (GameStub) registry.lookup(stubID);
 
-      } catch (Exception e) {
-         System.err.println("Client exception: " + e.toString());
-         e.printStackTrace();
-      }
+      
 
       // Set JFrame sizing
       setSize(1180, 680);
