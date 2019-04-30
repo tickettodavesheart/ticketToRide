@@ -4,6 +4,13 @@ import java.util.Random;
 import java.util.Arrays;
 import java.util.Hashtable;
 
+import java.io.*;
+import javax.xml.parsers.*;
+import javax.xml.xpath.*;
+import org.w3c.dom.*;
+import org.xml.sax.*;
+import java.util.*;
+
 /**
  * GameServer Class.
  * @author Lucas Kohorst
@@ -70,6 +77,20 @@ public class GameServer implements GameStub {
    // Hashtable to hold the given players claimed routes
    private Hashtable<String, ArrayList<String>> playerClaimedRoutes = 
           new Hashtable<String, ArrayList<String>>();
+
+   // Array of the trains that a player has left
+   private int[] trainsLeft = new int[]{45, 45, 45, 45, 45}; 
+
+   // Generate a Hashtable from the XML
+   private Hashtable<String, Integer> hashedRoutes = new Hashtable<String, Integer>();
+
+   // Document builders for XML parsing
+   private DocumentBuilder builder;
+   private XPath path;
+
+   // Last turn counter
+   private int lastTurnCounter = -1;
+   private boolean lastTurnHasNotStarted = true;
 
    /**
     * Method that returns a message.
@@ -201,6 +222,7 @@ public class GameServer implements GameStub {
     * Returns random destination cards the user can choose from.
     * @return destination cards the user can choose from
     */
+   @Override
    public ArrayList<String> getDestinationCards() {
       ArrayList<String> destinationCards = new ArrayList<String>();
       Random rand2 = new Random();
@@ -229,6 +251,7 @@ public class GameServer implements GameStub {
     * destination cards left. 
     * @param choosenCard the cards that were selected
     */
+   @Override
    public void removeDestinationCard(String choosenCard) {
       destinationCardsLeft.remove(choosenCard);
    }
@@ -239,9 +262,143 @@ public class GameServer implements GameStub {
     * @return claimedRoutes the routes that were taken in a game
     * @throws RemoteException if RMI does not work
     */
+   @Override
    public Hashtable<String, ArrayList<String>> getClaimedRoutes()  {
       return playerClaimedRoutes;
    }
+
+    /**
+     * First gets the weight of the route and 
+     * decrements the number of 
+     * trains that a player has
+     * @param player the player who needs to decrement
+     * @param route the route the player claimed
+     */ 
+     @Override
+     public void decrementPlayerTrains(String player, String route) {
+        // Getting the weight of the route
+        int weight = getRouteWeight(route);
+
+        // Getting the index of the player's name
+        try {
+           int playerIndex = playerNames.indexOf(player);
+           trainsLeft[playerIndex] = trainsLeft[playerIndex] - weight;
+        } catch (Exception e) { }
+     }
+
+    /**
+     * Stub method to get the number of trains that a player has
+     * @param player the player to get the trains of
+     * @return the number of trains they have left
+     */
+   @Override
+   public int getPlayerTrains(String player) {
+        int trainsToReturn = -1;
+        // Getting the index of the player's name
+        try {
+           int playerIndex = playerNames.indexOf(player);
+           trainsToReturn = trainsLeft[playerIndex];
+        } catch (Exception e) { }
+        return trainsToReturn;
+   }
+
+    /**
+     * Stub method to start the end of turn counter.
+     * @param player the player that ended the game
+     * @throws RemoteException if RMI does not work
+     */
+    public void startLastTurnCounter(String player) {
+        // Setting last turn to the 
+        lastTurnCounter = playerNames.indexOf(player);
+        lastTurnHasNotStarted = false;
+        System.out.println("Started countdown");
+    }
+
+    /**
+     * Stub method for checking that it is not the last turn.
+     * @param player the player to check if they already
+     * took their last turn
+     * @throws RemoteException if RMI does not work
+     */
+    public void isItLastTurn(String player) {
+        // TODO: change this to the end of game JFRame
+        if (playerNames.indexOf(player) == lastTurnCounter) {
+            System.out.println("They are equal exiting");
+            System.exit(0);
+            //End Game Here
+        }
+    }
+ 
+    /**
+     * Stub method to check if the last turn has already
+     * been started.
+     * @throws RemoteException if RMI does not work
+     */
+    public boolean lastTurnStarted() {
+        return lastTurnHasNotStarted;
+    }
+
+
+   /**
+    * Given the route gets the weight of the route
+    * @param route the route to check
+    * @return the weight of the route 
+    */
+    public int getRouteWeight(String route) {
+        // Creating the hashtable of all the routes
+        // and weights
+        try {
+            generateHashTable();
+        } catch (Exception e) { }
+
+        // Searching the hashtable for the supplied route
+        // and returning the weight
+        return hashedRoutes.get(route);
+    } 
+
+    /**
+     * Parses an XML file and generates a hashtable for it.
+     * @throws SAXException                 for SAX error
+     * @throws IOException                  for IO exception
+     * @throws XPathExpressionException     for XPATH error
+     * @throws ParserConfigurationException when can't configure the XML parser
+     */
+    public void generateHashTable() throws SAXException,
+    IOException, XPathExpressionException, ParserConfigurationException{
+        // Builing the parser
+        DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
+        builder = dbfactory.newDocumentBuilder();
+        XPathFactory xpfactory = XPathFactory.newInstance();
+        path = xpfactory.newXPath();
+
+        // Getting the XML to build the DOM
+        File f = new File("data/routes.xml");
+        Document doc = builder.parse(f);
+
+        // Getting the city count
+        int cityCount = Integer.parseInt(path.evaluate(
+                "count(/routes/city)", doc));
+
+        // Strings
+        int currentWeight = -1;
+        String currentRoute = "";
+
+        for (int i = 1; i <= cityCount; i++) {
+            int routeCount = Integer.parseInt(path.evaluate(
+                    "count(/routes/city[" + i + "]/route)", doc));
+            for (int j = 1; j <= routeCount; j++) {
+                currentRoute = path.evaluate("/routes/city[" + i + "]"
+                        + "/route[" + j + "]/id", doc);
+                currentWeight = Integer.parseInt(path.evaluate("/routes/city[" + i + "]"
+                        + "/route[" + j + "]/weight", doc));
+
+                hashedRoutes.put(currentRoute, currentWeight);
+            }
+
+        }
+
+    }
+
 
    /**
     * The Main method for the Server.

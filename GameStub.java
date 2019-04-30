@@ -95,4 +95,45 @@ public interface GameStub extends Remote {
    Hashtable<String, ArrayList<String>> getClaimedRoutes() 
        throws RemoteException;
 
+
+   /**
+    * Stub method to decrement the number of 
+    * trains that a player has.
+    * @param player the player who needs to decrement
+    * @param route the route the player claimed
+    * @throws RemoteException if RMI does not work
+    */
+    
+   void decrementPlayerTrains(String player, String route) throws RemoteException;
+
+   /**
+    * Stub method to get the number of trains that a player has.
+    * @param player the player to get the trains of
+    * @return the number of trains they have left
+    * @throws RemoteException if RMI does not work
+    */
+   int getPlayerTrains(String player) throws RemoteException;
+
+   /**
+    * Stub method to start the end of turn counter.
+    * @param player the player that ended the game
+    * @throws RemoteException if RMI does not work
+    */
+   void startLastTurnCounter(String player) throws RemoteException;
+
+   /**
+    * Stub method for checking that it is not the last turn.
+    * @param player the player to check if they already
+    * took their last turn
+    * @throws RemoteException if RMI does not work
+    */
+   void isItLastTurn(String player) throws RemoteException;
+
+   /**
+    * Stub method to check if the last turn has already
+    * been started.
+    * @throws RemoteException if RMI does not work
+    */
+   boolean lastTurnStarted() throws RemoteException;
+
 }

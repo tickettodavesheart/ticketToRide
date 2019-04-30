@@ -234,6 +234,14 @@ public class GameBoard extends JPanel {
     * button
     */
    public void startTurn() {
+      // Checking if this is their last turn
+      try {
+        if (!stub.lastTurnStarted()) {
+            // If it is their last turn
+            // Will trigger the end game if true
+            stub.isItLastTurn(currentPlayer);
+        }
+      } catch (RemoteException re) { }
       // Toggling the components on 
       toggleComponents(true);
       try {
@@ -313,6 +321,22 @@ public class GameBoard extends JPanel {
             stub.setTokenOwner(playerNames.get(0));
          }
          System.out.println("Token changed to: " + stub.getTockenOwner());
+
+         System.out.println("Current Player: " + currentPlayer);
+
+        // If the last turn has not already started
+        if (stub.lastTurnStarted()) {
+            //  Checking if the game is over or not
+            for (String p : playerNames) {
+                // Getting the number of trains a player has
+                int currentPlayerTrains = stub.getPlayerTrains(p);
+                if (currentPlayerTrains <= 3) {
+                    stub.sendMessage(currentPlayer + " has less than 3 trains left everyone will get one more turn!");
+                    // Keeping track of the last turn for everyone
+                    stub.startLastTurnCounter(currentPlayer);
+                }
+            }
+        }
       } catch (RemoteException re) { }      
    }
 
