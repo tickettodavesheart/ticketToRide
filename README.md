@@ -7,6 +7,20 @@
 <p>Ticket to Dave’s Heart is a computerized version of the board game Ticket to Ride. The objective of the game is to build a railroad network on the USA map. The application supports multiple games, which can be created and joined in the lobby and multiplayer-play
     over a network. Additional features include an in-game chat.</p>
 
+<br>
+<h1>About the game</h1>
+<p>Ticket to Dave’s Heart is an adaptation of the board game Ticket to Ride. The objective of the game is to build a railroad network on the USA map. The application supports multiple games, which can be created and joined in the lobby and multiplayer-play over a network. Additional features include an in-game chat.
+    To play, after connecting to a server you choose between joining a pre-established game or creating a new game for yourself and friends to join. After joining, players are prompted for a unique nickname.
+    Once all the players are in the lobby, the game can start. It is recommended for players to wait until all of the members of the party are in the lobby before beginning, just as you would sitting around a table. This can be accomplished by communicating in the chat window adjacent to the game board. 
+    Once the setup is complete, it is time to begin playing. You may find the detailed official rules to the game here: https://ncdn0.daysofwonder.com/tickettoride/en/img/tt_rules_2015_en.pdf. 
+    To summarize the rules, the objective of the game is for players to gain the most points. In order to gain points, players can:
+    complete destination cards. Players obtain between 2-3 of these at the beginning of the game and should attempt to connect the cities by the game’s end.
+    claim tracks. Every path claimed adds to the player’s point total. The longer the track, the more the points are worth. However, if the track is gray, then it is only worth the number of trains that the route takes. When the track is colored, however, this is the point translation: 
+    build the longest road. At the end of the game, the player with the longest road gets a 10 point bonus. 
+    You may also lose points. The only way to lose points is by not completing any of the destination cards that you have in your hand. This includes any destination cards that you may pick up mid-game. If you fail to complete these cards, the number on the card will be subtracted from your point total rather than added. 
+    The game ends when any player has only 3 or fewer trains left in their inventory. Once this happens, the players will have one turn left each before the point totals are added up and the winner is announced. 
+    </p>
+
 <h1>Contributers</h1>
 <a href="https://github.com/bugryn-josh">Joshua Bugryn</a><br>
 <a href="https://github.com/danielsause">Daniel Sause</a><br>
