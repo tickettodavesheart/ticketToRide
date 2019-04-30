@@ -68,3 +68,14 @@
 <br><br>
 <h1>Unresolved Issues</h1>
 <p>☐ Limiting to four players per game</p>
+
+<br><br>
+<h1>Awards</h1>
+<h3>Experienced XML</h3>
+<h5>Daniel Sause</h5>
+<h3>Layout Legend</h3>
+<h5>Michael Vasile</h5>
+<h3>GUI God</h3>
+<h5>Joshua Bugryn</h5>
+<h3>BLANK</h3>
+<h5>Lucas Kohorst</h5>
