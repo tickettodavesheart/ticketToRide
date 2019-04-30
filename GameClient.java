@@ -48,14 +48,6 @@ public class GameClient extends JFrame {
        panelName.add(txtName);
        ImageIcon img = new ImageIcon("resources/placeholder.png");
 
-      // Getting the players name
-      String[] optionsName = {"OK"};
-      JPanel panelName = new JPanel();
-      JLabel lblName = new JLabel("Enter your unique nickname: ");
-      JTextField txtName = new JTextField(10);
-      panelName.add(lblName);
-      panelName.add(txtName);
-
       try {
          // Locating the Registry
          Registry registry = LocateRegistry.getRegistry(ip);
@@ -276,6 +268,10 @@ public class GameClient extends JFrame {
       public void run() {
          try {
             currPlayer.setText(stub.getTockenOwner());
+
+            // update train card count
+            trainCardCount.setText(
+                  new String("" + stub.getPlayerTrains(nickname)));
 
             // Update playerlist
             Vector<String> playerList = stub.getPlayerNames();
