@@ -15,6 +15,7 @@ import java.rmi.RemoteException;
 
 /**
  * GameBoard Class.
+ * 
  * @author Joshua Bugryn
  * @version 4/15/2019
  */
@@ -416,107 +417,49 @@ public class GameBoard extends JPanel {
                buttonToPaint.colorButton("color" 
                         + currentPlayerIndex);
             }
-            sendPlayer = false;
-         }
-      } catch (Exception e) { 
-         System.out.println("Exception: " + e);
-      }
-   }
-   
-   /**
-    * Run at end of each users turn to send 
-    * updates to the server.
-    */
-   public void endTurn() {
-      // Turning the components off
-      toggleComponents(false);
-      // Setting sendPlayer to true for the next turn
-      sendPlayer = true;
-      try {
-         // grab the player name list from the server
-         Vector<String> playerNames = stub.getPlayerNames();
-         // find and store the current player's index in the list
-         int playerIndex = 0;
-         for (int i = 0; i < playerNames.size(); i++) {
-            if (playerNames.get(i).equals(currentPlayer)) {
-               playerIndex = i;
+
+            // set the token owner to the next player
+            if (playerIndex + 1 <= playerNames.size() - 1) {
+                stub.setTokenOwner(playerNames.get(playerIndex + 1));
+            } else {
+                stub.setTokenOwner(playerNames.get(0));
             }
-         }
+            System.out.println("Token changed to: " + stub.getTockenOwner());
 
-         // set the token owner to the next player
-         if (playerIndex + 1 <= playerNames.size() - 1) {
-            stub.setTokenOwner(playerNames.get(playerIndex + 1));
-         } else {
-            stub.setTokenOwner(playerNames.get(0));
-         }
-         System.out.println("Token changed to: " + stub.getTockenOwner());
+            System.out.println("Current Player: " + currentPlayer);
 
-         System.out.println("Current Player: " + currentPlayer);
-
-        // If the last turn has not already started
-        if (stub.lastTurnStarted()) {
-            //  Checking if the game is over or not
-            for (String p : playerNames) {
-                // Getting the number of trains a player has
-                int currentPlayerTrains = stub.getPlayerTrains(p);
-                if (currentPlayerTrains <= 3) {
-                    stub.sendMessage(currentPlayer + " has less than 3 trains left everyone will get one more turn!");
-                    // Keeping track of the last turn for everyone
-                    stub.startLastTurnCounter(currentPlayer);
+            // If the last turn has not already started
+            if (stub.lastTurnStarted()) {
+                // Checking if the game is over or not
+                for (String p : playerNames) {
+                    // Getting the number of trains a player has
+                    int currentPlayerTrains = stub.getPlayerTrains(p);
+                    if (currentPlayerTrains <= 3) {
+                        stub.sendMessage(
+                                currentPlayer + " has less than 3 trains left everyone will get one more turn!");
+                        // Keeping track of the last turn for everyone
+                        stub.startLastTurnCounter(currentPlayer);
+                    }
                 }
             }
+        } catch (RemoteException re) {
         }
-      } catch (RemoteException re) { }      
-   }
+    }
 
-   /**
-    * Used to toggle the components on or off
-    * at the start or end of turn.
-    * @param state true or false to toggle
-    */
-   public void toggleComponents(boolean state) {
-      Component[] components = getComponents();
-      for (Component c : components) {
-         c.setEnabled(state);
-         // If the component is a CButton
-         if (c instanceof CButton) {
-            // Toggling the buttons on or off
-            CButton cb = (CButton) c;
-            cb.toggleButton(state);
-         }
-      }
-   }
-
-   // Override paintComponent to draw BackGround image
-   @Override
-      public void paintComponent(Graphics g) {
-      Graphics2D g2d = (Graphics2D) g;
-      g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-             RenderingHints.VALUE_ANTIALIAS_ON);
-      g2d.drawImage(bgImage, 0, 0, this);
-   } // end paintComponent @Override
-   
-   /**
-    * Class for the gameboard update timer.
-    */
-   class GameboardUpdate extends TimerTask {
-      /**
-       * The run method for the GameboardUpdate task.
-       */
-      public void run() {
-         try {         
-            // check the server's account of the current player
-            String serverCurrentPlayer = stub.getTockenOwner();
-            
-            // If it is not your turn
-            if (!currentPlayer.equals(serverCurrentPlayer)) {
-               // Turning off the components
-               toggleComponents(false);
-            } 
-
-            // if the current player is now you, start your turn
-            if (currentPlayer.equals(serverCurrentPlayer)) {
-               startTurn();
+    /**
+     * Used to toggle the components on or off at the start or end of turn.
+     * 
+     * @param state true or false to toggle
+     */
+    public void toggleComponents(boolean state) {
+        Component[] components = getComponents();
+        for (Component c : components) {
+            c.setEnabled(state);
+            // If the component is a CButton
+            if (c instanceof CButton) {
+                // Toggling the buttons on or off
+                CButton cb = (CButton) c;
+                cb.toggleButton(state);
             }
          } catch (RemoteException re) { 
          } catch (NullPointerException npe) { }
@@ -602,8 +545,42 @@ public class GameBoard extends JPanel {
                }
                cardsList.remove(card);
                turn = true;
+        }
+    }
+
+    // Override paintComponent to draw BackGround image
+    @Override
+    public void paintComponent(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.drawImage(bgImage, 0, 0, this);
+    } // end paintComponent @Override
+
+    /**
+     * Class for the gameboard update timer.
+     */
+    class GameboardUpdate extends TimerTask {
+        /**
+         * The run method for the GameboardUpdate task.
+         */
+        public void run() {
+            try {
+                // check the server's account of the current player
+                String serverCurrentPlayer = stub.getTockenOwner();
+
+                // If it is not your turn
+                if (!currentPlayer.equals(serverCurrentPlayer)) {
+                    // Turning off the components
+                    toggleComponents(false);
+                }
+
+                // if the current player is now you, start your turn
+                if (currentPlayer.equals(serverCurrentPlayer)) {
+                    startTurn();
+                }
+            } catch (RemoteException re) {
+            } catch (NullPointerException npe) {
             }
-         } catch (RemoteException re) { }
-      }
-   }
+        }
+    }    
 } // end GameBoard class
