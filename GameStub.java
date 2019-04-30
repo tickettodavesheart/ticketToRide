@@ -66,6 +66,13 @@ public interface GameStub extends Remote {
    Hashtable<String, String> updateRoutes() throws RemoteException;
 
    /**
+    * Stub method to change selected destination cards.
+    * @param name player name of card owner
+    * @param card DestinationCard object to add to list
+    */
+   void addDestinationCard(String name, DestinationCard card) throws RemoteException;
+   
+   /**
     * Stub method to deal out cards to the player.
     * @param numCards - the number of cards to deal
     * @return starting cards the starting cards a player holds
@@ -77,21 +84,21 @@ public interface GameStub extends Remote {
     * Stub method to show the visible deck options for train cards
     * @return the arraylist of visible cards
     */
-    ArrayList<String> getVisibleTrainCards() throws RemoteException;  
+   ArrayList<String> getVisibleTrainCards() throws RemoteException;  
 
    /**
     * Stub method to get random destination cards from the server.
     * @return destination cards
     * @throws RemoteException when RMI does not work
     */
-   ArrayList<String> getDestinationCards() throws RemoteException;
+   ArrayList<DestinationCard> getDestinationCards() throws RemoteException;
 
    /**
     * Stub method to remove the destination card because it has been claimed.
     * @param choosenCard the cards that were selected
     * @throws RemoteException when RMI does not work
     */
-   void removeDestinationCard(String choosenCard) throws RemoteException;
+   void removeDestinationCard(DestinationCard choosenCard) throws RemoteException;
 
    /**
     * Stub method to remove the train card because it has been claimed.
@@ -150,4 +157,10 @@ public interface GameStub extends Remote {
     */
    boolean lastTurnStarted() throws RemoteException;
 
+   /**
+    * Stub method for calculating player score.
+    * @param player name of the player to calculate score of
+    * @return calculated score
+    */
+   int calcScore(String playerName) throws Exception;
 }

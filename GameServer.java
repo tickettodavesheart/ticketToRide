@@ -54,29 +54,10 @@ public class GameServer implements GameStub {
    ));
 
    // ArrayList of available destination cards
-   private ArrayList<String> destinationCardsLeft = new ArrayList<String>(
-       Arrays.asList("Los Angeles to New York City (21)", 
-       "Duluth to Houston (8)", 
-       "Sault Ste Marie to Nashville (8)", 
-       "New York to Atlanta (6)", 
-       "Portland to Nashville (17)", "Vancouver to Montréal (20)", 
-       "Duluth to El Paso (10)", "Toronto to Miami (10)", 
-       "Portland to Phoenix (11)",
-       "Dallas to New York City (11)", "Calgary to Salt Lake City (7)", 
-       "Calgary to Phoenix (13)", 
-       "Los Angeles to Miami (20)", "Winnipeg to Little Rock (11)", 
-       "San Francisco to Atlanta (17)", 
-       "Kansas City to Houston (5)", "Los Angeles to Chicago (16)", 
-       "Denver to Pittsburgh (11)", 
-       "Chicago to Santa Fe (9)", "Vancouver to Santa Fe (13)", 
-       "Boston to Miami (12)", 
-       "Chicago to New Orleans (7)", "Montreal to Atlanta (9)", 
-       "Seattle to New York (22)", 
-       "Denver to El Paso (4)", "Helena to Los Angeles (8)", 
-       "Winnipeg to Houston (12)", 
-       "Montreal to New Orleans (13)", "Sault Ste. Marie to Oklahoma City (9)", 
-       "Seattle to Los Angeles (9))"
-   ));
+   private ArrayList<DestinationCard> destinationCardsLeft = null;
+   
+   // Hashtable to hold given players claimed destination cards
+   private Hashtable<String, ArrayList<DestinationCard>> playerDestinationCards = new Hashtable<String, ArrayList<DestinationCard>>();;
 
    // Hashtable to hold the given players claimed routes
    private Hashtable<String, ArrayList<String>> playerClaimedRoutes = 
@@ -95,6 +76,17 @@ public class GameServer implements GameStub {
    // Last turn counter
    private int lastTurnCounter = -1;
    private boolean lastTurnHasNotStarted = true;
+
+
+/**
+ * GameServer constructor
+ */
+   public GameServer() throws Exception{
+      ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File("DestinationDeck.obj")));
+      destinationCardsLeft = (ArrayList<DestinationCard>)ois.readObject();
+      ois.close();
+      System.out.println("Game server is ready");
+   }
 
    /**
     * Method that returns a message.
@@ -181,6 +173,27 @@ public class GameServer implements GameStub {
       return selectedRoutes;
    }
 
+ /**
+  * Method to add a destination card to a players card list.
+  * @param name player name to assign card to
+  * @param card DestinationCard object to assign to player
+  */
+   @Override
+   public void addDestinationCard(String name, DestinationCard card) {
+      ArrayList<DestinationCard> newCards;
+     
+      if(playerDestinationCards.get(name) != null) {
+         newCards = playerDestinationCards.get(name);
+      } else {
+         newCards = new ArrayList<DestinationCard>();
+      }
+     // Adding new card to previous list
+      newCards.add(card);
+     // Adding the name and card to the Hashtable of players
+     // and their cards
+      playerDestinationCards.put(name, newCards);
+   }
+
    /**
     * Method to deal the initial cards to a player.
     * @param numCards - the number of cards to deal
@@ -193,7 +206,7 @@ public class GameServer implements GameStub {
       // index at
       Random rand = new Random();
       Integer[] cards = new Integer[numCards];
-
+   
       for (int i = 0; i < numCards; i++) {
          // Generate the number in the range of the indicies
          cards[i] = rand.nextInt(cardsLeft.size() - 1);
@@ -215,7 +228,7 @@ public class GameServer implements GameStub {
       
       Random rand = new Random();
       Integer[] cards = new Integer[numCards];
-
+   
       if (firstDeal) {
          for (int i = 0; i < numCards; i++) {
             cards[i] = rand.nextInt(cardsLeft.size() - 1);
@@ -226,7 +239,7 @@ public class GameServer implements GameStub {
             cardsLeft.remove(card);
          }
       } 
-
+   
       return visibleTrainCards;
    } 
 
@@ -235,8 +248,8 @@ public class GameServer implements GameStub {
     * @return destination cards the user can choose from
     */
    @Override
-   public ArrayList<String> getDestinationCards() {
-      ArrayList<String> destinationCards = new ArrayList<String>();
+   public ArrayList<DestinationCard> getDestinationCards() {
+      ArrayList<DestinationCard> destinationCards = new ArrayList<DestinationCard>();
       Random rand2 = new Random();
       // Generate the number in the range of the indicies
       int d1 = rand2.nextInt(destinationCardsLeft.size() - 1);
@@ -254,7 +267,7 @@ public class GameServer implements GameStub {
       destinationCards.add(destinationCardsLeft.get(d3));
       // Removing the dealt card from the cardsLeft
       destinationCardsLeft.remove(d3);
-
+   
       return destinationCards;
    }
 
@@ -264,7 +277,7 @@ public class GameServer implements GameStub {
     * @param choosenCard the cards that were selected
     */
    @Override
-   public void removeDestinationCard(String choosenCard) {
+   public void removeDestinationCard(DestinationCard choosenCard) {
       destinationCardsLeft.remove(choosenCard);
    }
 
@@ -273,7 +286,7 @@ public class GameServer implements GameStub {
     * train cards left list. 
     * @param choosenCard the cards that were selected
     */
-    public void removeTrainCard(String choosenCard) {
+   public void removeTrainCard(String choosenCard) {
       cardsLeft.remove(choosenCard);
    }
 
@@ -295,17 +308,17 @@ public class GameServer implements GameStub {
      * @param player the player who needs to decrement
      * @param route the route the player claimed
      */ 
-     @Override
+   @Override
      public void decrementPlayerTrains(String player, String route) {
         // Getting the weight of the route
-        int weight = getRouteWeight(route);
-
+      int weight = getRouteWeight(route);
+   
         // Getting the index of the player's name
-        try {
-           int playerIndex = playerNames.indexOf(player);
-           trainsLeft[playerIndex] = trainsLeft[playerIndex] - weight;
-        } catch (Exception e) { }
-     }
+      try {
+         int playerIndex = playerNames.indexOf(player);
+         trainsLeft[playerIndex] = trainsLeft[playerIndex] - weight;
+      } catch (Exception e) { }
+   }
 
     /**
      * Stub method to get the number of trains that a player has
@@ -314,13 +327,13 @@ public class GameServer implements GameStub {
      */
    @Override
    public int getPlayerTrains(String player) {
-        int trainsToReturn = -1;
+      int trainsToReturn = -1;
         // Getting the index of the player's name
-        try {
-           int playerIndex = playerNames.indexOf(player);
-           trainsToReturn = trainsLeft[playerIndex];
-        } catch (Exception e) { }
-        return trainsToReturn;
+      try {
+         int playerIndex = playerNames.indexOf(player);
+         trainsToReturn = trainsLeft[playerIndex];
+      } catch (Exception e) { }
+      return trainsToReturn;
    }
 
     /**
@@ -328,12 +341,12 @@ public class GameServer implements GameStub {
      * @param player the player that ended the game
      * @throws RemoteException if RMI does not work
      */
-    public void startLastTurnCounter(String player) {
+   public void startLastTurnCounter(String player) {
         // Setting last turn to the 
-        lastTurnCounter = playerNames.indexOf(player);
-        lastTurnHasNotStarted = false;
-        System.out.println("Started countdown");
-    }
+      lastTurnCounter = playerNames.indexOf(player);
+      lastTurnHasNotStarted = false;
+      System.out.println("Started countdown");
+   }
 
     /**
      * Stub method for checking that it is not the last turn.
@@ -341,23 +354,23 @@ public class GameServer implements GameStub {
      * took their last turn
      * @throws RemoteException if RMI does not work
      */
-    public void isItLastTurn(String player) {
+   public void isItLastTurn(String player) {
         // TODO: change this to the end of game JFRame
-        if (playerNames.indexOf(player) == lastTurnCounter) {
-            System.out.println("They are equal exiting");
-            System.exit(0);
+      if (playerNames.indexOf(player) == lastTurnCounter) {
+         System.out.println("They are equal exiting");
+         System.exit(0);
             //End Game Here
-        }
-    }
+      }
+   }
  
     /**
      * Stub method to check if the last turn has already
      * been started.
      * @throws RemoteException if RMI does not work
      */
-    public boolean lastTurnStarted() {
-        return lastTurnHasNotStarted;
-    }
+   public boolean lastTurnStarted() {
+      return lastTurnHasNotStarted;
+   }
 
 
    /**
@@ -365,17 +378,17 @@ public class GameServer implements GameStub {
     * @param route the route to check
     * @return the weight of the route 
     */
-    public int getRouteWeight(String route) {
+   public int getRouteWeight(String route) {
         // Creating the hashtable of all the routes
         // and weights
-        try {
-            generateHashTable();
-        } catch (Exception e) { }
-
+      try {
+         generateHashTable();
+      } catch (Exception e) { }
+   
         // Searching the hashtable for the supplied route
         // and returning the weight
-        return hashedRoutes.get(route);
-    } 
+      return hashedRoutes.get(route);
+   } 
 
     /**
      * Parses an XML file and generates a hashtable for it.
@@ -384,50 +397,84 @@ public class GameServer implements GameStub {
      * @throws XPathExpressionException     for XPATH error
      * @throws ParserConfigurationException when can't configure the XML parser
      */
-    public void generateHashTable() throws SAXException,
+   public void generateHashTable() throws SAXException,
     IOException, XPathExpressionException, ParserConfigurationException{
         // Builing the parser
-        DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
-        builder = dbfactory.newDocumentBuilder();
-        XPathFactory xpfactory = XPathFactory.newInstance();
-        path = xpfactory.newXPath();
-
+      DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
+      builder = dbfactory.newDocumentBuilder();
+      XPathFactory xpfactory = XPathFactory.newInstance();
+      path = xpfactory.newXPath();
+   
         // Getting the XML to build the DOM
-        File f = new File("data/routes.xml");
-        Document doc = builder.parse(f);
-
+      File f = new File("data/routes.xml");
+      Document doc = builder.parse(f);
+   
         // Getting the city count
-        int cityCount = Integer.parseInt(path.evaluate(
+      int cityCount = Integer.parseInt(path.evaluate(
                 "count(/routes/city)", doc));
-
+   
         // Strings
-        int currentWeight = -1;
-        String currentRoute = "";
-
-        for (int i = 1; i <= cityCount; i++) {
-            int routeCount = Integer.parseInt(path.evaluate(
+      int currentWeight = -1;
+      String currentRoute = "";
+   
+      for (int i = 1; i <= cityCount; i++) {
+         int routeCount = Integer.parseInt(path.evaluate(
                     "count(/routes/city[" + i + "]/route)", doc));
-            for (int j = 1; j <= routeCount; j++) {
-                currentRoute = path.evaluate("/routes/city[" + i + "]"
+         for (int j = 1; j <= routeCount; j++) {
+            currentRoute = path.evaluate("/routes/city[" + i + "]"
                         + "/route[" + j + "]/id", doc);
-                currentWeight = Integer.parseInt(path.evaluate("/routes/city[" + i + "]"
+            currentWeight = Integer.parseInt(path.evaluate("/routes/city[" + i + "]"
                         + "/route[" + j + "]/weight", doc));
-
-                hashedRoutes.put(currentRoute, currentWeight);
-            }
-
-        }
-
-    }
-
-
-   /**
-    * The Main method for the Server.
-    * @param args for command line input
-    */
-   public static void main(String[] args) {
-
-      System.out.println("Game server is ready");
-
+         
+            hashedRoutes.put(currentRoute, currentWeight);
+         }
+      
+      }
+   
    }
+   
+   /**
+    * Method to calculate a users score
+    * @param playerName players name to calculate the score of
+    * @return int calculated score value
+    */
+   @Override
+   public int calcScore(String playerName) throws Exception {
+      RoutePointsDict rpd = new RoutePointsDict();
+      DestinationCardCheck dcc = new DestinationCardCheck();
+      int score = 0;
+      ArrayList<String> ownedRoutes = getClaimedRoutes().get(playerName);
+      
+      for(String route : ownedRoutes) {
+         if(route.contains("grey")) {
+            score += rpd.getRouteWeight(route);
+         } else {
+            score += rpd.getRoutePoints(route);
+         }
+      }
+      
+      ArrayList<DestinationCard> ownedDestinationCards = playerDestinationCards.get(playerName);
+      for(DestinationCard dc : ownedDestinationCards) {
+         dcc.newCard(dc, ownedRoutes);
+      
+         dcc.verify(dc.getLocationOne());
+         if(dcc.isCardCompleted()) {
+            score += dc.getPointValue();
+         } else {
+            score -= dc.getPointValue();
+         }
+      }
+      return score;
+   }
+
+// 
+//    /**
+//     * The Main method for the Server.
+//     * @param args for command line input
+//     */
+   // public static void main(String[] args) {
+   // 
+      // System.out.println("Game server is ready");
+   // 
+   // }
 }
