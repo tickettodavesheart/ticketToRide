@@ -74,6 +74,13 @@ public interface GameStub extends Remote {
    ArrayList<String> dealCards(int numCards) throws RemoteException;
 
    /**
+    * Stub method to tell the server how many cards to refill
+    * @param usedList
+    * @throws RemoteException when RMI does not work.
+    */
+   void setUsedVisibleTrainCards(ArrayList<String> usedList) throws RemoteException;
+
+   /**
     * Stub method to show the visible deck options for train cards
     * @return the arraylist of visible cards
     */

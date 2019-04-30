@@ -26,6 +26,7 @@ public class GameServer implements GameStub {
    private boolean firstDeal = true;
    // The visible train cards
    private ArrayList<String> visibleTrainCards = new ArrayList<String>();
+   private ArrayList<String> usedVisibleTrainCards = new ArrayList<String>();
    // Vector of arraylists with each route and color that it takes
    private Hashtable<String, String> selectedRoutes =
           new Hashtable<String, String>();
@@ -207,6 +208,14 @@ public class GameServer implements GameStub {
    }
 
    /**
+    * A method to have the client tell the server how many cards to refill
+    * @param usedList
+    */
+   public void setUsedVisibleTrainCards(ArrayList<String> usedList) {
+      usedVisibleTrainCards = usedList;
+   }
+
+   /**
     * A method to show the visible deck options for train cards
     * @return the arraylist of visible cards
     */
@@ -218,15 +227,23 @@ public class GameServer implements GameStub {
 
       if (firstDeal) {
          for (int i = 0; i < numCards; i++) {
-            cards[i] = rand.nextInt(cardsLeft.size() - 1);
-            int card = cards[i];
+            int card = rand.nextInt(cardsLeft.size() - 1);
             // Adding the card
             visibleTrainCards.add(cardsLeft.get(card));
             // Removing the dealt card from the cardsLeft
             cardsLeft.remove(card);
          }
-      } 
-
+      } else {
+         int visibleCardsLeft = usedVisibleTrainCards.size();
+         for (int i = 0; i < 5 - visibleCardsLeft; i++) {
+            int card = rand.nextInt(cardsLeft.size() - 1);
+            usedVisibleTrainCards.add(cardsLeft.get(card));
+            cardsLeft.remove(card);
+         }
+         visibleTrainCards.clear();
+         visibleTrainCards = usedVisibleTrainCards;
+      }
+      firstDeal = false;
       return visibleTrainCards;
    } 
 

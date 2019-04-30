@@ -27,7 +27,7 @@ public class GameClient extends JFrame {
    private JLabel currScore;
    private JLabel playerNames;
    private JLabel trainCardCount;
-   
+
    // For RMI
    private GameStub stub;
    

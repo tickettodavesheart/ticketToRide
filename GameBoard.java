@@ -58,6 +58,15 @@ public class GameBoard extends JPanel {
    // Destination Cards that the player has
    private ArrayList<String> destinationList = new ArrayList<String>();
 
+   // Cards that the player can choose from
+   private ArrayList<String> visibleTrainCards = null;
+
+   // For Restricting Client's turn
+   private int numCardsClaimed = 0;
+   private boolean hasClaimedTrainCard = false;
+   private boolean hasClaimedRoute = false;
+   private boolean hasClaimedDestCard = false;
+
    /**
     * GameBoard constructor - creates then adds each button to the panel.
     * @param ip       the IP adress for the main server
@@ -184,138 +193,160 @@ public class GameBoard extends JPanel {
     */
    public void getDestinationCards() {
       // Getting the destination cards from the server
-      try {
-         JFrame jfDest = new JFrame();
-         // Asking what destination cards the user wants to have
-         JPanel panel = new JPanel();
-         JPanel txtPanel = new JPanel();
-         JPanel buttonPanel = new JPanel();
-         // Array of checkboxes for validation
-         ArrayList<JCheckBox> checkBoxList = new ArrayList<JCheckBox>();
-         
-         JButton jbOK = new JButton("Select");
-         buttonPanel.add(jbOK);
-         jbOK.addActionListener(e -> {
-            // Making sure at least one button is selected
-            int twoSelected = 0;
-            for (JCheckBox box : checkBoxList) {
-               if (box.isSelected()) {
-                  twoSelected++;
+      if (!hasClaimedDestCard && !hasClaimedRoute && !hasClaimedTrainCard) {
+         try {
+            JFrame jfDest = new JFrame();
+            // Asking what destination cards the user wants to have
+            JPanel panel = new JPanel();
+            JPanel txtPanel = new JPanel();
+            JPanel buttonPanel = new JPanel();
+            // Array of checkboxes for validation
+            ArrayList<JCheckBox> checkBoxList = new ArrayList<JCheckBox>();
+            
+            JButton jbOK = new JButton("Select");
+            buttonPanel.add(jbOK);
+            jbOK.addActionListener(e -> {
+               // Making sure at least one button is selected
+               int twoSelected = 0;
+               for (JCheckBox box : checkBoxList) {
+                  if (box.isSelected()) {
+                     twoSelected++;
+                  }
                }
+               if (beginningCards) {
+                  if (twoSelected >= 2) {
+                     jfDest.dispose();
+                     // Removing choosen cards from the server
+                     try {
+                        for (String s : destinationList) {
+                           stub.removeDestinationCard(s);
+                        }
+                     } catch (RemoteException re) { }
+                  }
+               } else if (!beginningCards) {
+                  if (twoSelected >= 1) {
+                     jfDest.dispose();
+                     // Removing choosen cards from the server
+                     try {
+                        for (String s : destinationList) {
+                           stub.removeDestinationCard(s);
+                        }
+                     } catch (RemoteException re) { }
+                  }
+               }
+               beginningCards = false;
+            });
+
+            ArrayList<String> dCardsFromServer = stub.getDestinationCards();
+
+            txtPanel.add(new JLabel(
+                  "Select two or more destination card(s)"));
+
+            // Adding the cards to the panel of options
+            for (String dCard : dCardsFromServer) {
+               JCheckBox jcb = new JCheckBox(dCard);
+               // Adding to the list
+               checkBoxList.add(jcb);
+               panel.add(jcb, BorderLayout.CENTER);
+               jcb.addActionListener(new RadioActionListener());
             }
-            if (beginningCards) {
-               if (twoSelected >= 2) {
-                  jfDest.dispose();
-                  // Removing choosen cards from the server
-                  try {
-                     for (String s : destinationList) {
-                        stub.removeDestinationCard(s);
-                     }
-                  } catch (RemoteException re) { }
-               }
-            } else if (!beginningCards) {
-               if (twoSelected >= 1) {
-                  jfDest.dispose();
-                  // Removing choosen cards from the server
-                  try {
-                     for (String s : destinationList) {
-                        stub.removeDestinationCard(s);
-                     }
-                  } catch (RemoteException re) { }
-               }
-            }
-            beginningCards = false;
-         });
 
-         ArrayList<String> dCardsFromServer = stub.getDestinationCards();
+            jfDest.add(txtPanel, BorderLayout.NORTH);
+            jfDest.add(panel, BorderLayout.CENTER);
+            jfDest.add(buttonPanel, BorderLayout.SOUTH);
 
-         txtPanel.add(new JLabel(
-                "Select two or more destination card(s)"));
-
-         // Adding the cards to the panel of options
-         for (String dCard : dCardsFromServer) {
-            JCheckBox jcb = new JCheckBox(dCard);
-            // Adding to the list
-            checkBoxList.add(jcb);
-            panel.add(jcb, BorderLayout.CENTER);
-            jcb.addActionListener(new RadioActionListener());
-         }
-
-         jfDest.add(txtPanel, BorderLayout.NORTH);
-         jfDest.add(panel, BorderLayout.CENTER);
-         jfDest.add(buttonPanel, BorderLayout.SOUTH);
-
-         jfDest.pack();
-         jfDest.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-         jfDest.setVisible(true);
-         jfDest.setLocationRelativeTo(null);
-         
-      } catch (RemoteException re) { }
+            jfDest.pack();
+            jfDest.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            jfDest.setVisible(true);
+            jfDest.setLocationRelativeTo(null);
+            
+         } catch (RemoteException re) { }
+      }
    }
 
    public void getTrainCards() {
-      try {
-         JFrame jfTrain = new JFrame();
-         // Asking what destination cards the user wants to have
-         JPanel panel = new JPanel();
-         JPanel txtPanel = new JPanel();
-         JPanel buttonPanel = new JPanel();
-         // Array of checkboxes for validation
-         ArrayList<JCheckBox> checkBoxList = new ArrayList<JCheckBox>();
-         
-         JButton jbOK = new JButton("Select");
-         buttonPanel.add(jbOK);
-         jbOK.addActionListener(e -> {
-            // Making sure at least one button is selected
-            int selectedTrains = 0;
-            for (JCheckBox box : checkBoxList) {
-               if (box.isSelected()) {
-                  selectedTrains++;
+
+      if (!hasClaimedDestCard && !hasClaimedRoute && numCardsClaimed < 2) {
+         try {
+            JFrame jfTrain = new JFrame();
+            // Asking what destination cards the user wants to have
+            JPanel panel = new JPanel();
+            JPanel txtPanel = new JPanel();
+            JPanel buttonPanel = new JPanel();
+            // Array of checkboxes for validation
+            ArrayList<JRadioButton> checkBoxList = new ArrayList<JRadioButton>();
+            
+            JButton jbOK = new JButton("Select");
+            buttonPanel.add(jbOK);
+            jbOK.addActionListener(e -> {
+               // Making sure at least one button is selected
+               int selectedTrains = 0;
+               for (JRadioButton box : checkBoxList) {
+                  if (box.isSelected()) {
+                     selectedTrains++;
+                  }
+               }
+               //if (beginningCards) {
+               if (selectedTrains == 1) {
+                  for (String s : cardsList) {
+                     System.out.println(s);
+                  }
+                  jfTrain.dispose();
+                  // Removing choosen card from the server
+                  // try {
+                  //    stub.removeTrainCard();
+                  // } catch (RemoteException re) { }
+               }
+            });
+
+            visibleTrainCards = stub.getVisibleTrainCards();
+            System.out.println("Grabbed visibleTrainCards from server. Count: " + visibleTrainCards.size());
+            int rainbowCount = 0;
+            for (String s: visibleTrainCards) {
+               if (s.equals("NEUTRAL")) {
+                  rainbowCount++;
                }
             }
-            //if (beginningCards) {
-            if (selectedTrains == 1) {
-               for (String s : cardsList) {
-                  System.out.println(s);
+            if (rainbowCount >= 3) {
+               for (int i = 0; i < rainbowCount; i++) {
+                  visibleTrainCards.remove("NEUTRAL");
+                  stub.removeTrainCard("NEUTRAL");
+                  stub.setUsedVisibleTrainCards(visibleTrainCards);
                }
-               jfTrain.dispose();
-               // Removing choosen card from the server
-               // try {
-               //    stub.removeTrainCard();
-               // } catch (RemoteException re) { }
+               visibleTrainCards.clear();
+               visibleTrainCards = stub.getVisibleTrainCards();
+               System.out.println("visibleTrainCards cleared. Reset to size: " + visibleTrainCards.size());
             }
-         });
+            
 
-         ArrayList<String> visibleTrainCards = stub.getVisibleTrainCards();
+            txtPanel.add(new JLabel(
+                  "Select a train card"));
 
-         txtPanel.add(new JLabel(
-                "Select a train card"));
+            // Adding the cards to the panel of options
+            for (String trainCard : visibleTrainCards) {
+               JRadioButton jcb = new JRadioButton(trainCard);
+               // Adding to the list 
+               checkBoxList.add(jcb);
+               panel.add(jcb, BorderLayout.CENTER);
+               jcb.addActionListener(new TrainRadioActionListener());
+            }
+            
+            JRadioButton jcbRandom = new JRadioButton("RANDOM");
+            checkBoxList.add(jcbRandom);
+            panel.add(jcbRandom, BorderLayout.CENTER);
+            jcbRandom.addActionListener(new TrainRadioActionListener());
 
-         // Adding the cards to the panel of options
-         for (String trainCard : visibleTrainCards) {
-            JCheckBox jcb = new JCheckBox(trainCard);
-            // Adding to the list 
-            checkBoxList.add(jcb);
-            panel.add(jcb, BorderLayout.CENTER);
-            jcb.addActionListener(new TrainRadioActionListener());
-         }
-         
-         JCheckBox jcbRandom = new JCheckBox("RANDOM");
-         checkBoxList.add(jcbRandom);
-         panel.add(jcbRandom, BorderLayout.CENTER);
-         jcbRandom.addActionListener(new TrainRadioActionListener());
+            jfTrain.add(txtPanel, BorderLayout.NORTH);
+            jfTrain.add(panel, BorderLayout.CENTER);
+            jfTrain.add(buttonPanel, BorderLayout.SOUTH);
 
-         jfTrain.add(txtPanel, BorderLayout.NORTH);
-         jfTrain.add(panel, BorderLayout.CENTER);
-         jfTrain.add(buttonPanel, BorderLayout.SOUTH);
-
-         jfTrain.pack();
-         jfTrain.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-         jfTrain.setVisible(true);
-         jfTrain.setLocationRelativeTo(null);
-         
-      } catch (RemoteException re) { }
-
+            jfTrain.pack();
+            jfTrain.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            jfTrain.setVisible(true);
+            jfTrain.setLocationRelativeTo(null);
+            
+         } catch (RemoteException re) { }
+      }
    }
 
    /**
@@ -325,6 +356,7 @@ public class GameBoard extends JPanel {
     * button
     */
    public void startTurn() {
+      
       // Checking if this is their last turn
       try {
         if (!stub.lastTurnStarted()) {
@@ -337,6 +369,12 @@ public class GameBoard extends JPanel {
       toggleComponents(true);
       try {
          if (sendPlayer) {
+
+            // reset controls
+            hasClaimedTrainCard = false;
+            hasClaimedRoute = false;
+            hasClaimedDestCard = false;
+            numCardsClaimed = 0;
             // Sending a message out who's turn it is
             stub.sendMessage(currentPlayer + " is playing");
             // Getting all the new selected routes and setting them
@@ -498,6 +536,7 @@ public class GameBoard extends JPanel {
             JCheckBox jrb = (JCheckBox) e.getSource();
             // Adding the destination to the destination list
             destinationList.add(jrb.getText());
+            hasClaimedDestCard = true;
             turn = false;
          } else {
             JCheckBox jrb = (JCheckBox) e.getSource();
@@ -518,21 +557,43 @@ public class GameBoard extends JPanel {
       @Override
       public void actionPerformed(ActionEvent e) {
          try {
+            if (numCardsClaimed >= 2) {
+               turn = false;
+            }
+
             if (turn) {
-               JCheckBox jrb = (JCheckBox) e.getSource();
+               
+               JRadioButton jrb = (JRadioButton) e.getSource();
                // Adding the destination to the destination list
                String card = jrb.getText();
 
                if (card.equals("RANDOM")) {
                   ArrayList<String> randomCard = stub.dealCards(1);
                   card = randomCard.get(0);
+                  numCardsClaimed++;
+                  System.out.println("numCardsClaimed incremented with random");
+               } else if (card.equals("NEUTRAL")) {
+                  if (numCardsClaimed >= 1) {
+                     cardsList.remove(card);
+                  } else {
+                     numCardsClaimed = numCardsClaimed + 2;
+                     System.out.println("numCardsClaimed incremented by 2");
+                  }
+               } else {
+                  numCardsClaimed++;
+                  System.out.println("numCardsClaimed incremented by default");
+
                }
                cardsList.add(card);
                stub.removeTrainCard(card);
+               visibleTrainCards.remove(card);
+               stub.setUsedVisibleTrainCards(visibleTrainCards);
+               hasClaimedTrainCard = true;
                turn = false;
+               System.out.println("numCardsClaimed: " + numCardsClaimed);
                
             } else {
-               JCheckBox jrb = (JCheckBox) e.getSource();
+               JRadioButton jrb = (JRadioButton) e.getSource();
                // Adding the destination to the destination list
                String card = jrb.getText();
                if (card.equals("RANDOM")) {
