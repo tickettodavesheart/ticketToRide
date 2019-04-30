@@ -48,39 +48,60 @@ public class GameClient extends JFrame {
        panelName.add(txtName);
        ImageIcon img = new ImageIcon("resources/placeholder.png");
 
-       try {
-          Vector<String> playerNames = new Vector<String>();
-          try {
-             playerNames = stub.getPlayerNames();
-            } catch(NullPointerException npe) { 
-               System.out.println("null pointer caught in GameClient name selection");
-            }
-            
-            boolean repeatPrompt = false;
-            do {
+      // Getting the players name
+      String[] optionsName = {"OK"};
+      JPanel panelName = new JPanel();
+      JLabel lblName = new JLabel("Enter your unique nickname: ");
+      JTextField txtName = new JTextField(10);
+      panelName.add(lblName);
+      panelName.add(txtName);
+
+      try {
+         // Locating the Registry
+         Registry registry = LocateRegistry.getRegistry(ip);
+
+         // Looking up the Stub class
+         stub = (GameStub) registry.lookup(stubID);
+
+      } catch (Exception e) {
+         System.err.println("Client exception: " + e.toString());
+         e.printStackTrace();
+      }
+
+      try {
+         // pull the player names list from GameServer 
+         Vector<String> playerNames = stub.getPlayerNames();
+          
+         // loop to validate names
+         boolean repeatPrompt = false;
+         do {
+            // prompt user for nickname
             JOptionPane.showOptionDialog(null, panelName, 
             "Nickname", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE,
             null, optionsName, optionsName[0]);
             nickname = txtName.getText();
+            System.out.println("Name Panel has been made. Nickname inputted: " + nickname);
             
-            // Getting the username
+            // default username
             if (nickname.length() < 1) {
                nickname = "Anonymous";
             }
             
+            // check to see if it's already someone's name
             for (String player: playerNames) {
+               System.out.println("Printing out the player names in for loop: "+player);
+               // if name is taken, reprompt user
                if (player.equals(nickname)) {
-                  System.out.println("ArrayList player: " + player);
+                  System.out.println("When equal, repeat. player: " + player);
                   repeatPrompt = true;
-               } 
+               // otherwise, exit loop
+               } else {
+                  repeatPrompt = false;
+               }
             }
-            System.out.println("The name given is: " + nickname);
          } while (repeatPrompt);
-      } catch (RemoteException re) { 
-      } 
-      
-      
-      // Set JFrame Layout Manager
+      } catch (RemoteException re) { } 
+
       setLayout(new BorderLayout(10, 10));
       
       // Sidebar JPanel
@@ -196,20 +217,6 @@ public class GameClient extends JFrame {
 
       // add CardDecks to bottomBar
       bottomBar.add(cardDecks,BorderLayout.EAST);
-      
-
-      try {
-         // Locating the Registry
-         Registry registry = LocateRegistry.getRegistry(ip);
-         
-         // Looking up the Stub class
-         stub = (GameStub) registry.lookup(stubID);
-         
-      } catch (Exception e) {
-         System.err.println("Client exception: " + e.toString());
-         e.printStackTrace();
-      }
-      
       
       // Set JFrame sizing
       setSize(1180, 740);

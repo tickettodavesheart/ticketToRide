@@ -7,6 +7,23 @@
 <p>Ticket to Dave’s Heart is a computerized version of the board game Ticket to Ride. The objective of the game is to build a railroad network on the USA map. The application supports multiple games, which can be created and joined in the lobby and multiplayer-play
     over a network. Additional features include an in-game chat.</p>
 
+<br>
+<h1>About the game</h1>
+<p>Ticket to Dave’s Heart is an adaptation of the board game Ticket to Ride. The objective of the game is to build a railroad network on the USA map. The application supports multiple games, which can be created and joined in the lobby and multiplayer-play over a network. Additional features include an in-game chat.</p>
+    <p>To play, after connecting to a server you choose between joining a pre-established game or creating a new game for yourself and friends to join. After joining, players are prompted for a unique nickname.</p>
+    <p>Once all the players are in the lobby, the game can start. It is recommended for players to wait until all of the members of the party are in the lobby before beginning, just as you would sitting around a table. This can be accomplished by communicating in the chat window adjacent to the game board.</p>
+    <p>Once the setup is complete, it is time to begin playing. You may find the detailed official rules to the game here: <a href="https://ncdn0.daysofwonder.com/tickettoride/en/img/tt_rules_2015_en.pdf">https://ncdn0.daysofwonder.com/tickettoride/en/img/tt_rules_2015_en.pdf</a>.</p> 
+    <p>To summarize the rules, the objective of the game is for players to gain the most points. In order to gain points, players can:</p>
+    <ul>
+    <li>complete destination cards. Players obtain between 2-3 of these at the beginning of the game and should attempt to connect the cities by the game’s end.</li>
+    <li>claim tracks. Every path claimed adds to the player’s point total. The longer the track, the more the points are worth. However, if the track is gray, then it is only worth the number of trains that the route takes. When the track is colored, however, this is the point translation:
+        <br><br><img src="https://user-images.githubusercontent.com/13056414/56982754-019af900-6b50-11e9-8a24-b3baf224bd2d.png" alt="Points Chart"></li><br><br>
+    <li>build the longest road. At the end of the game, the player with the longest road gets a 10 point bonus.</li>
+    </ul>
+    <p>You may also lose points. The only way to lose points is by not completing any of the destination cards that you have in your hand. This includes any destination cards that you may pick up mid-game. If you fail to complete these cards, the number on the card will be subtracted from your point total rather than added.</p>
+    <p>The game ends when any player has only 3 or fewer trains left in their inventory. Once this happens, the players will have one turn left each before the point totals are added up and the winner is announced. 
+    </p>
+
 <h1>Contributers</h1>
 <a href="https://github.com/bugryn-josh">Joshua Bugryn</a><br>
 <a href="https://github.com/danielsause">Daniel Sause</a><br>
@@ -51,3 +68,14 @@
 <br><br>
 <h1>Unresolved Issues</h1>
 <p>☐ Limiting to four players per game</p>
+
+<br><br>
+<h1>Awards</h1>
+<h3>Experienced XML</h3>
+<h5>Daniel Sause</h5>
+<h3>Layout Legend</h3>
+<h5>Michael Vasile</h5>
+<h3>GUI God</h3>
+<h5>Joshua Bugryn</h5>
+<h3>BLANK</h3>
+<h5>Lucas Kohorst</h5>

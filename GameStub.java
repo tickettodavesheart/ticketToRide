@@ -63,14 +63,21 @@ public interface GameStub extends Remote {
      * @return selectedRoutes the route selected and it's color
      * @throws RemoteException when RMI does not work.
      */
-   Vector<String> updateRoutes() throws RemoteException;
+   Hashtable<String, String> updateRoutes() throws RemoteException;
 
    /**
     * Stub method to deal out cards to the player.
+    * @param numCards - the number of cards to deal
     * @return starting cards the starting cards a player holds
     * @throws RemoteException when RMI does not work.
     */
-   ArrayList<String> dealCards() throws RemoteException;
+   ArrayList<String> dealCards(int numCards) throws RemoteException;
+
+   /**
+    * Stub method to show the visible deck options for train cards
+    * @return the arraylist of visible cards
+    */
+    ArrayList<String> getVisibleTrainCards() throws RemoteException;  
 
    /**
     * Stub method to get random destination cards from the server.
@@ -87,6 +94,13 @@ public interface GameStub extends Remote {
    void removeDestinationCard(String choosenCard) throws RemoteException;
 
    /**
+    * Stub method to remove the train card because it has been claimed.
+    * @param choosenCard the cards that were selected
+    * @throws RemoteException when RMI does not work
+    */
+   void removeTrainCard(String choosenCard) throws RemoteException;
+
+   /**
      * Stub method to get all of the claimed routes in the hashtable
      * with the key being the player and the value their routes.
      * @return claimedRoutes the routes that were taken in a game
@@ -94,5 +108,46 @@ public interface GameStub extends Remote {
      */
    Hashtable<String, ArrayList<String>> getClaimedRoutes() 
        throws RemoteException;
+
+
+   /**
+    * Stub method to decrement the number of 
+    * trains that a player has.
+    * @param player the player who needs to decrement
+    * @param route the route the player claimed
+    * @throws RemoteException if RMI does not work
+    */
+    
+   void decrementPlayerTrains(String player, String route) throws RemoteException;
+
+   /**
+    * Stub method to get the number of trains that a player has.
+    * @param player the player to get the trains of
+    * @return the number of trains they have left
+    * @throws RemoteException if RMI does not work
+    */
+   int getPlayerTrains(String player) throws RemoteException;
+
+   /**
+    * Stub method to start the end of turn counter.
+    * @param player the player that ended the game
+    * @throws RemoteException if RMI does not work
+    */
+   void startLastTurnCounter(String player) throws RemoteException;
+
+   /**
+    * Stub method for checking that it is not the last turn.
+    * @param player the player to check if they already
+    * took their last turn
+    * @throws RemoteException if RMI does not work
+    */
+   void isItLastTurn(String player) throws RemoteException;
+
+   /**
+    * Stub method to check if the last turn has already
+    * been started.
+    * @throws RemoteException if RMI does not work
+    */
+   boolean lastTurnStarted() throws RemoteException;
 
 }

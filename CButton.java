@@ -52,6 +52,9 @@ public class CButton extends JButton {
    // so that sending route to server only happens once
    private boolean sendRoutes = true;
 
+   // boolean to limit the selection of a route to once
+   private boolean selectedRoutesOnce = true;
+
    /**
     * CButton constructor.
     * @param button - A shape object to draw the button
@@ -104,8 +107,7 @@ public class CButton extends JButton {
          }
 
          public void mouseClicked(MouseEvent e) {
-            if (!selected) {
-					System.out.println("Mouse clickd in if");
+            if (!selected && selectedRoutesOnce) {
                try {
                   // Giving it the name and color
                   selectedName = nameButton;
@@ -114,6 +116,7 @@ public class CButton extends JButton {
 						// getting the current players index for painting
 						// grab the player names from the GameServer stub     
 						Vector<String> playerNames = stub.getPlayerNames();
+                                    currentPlayer = stub.getTockenOwner();
 						// iterate through the player names list to find the index 
 						// of the current player, and set the color of the road 
 						// to the corresponding color
@@ -121,15 +124,16 @@ public class CButton extends JButton {
 								if (playerNames.get(i).equals(currentPlayer)) {
 									// Calling the method to paint the color on the given CButton
 									colorButton("color" + i);
-									System.out.println("\n\n\n\n Using color: " + i);
 								} 
-						}
+                                    }
+                                    // Decrementing the player's trains
+                                    stub.decrementPlayerTrains(currentPlayer, nameButton);
+                  selectedRoutesOnce = false;
                   // Ending
                   // Ending the turn
                   endTurn();
                } catch (Exception re) { }
             } else {
-					System.out.println("Mouse in else");
                // If the route is deselected then remove it from the list
                selected = false;
             }
@@ -180,24 +184,32 @@ public class CButton extends JButton {
          // color1
          case "color0":
             paintColor = colors[0];
+            selected = true;
+            // repainting the string
+            repaint();
             break;
          // color2
          case "color1":
             paintColor = colors[1];
+            selected = true;
+            // repainting the string
+            repaint();
             break;
          // color3
          case "color2":
             paintColor = colors[2];
+            selected = true;
+            // repainting the string
+            repaint();
             break;
          // color4
          case "color3":
             paintColor = colors[3];
+            selected = true;
+            // repainting the string
+            repaint();
             break;
       }
-      selected = true;
-      // repainting the string
-      repaint();
-      System.out.println("Color: " + paintColor);
    }
 
    // Hit detection for mouse actions
@@ -248,18 +260,9 @@ public class CButton extends JButton {
       // draw outline
       g2d.draw(shape);
 
-      // if block to check if mouse click has selected or deselected button
-      // changes fill color to highlight button selection or deselection
-      // @param trainColor - Default color of the train route
-      
-
-      // TODO: need to disable the selection of buttons if
-      // a client already has it selected on the server
-      // display a message to the user they cannot click it
-      // FIXME: commented out so that the button is not repainted over in else
       if (selected) {
          // set the color to the new color
-         g2d.setPaint(paintColor);
+         g2d.setPaint(paintColor.darker());
       } else {
          g2d.setPaint(trainColor);
       }
