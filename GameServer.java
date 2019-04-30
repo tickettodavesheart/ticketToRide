@@ -158,43 +158,54 @@ public class GameServer implements GameStub {
 
    /**
     * Method to deal the initial cards to a player.
+    * @param numCards - the number of cards to deal
     * @return cards a list of cards a player gets
     */
    @Override
-   public ArrayList<String> dealCards() {
+   public ArrayList<String> dealCards(int numCards) {
+      System.out.println("top of dealCards method");
       ArrayList<String> dealtCards = new ArrayList<String>();
       // Generating a random number to choose the 
       // index at
       Random rand = new Random();
-      // Generate the number in the range of the indicies
-      int card1 = rand.nextInt(cardsLeft.size() - 1);
-      // Adding the card
-      dealtCards.add(cardsLeft.get(card1));
-      // Removing the dealt card from the cardsLeft
-      cardsLeft.remove(card1);
-      int card2 = rand.nextInt(cardsLeft.size() - 1);
-      // Adding the card
-      dealtCards.add(cardsLeft.get(card2));
-      // Removing the dealt card from the cardsLeft
-      cardsLeft.remove(card2);
-      int card3 = rand.nextInt(cardsLeft.size() - 1);
-      // Adding the card
-      dealtCards.add(cardsLeft.get(card3));
-      // Removing the dealt card from the cardsLeft
-      cardsLeft.remove(card3);
-      int card4 = rand.nextInt(cardsLeft.size() - 1);
-      // Adding the card
-      dealtCards.add(cardsLeft.get(card4));
-      // Removing the dealt card from the cardsLeft
-      cardsLeft.remove(card4);
-      int card5 = rand.nextInt(cardsLeft.size() - 1);
-      // Adding the card
-      dealtCards.add(cardsLeft.get(card5));
-      // Removing the dealt card from the cardsLeft
-      cardsLeft.remove(card5);
+      Integer[] cards = new Integer[numCards];
 
+      for(int i = 0; i < numCards; i++) {
+         System.out.println("cards[i] before assignment: " + cards[i]);
+         cards[i] = rand.nextInt(cardsLeft.size() - 1);
+         System.out.println("cards[i] after assignment: " + cards[i]);
+         int card = cards[i];
+         dealtCards.add(cardsLeft.get(card));
+         cardsLeft.remove(card); 
+      }
       return dealtCards;
 
+      // // Generate the number in the range of the indicies
+      // int card1 = rand.nextInt(cardsLeft.size() - 1);
+      // // Adding the card
+      // dealtCards.add(cardsLeft.get(card1));
+      // // Removing the dealt card from the cardsLeft
+      // cardsLeft.remove(card1);
+      // int card2 = rand.nextInt(cardsLeft.size() - 1);
+      // // Adding the card
+      // dealtCards.add(cardsLeft.get(card2));
+      // // Removing the dealt card from the cardsLeft
+      // cardsLeft.remove(card2);
+      // int card3 = rand.nextInt(cardsLeft.size() - 1);
+      // // Adding the card
+      // dealtCards.add(cardsLeft.get(card3));
+      // // Removing the dealt card from the cardsLeft
+      // cardsLeft.remove(card3);
+      // int card4 = rand.nextInt(cardsLeft.size() - 1);
+      // // Adding the card
+      // dealtCards.add(cardsLeft.get(card4));
+      // // Removing the dealt card from the cardsLeft
+      // cardsLeft.remove(card4);
+      // int card5 = rand.nextInt(cardsLeft.size() - 1);
+      // // Adding the card
+      // dealtCards.add(cardsLeft.get(card5));
+      // // Removing the dealt card from the cardsLeft
+      // cardsLeft.remove(card5);
    }
 
    /**
