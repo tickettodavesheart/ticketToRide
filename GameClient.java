@@ -31,6 +31,8 @@ public class GameClient extends JFrame {
    // For RMI
    private GameStub stub;
    
+   // Global Gameboard to access methods
+   private GameBoard gb;
    /**
     * Constructor for the ChatClient.
     * @param ip the IP adress for the main server
@@ -108,7 +110,7 @@ public class GameClient extends JFrame {
       });
       Thread gameThread = new Thread(new Runnable() {
          public void run() {
-            GameBoard gb = new GameBoard(ip, stubID, name, nickname);
+            gb = new GameBoard(ip, stubID, name, nickname);
             add(gb, BorderLayout.CENTER);
             gb.revalidate();
          }
@@ -196,16 +198,26 @@ public class GameClient extends JFrame {
 
       ImageIcon destDeckIcon = new ImageIcon(destDeckImg);
       destDeckLabel.setIcon(destDeckIcon);
-      
-      cardDecks.add(destDeckLabel);
+      JButton destDeckButton = new JButton(destDeckIcon);
+      cardDecks.add(destDeckButton);
+
+      destDeckButton.addActionListener(e -> {
+         // Calling the destination cards prompt
+         gb.getDestinationCards();
+      });
 
       // Train Card Deck Icon
       JLabel trainDeckLabel = new JLabel();
 
       ImageIcon trainDeckIcon = new ImageIcon(trainDeckImg);
       trainDeckLabel.setIcon(trainDeckIcon);
-      
-      cardDecks.add(trainDeckLabel);
+      JButton trainDeckButton = new JButton(trainDeckIcon);
+      cardDecks.add(trainDeckButton);
+
+      trainDeckButton.addActionListener(e -> {
+         // Calling the train cards prompt
+         gb.getTrainCards();
+      });
 
       // add CardDecks to bottomBar
       bottomBar.add(cardDecks,BorderLayout.EAST);
@@ -290,6 +302,4 @@ public class GameClient extends JFrame {
          }
       }
    }
-
-
 }
