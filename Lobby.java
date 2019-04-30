@@ -143,6 +143,7 @@ public class Lobby extends JFrame {
       // Set JFrame sizing
       setSize(250, 250);
       // pack();
+      setResizable(false);
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       setVisible(true);
       setLocationRelativeTo(null);
