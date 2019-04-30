@@ -52,6 +52,9 @@ public class CButton extends JButton {
    // so that sending route to server only happens once
    private boolean sendRoutes = true;
 
+   // boolean to limit the selection of a route to once
+   private boolean selectedRoutesOnce = true;
+
    /**
     * CButton constructor.
     * @param button - A shape object to draw the button
@@ -104,7 +107,7 @@ public class CButton extends JButton {
          }
 
          public void mouseClicked(MouseEvent e) {
-            if (!selected) {
+            if (!selected && selectedRoutesOnce) {
                try {
                   // Giving it the name and color
                   selectedName = nameButton;
@@ -122,7 +125,10 @@ public class CButton extends JButton {
 									// Calling the method to paint the color on the given CButton
 									colorButton("color" + i);
 								} 
-						}
+                                    }
+                                    // Decrementing the player's trains
+                                    stub.decrementPlayerTrains(currentPlayer, nameButton);
+                  selectedRoutesOnce = false;
                   // Ending
                   // Ending the turn
                   endTurn();
