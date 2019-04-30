@@ -74,6 +74,12 @@ public interface GameStub extends Remote {
    ArrayList<String> dealCards(int numCards) throws RemoteException;
 
    /**
+    * Stub method to show the visible deck options for train cards
+    * @return the arraylist of visible cards
+    */
+    ArrayList<String> getVisibleTrainCards() throws RemoteException;  
+
+   /**
     * Stub method to get random destination cards from the server.
     * @return destination cards
     * @throws RemoteException when RMI does not work
@@ -86,6 +92,13 @@ public interface GameStub extends Remote {
     * @throws RemoteException when RMI does not work
     */
    void removeDestinationCard(String choosenCard) throws RemoteException;
+
+   /**
+    * Stub method to remove the train card because it has been claimed.
+    * @param choosenCard the cards that were selected
+    * @throws RemoteException when RMI does not work
+    */
+   void removeTrainCard(String choosenCard) throws RemoteException;
 
    /**
      * Stub method to get all of the claimed routes in the hashtable

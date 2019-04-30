@@ -15,6 +15,10 @@ public class GameServer implements GameStub {
    private Vector<String> messages = new Vector<String>();
    private Vector<String> playerNames = new Vector<String>();
    private String tokenOwner = "";
+   // boolean for the visible train cards deck
+   private boolean firstDeal = true;
+   // The visible train cards
+   private ArrayList<String> visibleTrainCards = new ArrayList<String>();
    // Vector of arraylists with each route and color that it takes
    private Hashtable<String, String> selectedRoutes =
           new Hashtable<String, String>();
@@ -163,50 +167,47 @@ public class GameServer implements GameStub {
     */
    @Override
    public ArrayList<String> dealCards(int numCards) {
-      System.out.println("top of dealCards method");
       ArrayList<String> dealtCards = new ArrayList<String>();
       // Generating a random number to choose the 
       // index at
       Random rand = new Random();
       Integer[] cards = new Integer[numCards];
 
-      for(int i = 0; i < numCards; i++) {
-         System.out.println("cards[i] before assignment: " + cards[i]);
+      for (int i = 0; i < numCards; i++) {
+         // Generate the number in the range of the indicies
          cards[i] = rand.nextInt(cardsLeft.size() - 1);
-         System.out.println("cards[i] after assignment: " + cards[i]);
          int card = cards[i];
+         // Adding the card
          dealtCards.add(cardsLeft.get(card));
+         // Removing the dealt card from the cardsLeft
          cardsLeft.remove(card); 
       }
       return dealtCards;
-
-      // // Generate the number in the range of the indicies
-      // int card1 = rand.nextInt(cardsLeft.size() - 1);
-      // // Adding the card
-      // dealtCards.add(cardsLeft.get(card1));
-      // // Removing the dealt card from the cardsLeft
-      // cardsLeft.remove(card1);
-      // int card2 = rand.nextInt(cardsLeft.size() - 1);
-      // // Adding the card
-      // dealtCards.add(cardsLeft.get(card2));
-      // // Removing the dealt card from the cardsLeft
-      // cardsLeft.remove(card2);
-      // int card3 = rand.nextInt(cardsLeft.size() - 1);
-      // // Adding the card
-      // dealtCards.add(cardsLeft.get(card3));
-      // // Removing the dealt card from the cardsLeft
-      // cardsLeft.remove(card3);
-      // int card4 = rand.nextInt(cardsLeft.size() - 1);
-      // // Adding the card
-      // dealtCards.add(cardsLeft.get(card4));
-      // // Removing the dealt card from the cardsLeft
-      // cardsLeft.remove(card4);
-      // int card5 = rand.nextInt(cardsLeft.size() - 1);
-      // // Adding the card
-      // dealtCards.add(cardsLeft.get(card5));
-      // // Removing the dealt card from the cardsLeft
-      // cardsLeft.remove(card5);
    }
+
+   /**
+    * A method to show the visible deck options for train cards
+    * @return the arraylist of visible cards
+    */
+   public ArrayList<String> getVisibleTrainCards() {
+      int numCards = 5;
+      
+      Random rand = new Random();
+      Integer[] cards = new Integer[numCards];
+
+      if (firstDeal) {
+         for (int i = 0; i < numCards; i++) {
+            cards[i] = rand.nextInt(cardsLeft.size() - 1);
+            int card = cards[i];
+            // Adding the card
+            visibleTrainCards.add(cardsLeft.get(card));
+            // Removing the dealt card from the cardsLeft
+            cardsLeft.remove(card);
+         }
+      } 
+
+      return visibleTrainCards;
+   } 
 
    /**
     * Returns random destination cards the user can choose from.
@@ -242,6 +243,15 @@ public class GameServer implements GameStub {
     */
    public void removeDestinationCard(String choosenCard) {
       destinationCardsLeft.remove(choosenCard);
+   }
+
+   /**
+    * Removes the choosen train cards from the 
+    * train cards left list. 
+    * @param choosenCard the cards that were selected
+    */
+    public void removeTrainCard(String choosenCard) {
+      cardsLeft.remove(choosenCard);
    }
 
    /**

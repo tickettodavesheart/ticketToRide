@@ -253,7 +253,70 @@ public class GameBoard extends JPanel {
       } catch (RemoteException re) { }
    }
 
+   public void getTrainCards() {
+      try {
+         JFrame jfTrain = new JFrame();
+         // Asking what destination cards the user wants to have
+         JPanel panel = new JPanel();
+         JPanel txtPanel = new JPanel();
+         JPanel buttonPanel = new JPanel();
+         // Array of checkboxes for validation
+         ArrayList<JCheckBox> checkBoxList = new ArrayList<JCheckBox>();
+         
+         JButton jbOK = new JButton("Select");
+         buttonPanel.add(jbOK);
+         jbOK.addActionListener(e -> {
+            // Making sure at least one button is selected
+            int selectedTrains = 0;
+            for (JCheckBox box : checkBoxList) {
+               if (box.isSelected()) {
+                  selectedTrains++;
+               }
+            }
+            //if (beginningCards) {
+            if (selectedTrains == 1) {
+               for (String s : cardsList) {
+                  System.out.println(s);
+               }
+               jfTrain.dispose();
+               // Removing choosen card from the server
+               // try {
+               //    stub.removeTrainCard();
+               // } catch (RemoteException re) { }
+            }
+         });
 
+         ArrayList<String> visibleTrainCards = stub.getVisibleTrainCards();
+
+         txtPanel.add(new JLabel(
+                "Select a train card"));
+
+         // Adding the cards to the panel of options
+         for (String trainCard : visibleTrainCards) {
+            JCheckBox jcb = new JCheckBox(trainCard);
+            // Adding to the list 
+            checkBoxList.add(jcb);
+            panel.add(jcb, BorderLayout.CENTER);
+            jcb.addActionListener(new TrainRadioActionListener());
+         }
+         
+         JCheckBox jcbRandom = new JCheckBox("RANDOM");
+         checkBoxList.add(jcbRandom);
+         panel.add(jcbRandom, BorderLayout.CENTER);
+         jcbRandom.addActionListener(new TrainRadioActionListener());
+
+         jfTrain.add(txtPanel, BorderLayout.NORTH);
+         jfTrain.add(panel, BorderLayout.CENTER);
+         jfTrain.add(buttonPanel, BorderLayout.SOUTH);
+
+         jfTrain.pack();
+         jfTrain.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+         jfTrain.setVisible(true);
+         jfTrain.setLocationRelativeTo(null);
+         
+      } catch (RemoteException re) { }
+
+   }
 
    /**
     * Method that is called when the turn is started.
@@ -430,17 +493,32 @@ public class GameBoard extends JPanel {
 
       @Override
       public void actionPerformed(ActionEvent e) {
-         if (turn) {
-            JCheckBox jrb = (JCheckBox) e.getSource();
-            // Adding the destination to the destination list
-            destinationList.add(jrb.getText());
-            turn = false;
-         } else {
-            JCheckBox jrb = (JCheckBox) e.getSource();
-            // Adding the destination to the destination list
-            destinationList.remove(jrb.getText());
-            turn = true;
-         }
+         try {
+            if (turn) {
+               JCheckBox jrb = (JCheckBox) e.getSource();
+               // Adding the destination to the destination list
+               String card = jrb.getText();
+
+               if (card.equals("RANDOM")) {
+                  ArrayList<String> randomCard = stub.dealCards(1);
+                  card = randomCard.get(0);
+               }
+               cardsList.add(card);
+               stub.removeTrainCard(card);
+               turn = false;
+               
+            } else {
+               JCheckBox jrb = (JCheckBox) e.getSource();
+               // Adding the destination to the destination list
+               String card = jrb.getText();
+               if (card.equals("RANDOM")) {
+                  ArrayList<String> randomCard = stub.dealCards(1);
+                  card = randomCard.get(0);
+               }
+               cardsList.remove(card);
+               turn = true;
+            }
+         } catch (RemoteException re) { }
       }
    }
 } // end GameBoard class
