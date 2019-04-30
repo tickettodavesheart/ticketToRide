@@ -184,4 +184,11 @@ public interface GameStub extends Remote {
    */
   boolean lastTurnStarted() throws RemoteException;
 
+  /**
+   * Stub method for calculating player score.
+   * 
+   * @param player name of the player to calculate score of
+   * @return calculated score
+   */
+  int calcScore(String playerName) throws Exception;
 }

@@ -42,23 +42,13 @@ public class GameServer implements GameStub {
             "YELLOW", "YELLOW", "YELLOW", "YELLOW", "YELLOW", "YELLOW", "YELLOW", "YELLOW"));
 
     // ArrayList of available destination cards
-    private ArrayList<String> destinationCardsLeft = new ArrayList<String>(Arrays.asList(
-            "Los Angeles to New York City (21)", "Duluth to Houston (8)", "Sault Ste Marie to Nashville (8)",
-            "New York to Atlanta (6)", "Portland to Nashville (17)", "Vancouver to Montréal (20)",
-            "Duluth to El Paso (10)", "Toronto to Miami (10)", "Portland to Phoenix (11)",
-            "Dallas to New York City (11)", "Calgary to Salt Lake City (7)", "Calgary to Phoenix (13)",
-            "Los Angeles to Miami (20)", "Winnipeg to Little Rock (11)", "San Francisco to Atlanta (17)",
-            "Kansas City to Houston (5)", "Los Angeles to Chicago (16)", "Denver to Pittsburgh (11)",
-            "Chicago to Santa Fe (9)", "Vancouver to Santa Fe (13)", "Boston to Miami (12)",
-            "Chicago to New Orleans (7)", "Montreal to Atlanta (9)", "Seattle to New York (22)",
-            "Denver to El Paso (4)", "Helena to Los Angeles (8)", "Winnipeg to Houston (12)",
-            "Montreal to New Orleans (13)", "Sault Ste. Marie to Oklahoma City (9)", "Seattle to Los Angeles (9))"));
+    private ArrayList<DestinationCard> destinationCardsLeft = null;
+
+    // Hashtable to hold given players claimed destination cards
+    private Hashtable<String, ArrayList<DestinationCard>> playerDestinationCards = new Hashtable<String, ArrayList<DestinationCard>>();;
 
     // Hashtable to hold the given players claimed routes
     private Hashtable<String, ArrayList<String>> playerClaimedRoutes = new Hashtable<String, ArrayList<String>>();
-
-    // Hastable of player's train cards
-    private Hashtable<String, ArrayList<String>> playerTrainCards = new Hashtable<String, ArrayList<String>>();
 
     // Array of the trains that a player has left
     private int[] trainsLeft = new int[] { 45, 45, 45, 45, 45 };
@@ -73,6 +63,16 @@ public class GameServer implements GameStub {
     // Last turn counter
     private int lastTurnCounter = -1;
     private boolean lastTurnHasNotStarted = true;
+
+    /**
+     * GameServer constructor
+     */
+    public GameServer() throws Exception {
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File("DestinationDeck.obj")));
+        destinationCardsLeft = (ArrayList<DestinationCard>) ois.readObject();
+        ois.close();
+        System.out.println("Game server is ready");
+    }
 
     /**
      * Method that returns a message.
@@ -166,6 +166,28 @@ public class GameServer implements GameStub {
     }
 
     /**
+     * Method to add a destination card to a players card list.
+     * 
+     * @param name player name to assign card to
+     * @param card DestinationCard object to assign to player
+     */
+    @Override
+    public void addDestinationCard(String name, DestinationCard card) {
+        ArrayList<DestinationCard> newCards;
+
+        if (playerDestinationCards.get(name) != null) {
+            newCards = playerDestinationCards.get(name);
+        } else {
+            newCards = new ArrayList<DestinationCard>();
+        }
+        // Adding new card to previous list
+        newCards.add(card);
+        // Adding the name and card to the Hashtable of players
+        // and their cards
+        playerDestinationCards.put(name, newCards);
+    }
+
+    /**
      * Method to deal the initial cards to a player.
      * 
      * @param numCards - the number of cards to deal
@@ -182,7 +204,6 @@ public class GameServer implements GameStub {
         for (int i = 0; i < numCards; i++) {
             // Generate the number in the range of the indicies
             cards[i] = rand.nextInt(cardsLeft.size() - 1);
-
             int card = cards[i];
             // Adding the card
             dealtCards.add(cardsLeft.get(card));
@@ -206,9 +227,10 @@ public class GameServer implements GameStub {
         if (firstDeal) {
             for (int i = 0; i < numCards; i++) {
                 cards[i] = rand.nextInt(cardsLeft.size() - 1);
+
                 int card = cards[i];
                 // Adding the card
-                visibleTrainCards.add(cardsLeft.get(card));
+                dealtCards.add(cardsLeft.get(card));
                 // Removing the dealt card from the cardsLeft
                 cardsLeft.remove(card);
             }
@@ -223,8 +245,8 @@ public class GameServer implements GameStub {
      * @return destination cards the user can choose from
      */
     @Override
-    public ArrayList<String> getDestinationCards() {
-        ArrayList<String> destinationCards = new ArrayList<String>();
+    public ArrayList<DestinationCard> getDestinationCards() {
+        ArrayList<DestinationCard> destinationCards = new ArrayList<DestinationCard>();
         Random rand2 = new Random();
         // Generate the number in the range of the indicies
         int d1 = rand2.nextInt(destinationCardsLeft.size() - 1);
@@ -252,7 +274,7 @@ public class GameServer implements GameStub {
      * @param choosenCard the cards that were selected
      */
     @Override
-    public void removeDestinationCard(String choosenCard) {
+    public void removeDestinationCard(DestinationCard choosenCard) {
         destinationCardsLeft.remove(choosenCard);
     }
 
@@ -263,6 +285,18 @@ public class GameServer implements GameStub {
      */
     public void removeTrainCard(String choosenCard) {
         cardsLeft.remove(choosenCard);
+    }
+
+    /**
+     * Gets all of the claimed routes in the hashtable with the key being the player
+     * and the value their routes.
+     * 
+     * @return claimedRoutes the routes that were taken in a game
+     * @throws RemoteException if RMI does not work
+     */
+    @Override
+    public Hashtable<String, ArrayList<String>> getClaimedRoutes() {
+        return playerClaimedRoutes;
     }
 
     /**
@@ -448,4 +482,4 @@ public class GameServer implements GameStub {
         System.out.println("Game server is ready");
 
     }
-}
+
