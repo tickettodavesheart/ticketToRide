@@ -54,40 +54,38 @@ public class GameClient extends JFrame {
       }
 
       try {
+         // pull the player names list from GameServer 
          Vector<String> playerNames = stub.getPlayerNames();
-         // try {
-         //    playerNames = stub.getPlayerNames();
-         //    System.out.println("Vector successfully passed");
-         // } catch(NullPointerException npe) { 
-         //    System.out.println("null pointer caught in GameClient name selection- created empty vecotr");
-         //    playerNames = new Vector<String>();
-         // }
           
+         // loop to validate names
          boolean repeatPrompt = false;
          do {
+            // prompt user for nickname
             JOptionPane.showOptionDialog(null, panelName, 
                   "Nickname", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE,
                   null, optionsName, optionsName[0]);
             nickname = txtName.getText();
             System.out.println("Name Panel has been made. Nickname inputted: " + nickname);
             
-            // Getting the username
+            // default username
             if (nickname.length() < 1) {
                nickname = "Anonymous";
             }
             
+            // check to see if it's already someone's name
             for (String player: playerNames) {
                System.out.println("Printing out the player names in for loop: "+player);
+               // if name is taken, reprompt user
                if (player.equals(nickname)) {
                   System.out.println("When equal, repeat. player: " + player);
                   repeatPrompt = true;
+               // otherwise, exit loop
                } else {
                   repeatPrompt = false;
                }
             }
          } while (repeatPrompt);
-      } catch (RemoteException re) { 
-      } //catch (NullPointerException npe) { }
+      } catch (RemoteException re) { } 
 
       setLayout(new BorderLayout(10, 10));
 
