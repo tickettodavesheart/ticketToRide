@@ -17,7 +17,7 @@
     <ul>
     <li>complete destination cards. Players obtain between 2-3 of these at the beginning of the game and should attempt to connect the cities by the game’s end.</li>
     <li>claim tracks. Every path claimed adds to the player’s point total. The longer the track, the more the points are worth. However, if the track is gray, then it is only worth the number of trains that the route takes. When the track is colored, however, this is the point translation:
-        <br><br><img src="docs/images/points.png" alt="Points Chart"></li><br><br>
+        <br><br><img src="https://user-images.githubusercontent.com/13056414/56982754-019af900-6b50-11e9-8a24-b3baf224bd2d.png" alt="Points Chart"></li><br><br>
     <li>build the longest road. At the end of the game, the player with the longest road gets a 10 point bonus.</li>
     </ul>
     <p>You may also lose points. The only way to lose points is by not completing any of the destination cards that you have in your hand. This includes any destination cards that you may pick up mid-game. If you fail to complete these cards, the number on the card will be subtracted from your point total rather than added.</p>
