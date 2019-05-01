@@ -71,7 +71,7 @@
 
 <br><br>
 <h1>Awards</h1>
-<h3>Experienced XML</h3>
+<h3>XML Expert</h3>
 <h5>Daniel Sause</h5>
 <h3>Layout Legend</h3>
 <h5>Michael Vasile</h5>
