@@ -209,6 +209,7 @@ public class GameBoard extends JPanel {
             
             JButton jbOK = new JButton("Select");
             buttonPanel.add(jbOK);
+
             jbOK.addActionListener(e -> {
                // Making sure at least one button is selected
                int twoSelected = 0;
@@ -241,6 +242,7 @@ public class GameBoard extends JPanel {
                beginningCards = false;
             });
 
+
             ArrayList<String> dCardsFromServer = stub.getDestinationCards();
 
             txtPanel.add(new JLabel(
@@ -248,6 +250,7 @@ public class GameBoard extends JPanel {
 
             // Adding the cards to the panel of options
             for (String dCard : dCardsFromServer) {
+               System.out.println(dCard);
                JCheckBox jcb = new JCheckBox(dCard);
                // Adding to the list
                checkBoxList.add(jcb);
@@ -264,7 +267,8 @@ public class GameBoard extends JPanel {
             jfDest.setVisible(true);
             jfDest.setLocationRelativeTo(null);
             
-         } catch (RemoteException re) { }
+         } catch (RemoteException re) {
+         }
       }
    }
 
@@ -351,6 +355,14 @@ public class GameBoard extends JPanel {
             
          } catch (RemoteException re) { }
       }
+   }
+
+   /**
+    * Method to get a player's destination cards
+    * @return the destination cards a player owns
+    */
+   public ArrayList<String> getDestinationCardsFromPlayer() {
+      return destinationList;
    }
 
    /**
