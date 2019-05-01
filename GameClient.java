@@ -31,7 +31,7 @@ public class GameClient extends JFrame {
    private JLabel trainCardCount;
 
    private JPanel trainsPanel = new JPanel(null);
-   private JPanel bottomBar;
+   private JPanel bottomBar = new JPanel();
    private BufferedImage trainDeck;
 
    // For RMI
@@ -161,7 +161,6 @@ public class GameClient extends JFrame {
       sideBar.add(gameInfo, BorderLayout.NORTH);
 
       // Bottom JPanel
-      JPanel bottomBar = new JPanel();
       bottomBar.setLayout(new BorderLayout(10, 10));
 
       add(bottomBar, BorderLayout.SOUTH);
@@ -305,6 +304,7 @@ public class GameClient extends JFrame {
             trains.setIcon(resizeImage(trainDeck, 750, 100));
 
             ArrayList<String> currentPlayerTrainCards = stub.getPlayerTrainCards(nickname);
+            System.out.println(currentPlayerTrainCards.toString());
             ArrayList<Integer> colorCountList = new ArrayList<Integer>();
             int blackCount = 0;
             int blueCount = 0;
@@ -369,9 +369,8 @@ public class GameClient extends JFrame {
                initOffset += 75;
                revalidate();
             }
-            System.out.println("Added to the bottom bar");
-            bottomBar.add(trainsPanel, BorderLayout.CENTER);
             trainsPanel.add(trains);
+            bottomBar.add(trainsPanel, BorderLayout.CENTER);
 
             add(bottomBar, BorderLayout.SOUTH);
 
@@ -380,7 +379,7 @@ public class GameClient extends JFrame {
             // Update playerlist
             Vector<String> playerList = stub.getPlayerNames();
             String players = "";
-            for (int i = 0; i < playerList.size(); i++) {
+            for (int i = 0; i < playerList.size(); i++) {   
                if (i < playerList.size() - 1) {
                   players += playerList.get(i) + ", ";
                } else {

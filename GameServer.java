@@ -297,6 +297,7 @@ public class GameServer implements GameStub {
      * 
      * @return list of player's cards
      */
+    @Override
     public void addPlayerCards(String player, ArrayList<String> cards) {
         playerTrainCards.put(player, cards);
     }
@@ -307,14 +308,19 @@ public class GameServer implements GameStub {
      * @param player the player to get the list from
      * @return list of player's cards
      */
+    @Override
     public ArrayList<String> getPlayerTrainCards(String player) {
         ArrayList<String> returnList = null;
         Set<String> keys = playerTrainCards.keySet();
+        System.out.println(keys);
         for (String key : keys) {
+            System.out.println(key);
             if (key.equals(player)) {
+                System.out.println("in key return");
                 returnList = playerTrainCards.get(key);
             }
         }
+        System.out.println(returnList);
         return returnList;
     }
 

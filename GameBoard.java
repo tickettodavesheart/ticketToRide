@@ -108,9 +108,9 @@ public class GameBoard extends JPanel {
          stub.addName(nickname);
 
          // Getting their starting cards
-         System.out.println("Print the starting cards: " + stub.dealCards(5).size());
-         System.out.println("Size: " + stub.dealCards(5).size());
          ArrayList<String> dealtCards = stub.dealCards(5);
+         // Putting the cards on the server
+         stub.addPlayerCards(nickname, dealtCards);
          for (String card : dealtCards) {
             cardsList.add(card);
             System.out.println("Card: " + card);
@@ -390,6 +390,8 @@ public class GameBoard extends JPanel {
             // Creating the default player index
             int currentPlayerIndex = 0;
 
+            System.out.println("above for loop");
+
             // Iterating over the vector to see which ones need to be repainted
             for (String key : keys) {
                // Parsing the id into color and names
@@ -422,18 +424,9 @@ public class GameBoard extends JPanel {
                         + currentPlayerIndex);
             }
 
-            // set the token owner to the next player
-            if (currentPlayerIndex + 1 <= playerNames.size() - 1) {
-                stub.setTokenOwner(playerNames.get(currentPlayerIndex + 1));
-            } else {
-                stub.setTokenOwner(playerNames.get(0));
-            }
-            System.out.println("Token changed to: " + stub.getTockenOwner());
-
-            System.out.println("Current Player: " + currentPlayer);
 
             // If the last turn has not already started
-            if (stub.lastTurnStarted()) {
+            if (!stub.lastTurnStarted()) {
                 // Checking if the game is over or not
                 for (String p : playerNames) {
                     // Getting the number of trains a player has
@@ -446,6 +439,7 @@ public class GameBoard extends JPanel {
                     }
                 }
             }
+            sendPlayer = false;
          }
         } catch (RemoteException re) {
         }
