@@ -357,6 +357,14 @@ public class GameBoard extends JPanel {
       }
    }
 
+    /**
+     * Method to get a player's destination cards
+     * @return the destination cards a player owns
+     */
+    public ArrayList<DestinationCard> getDestinationCardsFromPlayer() {
+        return destinationList;
+     }
+
    /**
     * Method that is called when the turn is started.
     * Will loop over every key (which is the name) of buttonList

@@ -109,6 +109,7 @@ public class CButton extends JButton {
          public void mouseClicked(MouseEvent e) {
             if (!selected && selectedRoutesOnce) {
                try {
+                     System.out.println("In if");
                   // Giving it the name and color
                   selectedName = nameButton;
 						selected = true;
@@ -132,8 +133,20 @@ public class CButton extends JButton {
                   // Ending
                   // Ending the turn
                   endTurn();
-               } catch (Exception re) { }
+               } catch (Exception re) {
+                     System.out.println("Exception in clicked");
+                }
             } else {
+                  try {
+                        System.out.println("Running else");
+                        Vector<String> playerNames = stub.getPlayerNames();
+                        for (int i = 0; i < playerNames.size(); i++) {
+                              if (playerNames.get(i).equals(currentPlayer)) {
+                                    // Calling the method to paint the color on the given CButton
+                                    colorButton("color" + i);
+                              } 
+                        }
+            } catch (Exception ree) { }
                // If the route is deselected then remove it from the list
                selected = false;
             }
