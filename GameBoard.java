@@ -57,7 +57,7 @@ public class GameBoard extends JPanel {
    private ArrayList<String> cardsList = new ArrayList<String>();
 
    // Destination Cards that the player has
-   private ArrayList<String> destinationList = new ArrayList<String>();
+   private ArrayList<DestinationCard> destinationList = new ArrayList<DestinationCard>();
 
    // Cards that the player can choose from
    private ArrayList<String> visibleTrainCards = null;
@@ -83,18 +83,18 @@ public class GameBoard extends JPanel {
       try {
          // Locating the Registry
          Registry registry = LocateRegistry.getRegistry(ip);
-
+      
          // Looking up the Stub class
          stub = (GameStub) registry.lookup(stubID);
-
+      
       } catch (Exception e) {
          System.err.println("Client exception: " + e.toString());
          e.printStackTrace();
       }
-
+   
       // Setting the currentPlayer to their nickname
       currentPlayer = nickname;
-
+   
       try {  
          // Checking if they are the first player
          // if they are starting the token with them
@@ -106,7 +106,7 @@ public class GameBoard extends JPanel {
          }
          // Adding the player to the list of players on the server
          stub.addName(nickname);
-
+      
          // Getting their starting cards
          ArrayList<String> dealtCards = stub.dealCards(5);
          // Putting the cards on the server
@@ -115,28 +115,28 @@ public class GameBoard extends JPanel {
             cardsList.add(card);
             System.out.println("Card: " + card);
          }
-
+      
          getDestinationCards();
-
+      
       } catch (RemoteException re) { }
-
+   
       // Creating the timer to continually update the gameboard
       Timer time = new Timer();
       time.schedule(new GameboardUpdate(), 500, 1500);
    
       // set player name
       this.name = name;
-
+   
       // Vector<Shape> to hold input from buttonlist.dat
       Vector<Shape> buttonList = null;
-
+   
       setLayout(null);
-
+   
       // Tries to load provided background image and button list vector object
       try {
          this.bgImage = ImageIO.read(getClass().getResource(
                 "resources/map.png"));
-
+      
          ObjectInputStream ois = new ObjectInputStream(
                 getClass().getResourceAsStream("resources/buttonlist.dat"));
          buttonList = (Vector<Shape>) ois.readObject();
@@ -146,18 +146,18 @@ public class GameBoard extends JPanel {
       } catch (ClassNotFoundException cnfe) {
          cnfe.printStackTrace();
       }
-
+   
       // Loop to create and add each Custom Button (CButton)
       int i = 0;
       int j = 0;
       int suff = 1;
-
+   
       for (Shape s : buttonList) {
          // Creating the name of the button
          String buttonName = new String(prefix[j] + suff++);
          // Adding the buttonname to the vector
          namePaintList.add(buttonName);
-
+      
          // Creating a new CButton for the game board
          CButton cButton = new CButton(
                 s, buttonName, colors[j], ip, stubID, name);
@@ -172,10 +172,10 @@ public class GameBoard extends JPanel {
             j++;
          }
       } // End button creation loop
-
+   
       // Add End Turn Button
       JButton jbEndTurn = new JButton("End Turn");
-
+   
       // Sizing requirements for Button
       Insets insets = getInsets();
       Dimension size = jbEndTurn.getPreferredSize();
@@ -183,13 +183,14 @@ public class GameBoard extends JPanel {
              size.width, size.height);
       
       add(jbEndTurn);
-
+   
       // Action listener for the end turn button
-      jbEndTurn.addActionListener(e -> {
+      jbEndTurn.addActionListener(
+         e -> {
          // Calling the end turn method
-         endTurn();
-      });
-
+            endTurn();
+         });
+   
    } // End GameBoard constructor
 
    /**
@@ -209,71 +210,69 @@ public class GameBoard extends JPanel {
             
             JButton jbOK = new JButton("Select");
             buttonPanel.add(jbOK);
-
-            jbOK.addActionListener(e -> {
+            jbOK.addActionListener(
+               e -> {
                // Making sure at least one button is selected
-               int twoSelected = 0;
-               for (JCheckBox box : checkBoxList) {
-                  if (box.isSelected()) {
-                     twoSelected++;
+                  int twoSelected = 0;
+                  for (JCheckBox box : checkBoxList) {
+                     if (box.isSelected()) {
+                        twoSelected++;
+                     }
                   }
-               }
-               if (beginningCards) {
-                  if (twoSelected >= 2) {
-                     jfDest.dispose();
+                  if (beginningCards) {
+                     if (twoSelected >= 2) {
+                        jfDest.dispose();
                      // Removing choosen cards from the server
-                     try {
-                        for (String s : destinationList) {
-                           stub.removeDestinationCard(s);
-                        }
-                     } catch (RemoteException re) { }
-                  }
-               } else if (!beginningCards) {
-                  if (twoSelected >= 1) {
-                     jfDest.dispose();
+                        try {
+                           for (DestinationCard dc : destinationList) {
+                              stub.removeDestinationCard(dc);
+                           }
+                        } catch (RemoteException re) { }
+                     }
+                  } else if (!beginningCards) {
+                     if (twoSelected >= 1) {
+                        jfDest.dispose();
                      // Removing choosen cards from the server
-                     try {
-                        for (String s : destinationList) {
-                           stub.removeDestinationCard(s);
-                        }
-                     } catch (RemoteException re) { }
+                        try {
+                           for (DestinationCard dc : destinationList) {
+                              stub.removeDestinationCard(dc);
+                           }
+                        } catch (RemoteException re) { }
+                     }
                   }
-               }
-               beginningCards = false;
-            });
-
-
-            ArrayList<String> dCardsFromServer = stub.getDestinationCards();
-
+                  beginningCards = false;
+               });
+         
+            ArrayList<DestinationCard> dCardsFromServer = stub.getDestinationCards();
+         
             txtPanel.add(new JLabel(
                   "Select two or more destination card(s)"));
-
+         
             // Adding the cards to the panel of options
-            for (String dCard : dCardsFromServer) {
-               System.out.println(dCard);
-               JCheckBox jcb = new JCheckBox(dCard);
+            for (DestinationCard dCard : dCardsFromServer) {
+               JCheckBox jcb = new JCheckBox(dCard.toString());
+               jcb.putClientProperty("card", dCard);
                // Adding to the list
                checkBoxList.add(jcb);
                panel.add(jcb, BorderLayout.CENTER);
                jcb.addActionListener(new RadioActionListener());
             }
-
+         
             jfDest.add(txtPanel, BorderLayout.NORTH);
             jfDest.add(panel, BorderLayout.CENTER);
             jfDest.add(buttonPanel, BorderLayout.SOUTH);
-
+         
             jfDest.pack();
             jfDest.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             jfDest.setVisible(true);
             jfDest.setLocationRelativeTo(null);
             
-         } catch (RemoteException re) {
-         }
+         } catch (RemoteException re) { }
       }
    }
 
    public void getTrainCards() {
-
+   
       if (!hasClaimedDestCard && !hasClaimedRoute && numCardsClaimed < 2) {
          try {
             JFrame jfTrain = new JFrame();
@@ -286,27 +285,28 @@ public class GameBoard extends JPanel {
             
             JButton jbOK = new JButton("Select");
             buttonPanel.add(jbOK);
-            jbOK.addActionListener(e -> {
+            jbOK.addActionListener(
+               e -> {
                // Making sure at least one button is selected
-               int selectedTrains = 0;
-               for (JRadioButton box : checkBoxList) {
-                  if (box.isSelected()) {
-                     selectedTrains++;
+                  int selectedTrains = 0;
+                  for (JRadioButton box : checkBoxList) {
+                     if (box.isSelected()) {
+                        selectedTrains++;
+                     }
                   }
-               }
                //if (beginningCards) {
-               if (selectedTrains == 1) {
-                  for (String s : cardsList) {
-                     System.out.println(s);
-                  }
-                  jfTrain.dispose();
+                  if (selectedTrains == 1) {
+                     for (String s : cardsList) {
+                        System.out.println(s);
+                     }
+                     jfTrain.dispose();
                   // Removing choosen card from the server
                   // try {
                   //    stub.removeTrainCard();
                   // } catch (RemoteException re) { }
-               }
-            });
-
+                  }
+               });
+         
             visibleTrainCards = stub.getVisibleTrainCards();
             System.out.println("Grabbed visibleTrainCards from server. Count: " + visibleTrainCards.size());
             int rainbowCount = 0;
@@ -326,10 +326,10 @@ public class GameBoard extends JPanel {
                System.out.println("visibleTrainCards cleared. Reset to size: " + visibleTrainCards.size());
             }
             
-
+         
             txtPanel.add(new JLabel(
                   "Select a train card"));
-
+         
             // Adding the cards to the panel of options
             for (String trainCard : visibleTrainCards) {
                JRadioButton jcb = new JRadioButton(trainCard);
@@ -343,11 +343,11 @@ public class GameBoard extends JPanel {
             checkBoxList.add(jcbRandom);
             panel.add(jcbRandom, BorderLayout.CENTER);
             jcbRandom.addActionListener(new TrainRadioActionListener());
-
+         
             jfTrain.add(txtPanel, BorderLayout.NORTH);
             jfTrain.add(panel, BorderLayout.CENTER);
             jfTrain.add(buttonPanel, BorderLayout.SOUTH);
-
+         
             jfTrain.pack();
             jfTrain.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             jfTrain.setVisible(true);
@@ -355,14 +355,6 @@ public class GameBoard extends JPanel {
             
          } catch (RemoteException re) { }
       }
-   }
-
-   /**
-    * Method to get a player's destination cards
-    * @return the destination cards a player owns
-    */
-   public ArrayList<String> getDestinationCardsFromPlayer() {
-      return destinationList;
    }
 
    /**
@@ -375,17 +367,17 @@ public class GameBoard extends JPanel {
       
       // Checking if this is their last turn
       try {
-        if (!stub.lastTurnStarted()) {
+         if (!stub.lastTurnStarted()) {
             // If it is their last turn
             // Will trigger the end game if true
             stub.isItLastTurn(currentPlayer);
-        }
+         }
       } catch (RemoteException re) { }
       // Toggling the components on 
       toggleComponents(true);
       try {
          if (sendPlayer) {
-
+         
             // reset controls
             hasClaimedTrainCard = false;
             hasClaimedRoute = false;
@@ -398,12 +390,12 @@ public class GameBoard extends JPanel {
             Set<String> keys = selectedFromServer.keySet();
             System.out.println("Routes from server: " 
                   + selectedFromServer.toString());
-
+         
             // Creating the default player index
             int currentPlayerIndex = 0;
-
+         
             System.out.println("above for loop");
-
+         
             // Iterating over the vector to see which ones need to be repainted
             for (String key : keys) {
                // Parsing the id into color and names
@@ -416,7 +408,7 @@ public class GameBoard extends JPanel {
                CButton buttonToPaint = buttonPaintList.elementAt(indexOfButton);
                // Setting the color to paint
                String colorToPaint = parsed[0];
-
+            
                // getting the current players index for painting
                playerNames = stub.getPlayerNames();
                for (int j = 0; j < playerNames.size(); j++) {
@@ -424,7 +416,7 @@ public class GameBoard extends JPanel {
                      currentPlayerIndex = j;
                   }
                }
-
+            
                // iterate through the player names list to find the index 
                // of the current player, and set the color of the road 
                // to the corresponding color
@@ -435,27 +427,27 @@ public class GameBoard extends JPanel {
                buttonToPaint.colorButton("color" 
                         + currentPlayerIndex);
             }
-
-
+         
+         
             // If the last turn has not already started
             if (!stub.lastTurnStarted()) {
                 // Checking if the game is over or not
-                for (String p : playerNames) {
+               for (String p : playerNames) {
                     // Getting the number of trains a player has
-                    int currentPlayerTrains = stub.getPlayerTrains(p);
-                    if (currentPlayerTrains <= 3) {
-                        stub.sendMessage(
+                  int currentPlayerTrains = stub.getPlayerTrains(p);
+                  if (currentPlayerTrains <= 3) {
+                     stub.sendMessage(
                                 currentPlayer + " has less than 3 trains left everyone will get one more turn!");
                         // Keeping track of the last turn for everyone
-                        stub.startLastTurnCounter(currentPlayer);
-                    }
-                }
+                     stub.startLastTurnCounter(currentPlayer);
+                  }
+               }
             }
             sendPlayer = false;
          }
-        } catch (RemoteException re) {
-        }
-    }
+      } catch (RemoteException re) {
+      }
+   }
 
    /**
     * Run at end of each users turn to send updates to the server.
@@ -475,7 +467,7 @@ public class GameBoard extends JPanel {
                playerIndex = i;
             }
          }
-
+      
          // set the token owner to the next player
          if (playerIndex + 1 <= playerNames.size() - 1) {
             stub.setTokenOwner(playerNames.get(playerIndex + 1));
@@ -483,9 +475,9 @@ public class GameBoard extends JPanel {
             stub.setTokenOwner(playerNames.get(0));
          }
          System.out.println("Token changed to: " + stub.getTockenOwner());
-
+      
          System.out.println("Current Player: " + currentPlayer);
-
+      
          // If the last turn has not already started
          if (stub.lastTurnStarted()) {
             // Checking if the game is over or not
@@ -508,18 +500,18 @@ public class GameBoard extends JPanel {
      * 
      * @param state true or false to toggle
      */
-    public void toggleComponents(boolean state) {
-        Component[] components = getComponents();
-        for (Component c : components) {
-            c.setEnabled(state);
+   public void toggleComponents(boolean state) {
+      Component[] components = getComponents();
+      for (Component c : components) {
+         c.setEnabled(state);
             // If the component is a CButton
-            if (c instanceof CButton) {
+         if (c instanceof CButton) {
                 // Toggling the buttons on or off
-                CButton cb = (CButton) c;
-                cb.toggleButton(state);
-            }
+            CButton cb = (CButton) c;
+            cb.toggleButton(state);
          }
       }
+   }
    
    /**
     * Action Listener for the destination chooser.
@@ -527,13 +519,13 @@ public class GameBoard extends JPanel {
    class RadioActionListener implements ActionListener {
       // for when a button is deselected
       private boolean turn = true;
-
+   
       @Override
       public void actionPerformed(ActionEvent e) {
          if (turn) {
             JCheckBox jrb = (JCheckBox) e.getSource();
             // Adding the destination to the destination list
-            destinationList.add(jrb.getText());
+            destinationList.add((DestinationCard)jrb.getClientProperty("card"));
             hasClaimedDestCard = true;
             turn = false;
          } else {
@@ -559,20 +551,20 @@ public class GameBoard extends JPanel {
    class TrainRadioActionListener implements ActionListener {
       // for when a button is deselected
       private boolean turn = true;
-
+   
       @Override
       public void actionPerformed(ActionEvent e) {
          try {
             if (numCardsClaimed >= 2) {
                turn = false;
             }
-
+         
             if (turn) {
                
                JRadioButton jrb = (JRadioButton) e.getSource();
                // Adding the destination to the destination list
                String card = jrb.getText();
-
+            
                if (card.equals("RANDOM")) {
                   ArrayList<String> randomCard = stub.dealCards(1);
                   card = randomCard.get(0);
@@ -588,7 +580,7 @@ public class GameBoard extends JPanel {
                } else {
                   numCardsClaimed++;
                   System.out.println("numCardsClaimed incremented by default");
-
+               
                }
                cardsList.add(card);
                stub.removeTrainCard(card);
@@ -597,7 +589,7 @@ public class GameBoard extends JPanel {
                hasClaimedTrainCard = true;
                turn = false;
                System.out.println("numCardsClaimed: " + numCardsClaimed);
-
+            
                // Adding to the server
                stub.addPlayerCards(currentPlayer, cardsList);
                
@@ -612,36 +604,36 @@ public class GameBoard extends JPanel {
                cardsList.remove(card);
                turn = true;
             }
-        } catch (Exception ae) { }
-    }
+         } catch (Exception ae) { }
+      }
    }
 
     /**
      * Class for the gameboard update timer.
      */
-    class GameboardUpdate extends TimerTask {
+   class GameboardUpdate extends TimerTask {
         /**
          * The run method for the GameboardUpdate task.
          */
-        public void run() {
-            try {
+      public void run() {
+         try {
                 // check the server's account of the current player
-                String serverCurrentPlayer = stub.getTockenOwner();
-
+            String serverCurrentPlayer = stub.getTockenOwner();
+         
                 // If it is not your turn
-                if (!currentPlayer.equals(serverCurrentPlayer)) {
+            if (!currentPlayer.equals(serverCurrentPlayer)) {
                     // Turning off the components
-                    toggleComponents(false);
-                }
-
-                // if the current player is now you, start your turn
-                if (currentPlayer.equals(serverCurrentPlayer)) {
-                    startTurn();
-                }
-            } catch (RemoteException re) {
-            } catch (NullPointerException npe) {
+               toggleComponents(false);
             }
-        }
-    }   
+         
+                // if the current player is now you, start your turn
+            if (currentPlayer.equals(serverCurrentPlayer)) {
+               startTurn();
+            }
+         } catch (RemoteException re) {
+         } catch (NullPointerException npe) {
+         }
+      }
+   }   
 
 } // end GameBoard class
