@@ -62,6 +62,9 @@ public class GameBoard extends JPanel {
    // Cards that the player can choose from
    private ArrayList<String> visibleTrainCards = null;
 
+   // The names of the players on the server
+   private Vector<String> playerNames;
+
    // For Restricting Client's turn
    private int numCardsClaimed = 0;
    private boolean hasClaimedTrainCard = false;
@@ -190,7 +193,7 @@ public class GameBoard extends JPanel {
    } // End GameBoard constructor
 
    /**
-    * method to prompt user for destination cards
+    * method to prompt user for destination cards.
     */
    public void getDestinationCards() {
       // Getting the destination cards from the server
@@ -383,6 +386,10 @@ public class GameBoard extends JPanel {
             Set<String> keys = selectedFromServer.keySet();
             System.out.println("Routes from server: " 
                   + selectedFromServer.toString());
+
+            // Creating the default player index
+            int currentPlayerIndex = 0;
+
             // Iterating over the vector to see which ones need to be repainted
             for (String key : keys) {
                // Parsing the id into color and names
@@ -396,13 +403,10 @@ public class GameBoard extends JPanel {
                // Setting the color to paint
                String colorToPaint = parsed[0];
 
-               // Creating the default player index
-               int currentPlayerIndex = 0;
-
                // getting the current players index for painting
-               Vector<String> players = stub.getPlayerNames();
-               for (int j = 0; j < players.size(); j++) {
-                  if (players.get(j).equals(selectedFromServer.get(key))) {
+               playerNames = stub.getPlayerNames();
+               for (int j = 0; j < playerNames.size(); j++) {
+                  if (playerNames.get(j).equals(selectedFromServer.get(key))) {
                      currentPlayerIndex = j;
                   }
                }
@@ -419,8 +423,8 @@ public class GameBoard extends JPanel {
             }
 
             // set the token owner to the next player
-            if (playerIndex + 1 <= playerNames.size() - 1) {
-                stub.setTokenOwner(playerNames.get(playerIndex + 1));
+            if (currentPlayerIndex + 1 <= playerNames.size() - 1) {
+                stub.setTokenOwner(playerNames.get(currentPlayerIndex + 1));
             } else {
                 stub.setTokenOwner(playerNames.get(0));
             }
@@ -442,9 +446,56 @@ public class GameBoard extends JPanel {
                     }
                 }
             }
+         }
         } catch (RemoteException re) {
         }
     }
+
+   /**
+    * Run at end of each users turn to send updates to the server.
+    */
+   public void endTurn() {
+      // Turning the components off
+      toggleComponents(false);
+      // Setting sendPlayer to true for the next turn
+      sendPlayer = true;
+      try {
+         // grab the player name list from the server
+         Vector<String> playerNames = stub.getPlayerNames();
+         // find and store the current player's index in the list
+         int playerIndex = 0;
+         for (int i = 0; i < playerNames.size(); i++) {
+            if (playerNames.get(i).equals(currentPlayer)) {
+               playerIndex = i;
+            }
+         }
+
+         // set the token owner to the next player
+         if (playerIndex + 1 <= playerNames.size() - 1) {
+            stub.setTokenOwner(playerNames.get(playerIndex + 1));
+         } else {
+            stub.setTokenOwner(playerNames.get(0));
+         }
+         System.out.println("Token changed to: " + stub.getTockenOwner());
+
+         System.out.println("Current Player: " + currentPlayer);
+
+         // If the last turn has not already started
+         if (stub.lastTurnStarted()) {
+            // Checking if the game is over or not
+            for (String p : playerNames) {
+               // Getting the number of trains a player has
+               int currentPlayerTrains = stub.getPlayerTrains(p);
+               if (currentPlayerTrains <= 3) {
+                  stub.sendMessage(currentPlayer + " has less than 3 trains left everyone will get one more turn!");
+                  // Keeping track of the last turn for everyone
+                  stub.startLastTurnCounter(currentPlayer);
+               }
+            }
+         }
+      } catch (RemoteException re) {
+      }
+   }
 
     /**
      * Used to toggle the components on or off at the start or end of turn.
@@ -461,15 +512,13 @@ public class GameBoard extends JPanel {
                 CButton cb = (CButton) c;
                 cb.toggleButton(state);
             }
-         } catch (RemoteException re) { 
-         } catch (NullPointerException npe) { }
+         }
       }
-   }
    
    /**
     * Action Listener for the destination chooser.
     */
-   public class RadioActionListener implements ActionListener {
+   class RadioActionListener implements ActionListener {
       // for when a button is deselected
       private boolean turn = true;
 
@@ -490,10 +539,18 @@ public class GameBoard extends JPanel {
       }
    }
 
+   // Override paintComponent to draw BackGround image
+   @Override
+   public void paintComponent(Graphics g) {
+      Graphics2D g2d = (Graphics2D) g;
+      g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2d.drawImage(bgImage, 0, 0, this);
+   } // end paintComponent @Override
+
    /**
     * Action Listener for the destination chooser.
     */
-    public class TrainRadioActionListener implements ActionListener {
+   class TrainRadioActionListener implements ActionListener {
       // for when a button is deselected
       private boolean turn = true;
 
@@ -545,16 +602,10 @@ public class GameBoard extends JPanel {
                }
                cardsList.remove(card);
                turn = true;
-        }
+            }
+        } catch (Exception ae) { }
     }
-
-    // Override paintComponent to draw BackGround image
-    @Override
-    public void paintComponent(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.drawImage(bgImage, 0, 0, this);
-    } // end paintComponent @Override
+   }
 
     /**
      * Class for the gameboard update timer.
@@ -582,5 +633,6 @@ public class GameBoard extends JPanel {
             } catch (NullPointerException npe) {
             }
         }
-    }    
+    }   
+
 } // end GameBoard class

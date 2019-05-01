@@ -34,7 +34,7 @@ public class DestinationCardCheck {
    public DestinationCardCheck() {
       try {
          ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File("MAP_HASHED.obj")));
-         MASTER_LIST = (Hashtable<String, Hashtable<String, ArrayList<String>>>)ois.readObject();
+         MASTER_LIST = (Hashtable<String, Hashtable<String, ArrayList<String>>>) ois.readObject();
          ois.close();
          //System.out.println(MASTER_LIST);
          //System.out.println(MASTER_LIST.keySet().size());

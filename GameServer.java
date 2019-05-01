@@ -201,28 +201,6 @@ public class GameServer implements GameStub {
             usedVisibleTrainCards = usedList;
             }
 
-            /**
-            * A method to show the visible deck options for train cards
-            * @return the arraylist of visible cards
-            */
-            public ArrayList<String> getVisibleTrainCards() {
-            int numCards = 5;
-
-            Random rand = new Random();
-            Integer[] cards = new Integer[numCards];
-
-            if (firstDeal) {
-            for (int i = 0; i < numCards; i++) {
-               int card = rand.nextInt(cardsLeft.size() - 1);
-
-            // Adding the card
-            dealtCards.add(cardsLeft.get(card));
-            // Removing the dealt card from the cardsLeft
-            cardsLeft.remove(card);
-        }
-        return dealtCards;
-    }
-
     /**
      * A method to show the visible deck options for train cards
      * 
