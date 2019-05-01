@@ -77,5 +77,5 @@
 <h5>Michael Vasile</h5>
 <h3>GUI God</h3>
 <h5>Joshua Bugryn</h5>
-<h3>BLANK</h3>
+<h3>Client / Server Commander</h3>
 <h5>Lucas Kohorst</h5>
