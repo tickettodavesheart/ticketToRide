@@ -314,11 +314,13 @@ public class GameClient extends JFrame {
        */
       public void run() {
          try {
+            // Updating the train card count
+            trainCardCount.setText(Integer.toString(stub.getPlayerTrains(nickname)));
             // Getting the user's destination cards
             ArrayList<String> dCards = gb.getDestinationCardsFromPlayer();
             String destCardsString = "<html>Destination Cards: <br>";
             for (String c : dCards) {
-               destCardsString += "    " + c + ", <br>";
+               destCardsString += c + ", <br>";
                System.out.println(c);
             }
             destCardsString += "</html>";
