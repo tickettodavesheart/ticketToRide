@@ -585,6 +585,9 @@ public class GameBoard extends JPanel {
                hasClaimedTrainCard = true;
                turn = false;
                System.out.println("numCardsClaimed: " + numCardsClaimed);
+
+               // Adding to the server
+               stub.addPlayerCards(currentPlayer, cardsList);
                
             } else {
                JRadioButton jrb = (JRadioButton) e.getSource();

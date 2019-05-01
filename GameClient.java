@@ -30,7 +30,6 @@ public class GameClient extends JFrame {
    private JLabel playerNames;
    private JLabel trainCardCount;
 
-   private JPanel trainsPanel = new JPanel(null);
    private JPanel bottomBar = new JPanel();
    private BufferedImage trainDeck;
 
@@ -197,7 +196,6 @@ public class GameClient extends JFrame {
 
       // Add cardInfo to bottomBar
       bottomBar.add(cardInfo, BorderLayout.WEST);
-      bottomBar.add(trainsPanel, BorderLayout.CENTER);
 
       // cardDecks JPanel
       JPanel cardDecks = new JPanel();
@@ -291,6 +289,7 @@ public class GameClient extends JFrame {
        */
       public void run() {
          try {
+            JPanel trainsPanel = new JPanel(null);
             // Train Card Stack
             trainsPanel.setBounds(0, 0, 1389, 205);
             JLabel trains = new JLabel();
@@ -304,6 +303,7 @@ public class GameClient extends JFrame {
             trains.setIcon(resizeImage(trainDeck, 750, 100));
 
             ArrayList<String> currentPlayerTrainCards = stub.getPlayerTrainCards(nickname);
+            System.out.println("Size of currentplayer treaein cars: " + currentPlayerTrainCards.size());
             System.out.println(currentPlayerTrainCards.toString());
             ArrayList<Integer> colorCountList = new ArrayList<Integer>();
             int blackCount = 0;
@@ -367,11 +367,9 @@ public class GameClient extends JFrame {
                trainCount.setBounds(initOffset, 0, 35, 40);
                trainsPanel.add(trainCount);
                initOffset += 75;
-               revalidate();
             }
             trainsPanel.add(trains);
             bottomBar.add(trainsPanel, BorderLayout.CENTER);
-
             add(bottomBar, BorderLayout.SOUTH);
 
             currPlayer.setText(stub.getTockenOwner());
