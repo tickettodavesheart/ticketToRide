@@ -44,9 +44,8 @@
 
 <br><br>
 <h1>Todo</h1>
-<p>☐ Add ticket and destination cards</p>
-<p>☐ Calculate points for each player</p>
-<p>☐ Add game logs</p>
+<p>☐ End of game sequence</p>
+<p>☐ Route Validation</p>
 
 
 <br><br>
@@ -68,6 +67,13 @@
 <br><br>
 <h1>Unresolved Issues</h1>
 <p>☐ Limiting to four players per game</p>
+
+<br><br>
+<h1>Improvements</h1>
+<p>☐ Hold the gameboard state on the server, then pass it on with the token change</p>
+<p>☐ Improve Graphics</p>
+<p>☐ Less Timers?</p>
+<p>☐ Faster token switching</p>
 
 <br><br>
 <h1>Awards</h1>
