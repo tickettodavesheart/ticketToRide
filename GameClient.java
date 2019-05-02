@@ -320,7 +320,6 @@ public class GameClient extends JFrame {
             String destCardsString = "<html>Destination Cards: <br>";
             for (DestinationCard c : dCards) {
                destCardsString += c.toString() + ", <br>";
-               System.out.println(c);
             }
             destCardsString += "</html>";
             jlDestCards.setText(destCardsString);

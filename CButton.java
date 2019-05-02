@@ -120,18 +120,17 @@ public class CButton extends JButton {
    /**
     * Method that is called when the user's turn is over.
     */
-   public void endTurn() {
-      if (sendRoutes) {
+   public void endTurn(String selected) {
+
          try {
             // Sending the selected route and name to the 
             // server to paint on the next client
-            stub.addRoute(currentPlayer, selectedName);
+            stub.addRoute(currentPlayer, selected);
             System.out.println("Added: " + currentPlayer + " to route: " + selectedName);
 				sendRoutes = false;
 				// No longer can select a route
 				toggleButton(false);
          } catch (Exception endTurnE) { }
-      }
    }
 
    /**
@@ -341,7 +340,7 @@ class RouteAdapter extends MouseAdapter {
                btn.toggleSelectedOnce(false);
                // Ending
                // Ending the turn
-               //btn.endTurn();
+               btn.endTurn(btn.getButtonID());
             } catch (Exception re) {
                   re.printStackTrace();
                   System.out.println(re);

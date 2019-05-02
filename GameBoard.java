@@ -398,23 +398,26 @@ public class GameBoard extends JPanel {
             stub.sendMessage(currentPlayer + " is playing");
             // Getting all the new selected routes and setting them
             Hashtable<String, String> selectedFromServer = stub.updateRoutes();
-            Set<String> keys = selectedFromServer.keySet();
-            System.out.println("Routes from server: " 
-                  + selectedFromServer.toString());
+            Object[] keys = selectedFromServer.keySet().toArray();
          
             // Creating the default player index
             int currentPlayerIndex = 0;
+
+            System.out.println(selectedFromServer.toString());
+            System.out.println("Keys length: " + keys.length);
          
             System.out.println("above for loop");
          
             // Iterating over the vector to see which ones need to be repainted
-            for (String key : keys) {
+            for (Object key : keys) {
+               System.out.println("in the t");
+               System.out.println((String) key);
                // Parsing the id into color and names
                // 0 is the color
-               String[] parsed = key.split("_");
+               String[] parsed = ((String) key).split("_");
                // Finding the index of the button first using the
                // namePaintList
-               int indexOfButton = namePaintList.indexOf(key);
+               int indexOfButton = namePaintList.indexOf((String) key);
                // Getting the correct button in the buttonPaintList
                CButton buttonToPaint = buttonPaintList.elementAt(indexOfButton);
                // Setting the color to paint
@@ -423,7 +426,9 @@ public class GameBoard extends JPanel {
                // getting the current players index for painting
                playerNames = stub.getPlayerNames();
                for (int j = 0; j < playerNames.size(); j++) {
+                  System.out.println("we in the for");
                   if (playerNames.get(j).equals(selectedFromServer.get(key))) {
+                     System.out.println("in the if");
                      currentPlayerIndex = j;
                   }
                }
