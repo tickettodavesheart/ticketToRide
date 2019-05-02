@@ -116,7 +116,6 @@ public class GameBoard extends JPanel {
             System.out.println("Card: " + card);
          }
       
-         getDestinationCards();
       
       } catch (RemoteException re) { }
    
@@ -190,7 +189,7 @@ public class GameBoard extends JPanel {
          // Calling the end turn method
             endTurn();
          });
-   
+      getDestinationCards();
    } // End GameBoard constructor
 
    /**

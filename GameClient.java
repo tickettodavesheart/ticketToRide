@@ -326,8 +326,6 @@ public class GameClient extends JFrame {
             jlDestCards.setText(destCardsString);
 
             ArrayList<String> currentPlayerTrainCards = stub.getPlayerTrainCards(nickname);
-            System.out.println("Size of currentplayer treaein cars: " + currentPlayerTrainCards.size());
-            System.out.println(currentPlayerTrainCards.toString());
             int blackCount = 0;
             int blueCount = 0;
             int greenCount = 0;

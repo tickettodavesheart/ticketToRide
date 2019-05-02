@@ -70,6 +70,8 @@ public class GameServer implements GameStub {
 
    private ArrayList<String> usedVisibleTrainCards = new ArrayList<String>();
 
+   private RoutePointsDict routeDict = new RoutePointsDict();
+
 
    /**
     * Method that returns a message.
@@ -329,7 +331,7 @@ public class GameServer implements GameStub {
    @Override
    public void decrementPlayerTrains(String player, String route) {
       // Getting the weight of the route
-      int weight = getRouteWeight(route);
+      int weight = routeDict.getRouteWeight(route);
    
       // Getting the index of the player's name
       try {
