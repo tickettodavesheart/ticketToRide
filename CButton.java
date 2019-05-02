@@ -120,13 +120,13 @@ public class CButton extends JButton {
    /**
     * Method that is called when the user's turn is over.
     */
-   public void endTurn(String selected) {
+   public void endTurn(String selected, String playerToAdd) {
 
          try {
             // Sending the selected route and name to the 
             // server to paint on the next client
-            stub.addRoute(currentPlayer, selected);
-            System.out.println("Added: " + currentPlayer + " to route: " + selectedName);
+            stub.addRoute(playerToAdd, selected);
+            System.out.println("Added: " + playerToAdd + " to route: " + selected);
 				sendRoutes = false;
 				// No longer can select a route
 				toggleButton(false);
@@ -313,37 +313,37 @@ class RouteAdapter extends MouseAdapter {
       }
 
       public void mouseClicked(MouseEvent e) {
-            System.out.println(btn.getButtonID());
-            try {
-                  int list = ((CButton) e.getSource()).getMouseListeners().length;
-                  System.out.println("In if listener count = " + list);
-               // Giving it the name and color
-               selectedName = btn.getButtonID();
-                                 btn.toggleSelected(true);
-                                 // Giving it the name and color
-                                 // getting the current players index for painting
-                                 // grab the player names from the GameServer stub     
-                                 Vector<String> playerNames = stub.getPlayerNames();
-                                 currentPlayer = stub.getTockenOwner();
-                                 // iterate through the player names list to find the index 
-                                 // of the current player, and set the color of the road 
-                                 // to the corresponding color
-                                 for (int i = 0; i < playerNames.size(); i++) {
-                                             if (playerNames.get(i).equals(currentPlayer)) {
-                                                   // Calling the method to paint the color on the given CButton
-                                                   btn.colorButton("color" + i);
-                                             } 
-                                 }
-                                 // Decrementing the player's trains
-                                 stub.decrementPlayerTrains(currentPlayer, btn.getButtonID());
-                                 System.out.println(btn.getButtonID());
-               btn.toggleSelectedOnce(false);
-               // Ending
-               // Ending the turn
-               btn.endTurn(btn.getButtonID());
-            } catch (Exception re) {
-                  re.printStackTrace();
-                  System.out.println(re);
-             }
+      System.out.println(btn.getButtonID());
+      try {
+         int list = ((CButton) e.getSource()).getMouseListeners().length;
+         System.out.println("In if listener count = " + list);
+         // Giving it the name and color
+         selectedName = btn.getButtonID();
+         btn.toggleSelected(true);
+         // Giving it the name and color
+         // getting the current players index for painting
+         // grab the player names from the GameServer stub     
+         Vector<String> playerNames = stub.getPlayerNames();
+         currentPlayer = stub.getTockenOwner();
+         // iterate through the player names list to find the index 
+         // of the current player, and set the color of the road 
+         // to the corresponding color
+         for (int i = 0; i < playerNames.size(); i++) {
+            if (playerNames.get(i).equals(currentPlayer)) {
+               // Calling the method to paint the color on the given CButton
+               btn.colorButton("color" + i);
+            } 
+         }
+         // Decrementing the player's trains
+         stub.decrementPlayerTrains(currentPlayer, btn.getButtonID());
+         System.out.println(btn.getButtonID());
+         btn.toggleSelectedOnce(false);
+         // Ending
+         // Ending the turn
+         btn.endTurn(btn.getButtonID(), stub.getTockenOwner());
+      } catch (Exception re) {
+            re.printStackTrace();
+            System.out.println(re);
+         }
       }
    } // end MouseListener
