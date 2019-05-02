@@ -28,7 +28,7 @@ public class GameBoard extends JPanel {
    private Color[] colors = {Color.BLACK, Color.WHITE, Color.GRAY,
        Color.YELLOW, Color.GREEN, Color.ORANGE, Color.MAGENTA,
        Color.RED, Color.BLUE, new Color(230, 26, 40)};
-   private String[] prefix = {"black_", "white_", "gray_", "yellow_",
+   private String[] prefix = {"black_", "white_", "grey_", "yellow_",
        "green_", "orange_", "purple_", "red_", "blue_", "city_"};
    // Array of ints to control color changing in loop
    private int[] loop = {7, 14, 58, 65, 72, 79, 86, 93, 100, 136};
@@ -49,6 +49,7 @@ public class GameBoard extends JPanel {
 
    // For sending who's turn it is intially
    private boolean sendPlayer = true;
+   private boolean endPlayerTurn = true;
 
    // For changing destination card requirement from 2 to 1 after game start
    private boolean beginningCards = true;
@@ -371,6 +372,8 @@ public class GameBoard extends JPanel {
     * button
     */
    public void startTurn() {
+
+      endPlayerTurn = true;
       
       // Checking if this is their last turn
       try {
@@ -381,9 +384,10 @@ public class GameBoard extends JPanel {
          }
       } catch (RemoteException re) { }
       // Toggling the components on 
-      toggleComponents(true);
       try {
          if (sendPlayer) {
+            toggleComponents(true);
+            System.out.println("SendPlayer If");
          
             // reset controls
             hasClaimedTrainCard = false;
@@ -453,6 +457,7 @@ public class GameBoard extends JPanel {
             sendPlayer = false;
          }
       } catch (RemoteException re) {
+          re.printStackTrace();
       }
    }
 
@@ -460,46 +465,50 @@ public class GameBoard extends JPanel {
     * Run at end of each users turn to send updates to the server.
     */
    public void endTurn() {
-      // Turning the components off
-      toggleComponents(false);
-      // Setting sendPlayer to true for the next turn
-      sendPlayer = true;
-      try {
-         // grab the player name list from the server
-         Vector<String> playerNames = stub.getPlayerNames();
-         // find and store the current player's index in the list
-         int playerIndex = 0;
-         for (int i = 0; i < playerNames.size(); i++) {
-            if (playerNames.get(i).equals(currentPlayer)) {
-               playerIndex = i;
+       System.out.println("\n\n\n\nEndPlayer Turn: " + endPlayerTurn);
+      if (endPlayerTurn) {
+        // Turning the components off
+        toggleComponents(false);
+        // Setting sendPlayer to true for the next turn
+        sendPlayer = true;
+        try {
+            // grab the player name list from the server
+            Vector<String> playerNames = stub.getPlayerNames();
+            // find and store the current player's index in the list
+            int playerIndex = 0;
+            for (int i = 0; i < playerNames.size(); i++) {
+                if (playerNames.get(i).equals(currentPlayer)) {
+                playerIndex = i;
+                } 
             }
-         }
-      
-         // set the token owner to the next player
-         if (playerIndex + 1 <= playerNames.size() - 1) {
-            stub.setTokenOwner(playerNames.get(playerIndex + 1));
-         } else {
-            stub.setTokenOwner(playerNames.get(0));
-         }
-         System.out.println("Token changed to: " + stub.getTockenOwner());
-      
-         System.out.println("Current Player: " + currentPlayer);
-      
-         // If the last turn has not already started
-         if (stub.lastTurnStarted()) {
-            // Checking if the game is over or not
-            for (String p : playerNames) {
-               // Getting the number of trains a player has
-               int currentPlayerTrains = stub.getPlayerTrains(p);
-               if (currentPlayerTrains <= 3) {
-                  stub.sendMessage(currentPlayer + " has less than 3 trains left everyone will get one more turn!");
-                  // Keeping track of the last turn for everyone
-                  stub.startLastTurnCounter(currentPlayer);
-               }
+        
+            // set the token owner to the next player
+            if (playerIndex + 1 <= playerNames.size() - 1) {
+                stub.setTokenOwner(playerNames.get(playerIndex + 1));
+            } else {
+                stub.setTokenOwner(playerNames.get(0));
             }
-         }
-      } catch (RemoteException re) {
-      }
+            System.out.println("Token changed to: " + stub.getTockenOwner());
+        
+            System.out.println("Current Player: " + currentPlayer);
+        
+            // If the last turn has not already started
+            if (stub.lastTurnStarted()) {
+                // Checking if the game is over or not
+                for (String p : playerNames) {
+                // Getting the number of trains a player has
+                int currentPlayerTrains = stub.getPlayerTrains(p);
+                if (currentPlayerTrains <= 3) {
+                    stub.sendMessage(currentPlayer + " has less than 3 trains left everyone will get one more turn!");
+                    // Keeping track of the last turn for everyone
+                    stub.startLastTurnCounter(currentPlayer);
+                }
+                }
+            }
+        } catch (RemoteException re) {
+        }
+        endPlayerTurn = false;
+    }
    }
 
     /**

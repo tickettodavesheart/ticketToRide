@@ -5,8 +5,8 @@ public class RoutePointsDict {
 
    private Hashtable<Integer, Integer> routeValues;
    private Hashtable<String, Integer> routeWeights;
-   private final File VALUES = new File("ROUTE_POINTS_TABLE.obj");
-   private final File WEIGHTS = new File("ROUTE_WEIGHT_DICT.obj");
+   private final File VALUES = new File("resources/ROUTE_POINTS_TABLE.obj");
+   private final File WEIGHTS = new File("resources/ROUTE_WEIGHT_DICT.obj");
    
    public RoutePointsDict() {
       try {
@@ -33,6 +33,7 @@ public class RoutePointsDict {
       int weight;
       
       weight = routeWeights.get(route);
+      System.out.println("Returned weight: " + weight);
       return weight;
    }
     

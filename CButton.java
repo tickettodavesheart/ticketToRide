@@ -43,7 +43,7 @@ public class CButton extends JButton {
    private GameStub stub;
 
    // The mouse listner for custom button handling
-   private MouseAdapter ml = null;
+   private MouseListener ml = null;
    
    // Current players name
    private String currentPlayer;
@@ -103,12 +103,16 @@ public class CButton extends JButton {
     * @param state if they are on or off
     */
    public void toggleButton(boolean state) {
-      if (getMouseListeners()[0] != null) {
-         addMouseListener(new RouteAdapter(this, selectedName, stub));
+         ml = new RouteAdapter(this, selectedName, stub);
+      if (state) {
+         addMouseListener(ml);
          // Setting the boolean to send routes for the new turn to true
          sendRoutes = true;
       } else {
-         removeMouseListener(getMouseListeners()[0]);
+            MouseListener[] mla = getMouseListeners();
+            for (int j = 0; j < mla.length; j++) {
+                  removeMouseListener(mla[j]);
+            }
          sendRoutes = false;
       }
    }
@@ -310,9 +314,10 @@ class RouteAdapter extends MouseAdapter {
       }
 
       public void mouseClicked(MouseEvent e) {
-         if (!btn.getSelected() && btn.getSelectedOnce()) {
+            System.out.println(btn.getButtonID());
             try {
-                  System.out.println("In if");
+                  int list = ((CButton) e.getSource()).getMouseListeners().length;
+                  System.out.println("In if listener count = " + list);
                // Giving it the name and color
                selectedName = btn.getButtonID();
                                  btn.toggleSelected(true);
@@ -336,24 +341,10 @@ class RouteAdapter extends MouseAdapter {
                btn.toggleSelectedOnce(false);
                // Ending
                // Ending the turn
-               btn.endTurn();
+               //btn.endTurn();
             } catch (Exception re) {
                   re.printStackTrace();
-                  System.out.println("Exception in clicked");
+                  System.out.println(re);
              }
-         } else {
-               try {
-                     System.out.println("Running else");
-                     Vector<String> playerNames = stub.getPlayerNames();
-                     for (int i = 0; i < playerNames.size(); i++) {
-                           if (playerNames.get(i).equals(currentPlayer)) {
-                                 // Calling the method to paint the color on the given CButton
-                                 btn.colorButton("color" + i);
-                           } 
-                     }
-         } catch (Exception ree) { }
-            // If the route is deselected then remove it from the list
-            btn.toggleSelected(false);
-         }
       }
    } // end MouseListener
