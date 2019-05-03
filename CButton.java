@@ -53,7 +53,9 @@ public class CButton extends JButton {
    private boolean sendRoutes = true;
 
    // boolean to limit the selection of a route to once
-   private boolean selectedRoutesOnce = true;
+   private boolean routeClaimed = false;
+
+   //
 
 
    /**
@@ -95,6 +97,13 @@ public class CButton extends JButton {
          System.err.println("Client exception: " + e.toString());
          e.printStackTrace();
       }
+
+      MouseListener[] mla = getMouseListeners();
+      if (mla.length > 0) {
+         for (int j = 0; j < mla.length; j++) {
+               removeMouseListener(mla[j]);
+       }
+      }
       
    } // end CButton constructor
 
@@ -103,34 +112,50 @@ public class CButton extends JButton {
     * @param state if they are on or off
     */
    public void toggleButton(boolean state) {
+         //System.out.println(getButtonID() + " claimed = " + routeClaimed);
          ml = new RouteAdapter(this, selectedName, stub);
-      if (state) {
+      if (state && !routeClaimed) {
+         MouseListener[] mla = getMouseListeners();
+         if (mla.length > 0) {
+            for (int j = 0; j < mla.length; j++) {
+                  removeMouseListener(mla[j]);
+          }
+      }
          addMouseListener(ml);
          // Setting the boolean to send routes for the new turn to true
          sendRoutes = true;
       } else {
             MouseListener[] mla = getMouseListeners();
-            for (int j = 0; j < mla.length; j++) {
-                  removeMouseListener(mla[j]);
-            }
-         sendRoutes = false;
+            if (mla.length > 0) {
+               for (int j = 0; j < mla.length; j++) {
+                     removeMouseListener(mla[j]);
+             }
+            sendRoutes = false;
+         }
       }
    }
 
    /**
     * Method that is called when the user's turn is over.
     */
-   public void endTurn(String selected, String playerToAdd) {
-
+   public void endTurn(String routeName, String playerToAdd) {
+      System.out.println("\n\n\n" + routeName + " " + routeClaimed + "\n\n\n");
          try {
+            if(getSelected() && !this.routeClaimed){
+               this.routeClaimed = true;
+               System.out.println("\n\n\n" + routeName + " " + routeClaimed + "\n\n\n");
+            }
             // Sending the selected route and name to the 
             // server to paint on the next client
-            stub.addRoute(playerToAdd, selected);
-            System.out.println("Added: " + playerToAdd + " to route: " + selected);
+            stub.addRoute(playerToAdd, routeName);
+            System.out.println("Added: " + playerToAdd + " to route: " + routeName);
 				sendRoutes = false;
 				// No longer can select a route
-				toggleButton(false);
-         } catch (Exception endTurnE) { }
+            toggleButton(false);
+            System.out.println(routeName + "claimed = " + this.routeClaimed);
+         } catch (Exception endTurnE) { 
+            endTurnE.printStackTrace();
+         }
    }
 
    /**
@@ -221,7 +246,7 @@ public class CButton extends JButton {
 
       if (selected) {
          // set the color to the new color
-         g2d.setPaint(paintColor.darker());
+         g2d.setPaint(paintColor);
       } else {
          g2d.setPaint(trainColor);
       }
@@ -255,11 +280,11 @@ public class CButton extends JButton {
       }
 
       /**
-       * toggleSelectedOnce - toggles boolean state of selectedRoutesOnce
+       * toggleSelectedOnce - toggles boolean state of routeClaimed
        * 
        */
-      public void toggleSelectedOnce(boolean toggle) {
-            selectedRoutesOnce = toggle;
+      public void toggleRouteClaimed(boolean toggle) {
+            routeClaimed = toggle;
       }
 
       /**
@@ -279,12 +304,13 @@ public class CButton extends JButton {
       }
 
       /**
-       * getSelectedOnce - gets value of selectedRouteOnce
-       * @return selectedRoutesOnce - boolean state of selectedRouteOnce
+       * isRouteClaimed - gets value of routeClaimed
+       * @return routeClaimed - boolean state of routeClaimed
        */
-      public boolean getSelectedOnce() {
-            return selectedRoutesOnce;
+      public boolean isRouteClaimed() {
+            return routeClaimed;
       }
+
 
 } // end CButton class
 
@@ -298,8 +324,7 @@ class RouteAdapter extends MouseAdapter {
       public RouteAdapter(CButton btn, String selectedName, GameStub stub) {
             this.btn = btn;
             this.selectedName = selectedName;
-            this.stub = stub;
-            this.currentPlayer = currentPlayer; 
+            this.stub = stub; 
       }
 
       public void mouseEntered(MouseEvent e) {
@@ -313,37 +338,50 @@ class RouteAdapter extends MouseAdapter {
       }
 
       public void mouseClicked(MouseEvent e) {
-      System.out.println(btn.getButtonID());
-      try {
-         int list = ((CButton) e.getSource()).getMouseListeners().length;
-         System.out.println("In if listener count = " + list);
-         // Giving it the name and color
-         selectedName = btn.getButtonID();
-         btn.toggleSelected(true);
-         // Giving it the name and color
-         // getting the current players index for painting
-         // grab the player names from the GameServer stub     
-         Vector<String> playerNames = stub.getPlayerNames();
-         currentPlayer = stub.getTockenOwner();
-         // iterate through the player names list to find the index 
-         // of the current player, and set the color of the road 
-         // to the corresponding color
-         for (int i = 0; i < playerNames.size(); i++) {
-            if (playerNames.get(i).equals(currentPlayer)) {
-               // Calling the method to paint the color on the given CButton
-               btn.colorButton("color" + i);
-            } 
-         }
-         // Decrementing the player's trains
-         stub.decrementPlayerTrains(currentPlayer, btn.getButtonID());
          System.out.println(btn.getButtonID());
-         btn.toggleSelectedOnce(false);
-         // Ending
-         // Ending the turn
-         btn.endTurn(btn.getButtonID(), stub.getTockenOwner());
-      } catch (Exception re) {
-            re.printStackTrace();
-            System.out.println(re);
+         System.out.println("gameboard hasclaimedroute = " + ( (GameBoard) btn.getParent() ).getHasClaimedRoute());
+
+         if( !( (GameBoard) btn.getParent() ).getHasClaimedRoute() ) {
+            try {
+               // Giving it the name and color
+               btn.toggleRouteClaimed(true);
+               selectedName = btn.getButtonID();
+               btn.toggleSelected(true);
+               ((GameBoard) btn.getParent() ).setHasClaimedRoute(true, btn.getButtonID());
+               // Giving it the name and color
+               // getting the current players index for painting
+               // grab the player names from the GameServer stub     
+               Vector<String> playerNames = stub.getPlayerNames();
+               currentPlayer = stub.getTockenOwner();
+               // iterate through the player names list to find the index 
+               // of the current player, and set the color of the road 
+               // to the corresponding color
+               for (int i = 0; i < playerNames.size(); i++) {
+                  if (playerNames.get(i).equals(currentPlayer)) {
+                     // Calling the method to paint the color on the given CButton
+                     btn.colorButton("color" + i);
+                  } 
+               }
+               // Decrementing the player's trains
+               stub.decrementPlayerTrains(currentPlayer, btn.getButtonID());
+               System.out.println(btn.getButtonID());
+               ////btn.toggleSelectedOnce(false);
+               // Ending
+               // Ending the turn
+               //btn.endTurn(btn.getButtonID(), stub.getTockenOwner());
+            } catch (Exception re) {
+                  re.printStackTrace();
+                  System.out.println(re);
+               }
+         } else if(btn.getSelected()) {
+            try {
+               btn.toggleSelected(false);
+               ((GameBoard) btn.getParent() ).setHasClaimedRoute(false, "");
+               btn.toggleRouteClaimed(false);
+               btn.repaint();
+            } catch (RemoteException re) {
+               re.printStackTrace();
+            }
          }
       }
    } // end MouseListener

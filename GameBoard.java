@@ -71,6 +71,7 @@ public class GameBoard extends JPanel {
    private boolean hasClaimedTrainCard = false;
    private boolean hasClaimedRoute = false;
    private boolean hasClaimedDestCard = false;
+   private String currentClaimedRoute = "";
 
    /**
     * GameBoard constructor - creates then adds each button to the panel.
@@ -165,6 +166,7 @@ public class GameBoard extends JPanel {
          buttonPaintList.add(cButton);
          // Adding to the JPanel
          add(cButton);
+         //cButton.toggleButton(true);
          // Incrementing and looping for the names and shapes
          i++;
          if (i == loop[j] && j < 9) {
@@ -472,8 +474,16 @@ public class GameBoard extends JPanel {
    public void endTurn() {
        System.out.println("\n\n\n\nEndPlayer Turn: " + endPlayerTurn);
       if (endPlayerTurn) {
-        // Turning the components off
-        toggleComponents(false);
+         // sending route to server to be painted on other clients
+         try {
+            stub.addRoute(currentPlayer, currentClaimedRoute );
+           // Turning the components off
+           toggleComponents(false);
+        
+           setHasClaimedRoute(false, "");
+        } catch(RemoteException re) {
+           re.printStackTrace();
+        }
         // Setting sendPlayer to true for the next turn
         sendPlayer = true;
         try {
@@ -628,6 +638,29 @@ public class GameBoard extends JPanel {
          } catch (Exception ae) { }
       }
    }
+
+
+   /**
+    *  setHasClaimedRoute 
+    *  @param toggle true or false to set to
+    */
+   public void setHasClaimedRoute(boolean toggle, String routeName) throws RemoteException {
+      this.hasClaimedRoute = toggle;
+      if(toggle) {
+         currentClaimedRoute = routeName;
+      } else {
+         currentClaimedRoute = "";
+      }
+      System.out.println(currentPlayer + " has claimed " + routeName + " set to " + toggle);
+   }
+
+   /**
+    * getHasClaimedRoute 
+    * @return boolean true or false if a route has been chosen this turn
+    */
+    public boolean getHasClaimedRoute() {
+      return this.hasClaimedRoute;
+    }
 
     /**
      * Class for the gameboard update timer.
