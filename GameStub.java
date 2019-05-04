@@ -167,6 +167,16 @@ public interface GameStub extends Remote {
    void decrementPlayerTrains(String player, String route) throws RemoteException;
 
    /**
+    * Stub method to increment the number of trains that a player has.
+    * 
+    * @param player the player who needs to increment
+    * @param route  the route the player unclaimed
+    * @throws RemoteException if RMI does not work
+    */
+
+    void incrementPlayerTrains(String player, String route) throws RemoteException;
+
+   /**
     * Stub method to get the number of trains that a player has.
     * 
     * @param player the player to get the trains of

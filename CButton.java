@@ -375,6 +375,7 @@ class RouteAdapter extends MouseAdapter {
                }
          } else if(btn.getSelected()) {
             try {
+               stub.incrementPlayerTrains(currentPlayer, btn.getButtonID());
                btn.toggleSelected(false);
                ((GameBoard) btn.getParent() ).setHasClaimedRoute(false, "");
                btn.toggleRouteClaimed(false);

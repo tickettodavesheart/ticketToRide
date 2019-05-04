@@ -341,6 +341,26 @@ public class GameServer implements GameStub {
       }
    }
 
+      /**
+    * First gets the weight of the route and increments the number of trains that a
+    * player has
+    * 
+    * @param player the player who needs to increment
+    * @param route  the route the player claimed
+    */
+    @Override
+    public void incrementPlayerTrains(String player, String route) {
+       // Getting the weight of the route
+       int weight = routeDict.getRouteWeight(route);
+    
+       // Getting the index of the player's name
+       try {
+          int playerIndex = playerNames.indexOf(player);
+          trainsLeft[playerIndex] = trainsLeft[playerIndex] + weight;
+       } catch (Exception e) {
+       }
+    }
+
    /**
     * Stub method to get the number of trains that a player has
     * 
