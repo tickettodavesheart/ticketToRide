@@ -55,7 +55,7 @@ public class GameClient extends JFrame {
    private boolean cardsCreated = true;
 
    // For the player's destination cards
-   private JLabel jlDestCards;
+   private JLabel destCards;
 
    /**
      * Constructor for the ChatClient.
@@ -158,12 +158,20 @@ public class GameClient extends JFrame {
       add(sideBar, BorderLayout.EAST);
 
       // Game Info in Sidebar
+      JPanel upperSidebar = new JPanel();
+      upperSidebar.setLayout(new GridLayout(0,1));
+
+
       JPanel gameInfo = new JPanel();
-      gameInfo.setLayout(new GridLayout(0, 1));
+      gameInfo.setLayout(new GridLayout(0, 2));
+      //gameInfo.setPreferredSize(new Dimension(80, 150));
       gameInfo.setBorder(BorderFactory.createTitledBorder("Game Info"));
 
-      JLabel jlGame = new JLabel("Game: " + name);
-      gameInfo.add(jlGame);
+      JLabel labelGameName = new JLabel("Game: ");
+      gameInfo.add(labelGameName);
+
+      JLabel gameName = new JLabel(name);
+      gameInfo.add(gameName);
 
       JLabel labelCurrPlayer = new JLabel("Current Player: ");
       gameInfo.add(labelCurrPlayer);
@@ -177,11 +185,22 @@ public class GameClient extends JFrame {
       playerNames = new JLabel();
       gameInfo.add(playerNames);
 
-      jlDestCards = new JLabel("<html>Destination Cards: <html>");
-      gameInfo.add(jlDestCards);
+      JPanel roundInfo = new JPanel();
+      roundInfo.setLayout(new GridLayout(0,2));
+      roundInfo.setBorder(BorderFactory.createTitledBorder("Your Hand"));
+
+      roundInfo.add(new JLabel("Destination Cards: "));
+
+      destCards = new JLabel();
+      roundInfo.add(destCards);
 
       // add gameInfo to sidebar
-      sideBar.add(gameInfo, BorderLayout.NORTH);
+      upperSidebar.add(gameInfo);
+
+      upperSidebar.add(roundInfo);
+
+      // add upperSidebar pane to sidebar
+      sideBar.add(upperSidebar, BorderLayout.NORTH);
 
       // Bottom JPanel
       bottomBar.setLayout(new BorderLayout(10, 10));
@@ -223,7 +242,7 @@ public class GameClient extends JFrame {
 
       // cardDecks JPanel
       JPanel cardDecks = new JPanel();
-      cardDecks.setLayout(new FlowLayout(FlowLayout.LEFT, 65, 10));
+      cardDecks.setLayout(new FlowLayout(FlowLayout.LEFT, 40, 10));
 
       // Destination Card Deck Icon
       JLabel destDeckLabel = new JLabel();
@@ -257,7 +276,8 @@ public class GameClient extends JFrame {
       add(bottomBar, BorderLayout.SOUTH);
 
       // Set JFrame sizing
-      setSize(1180, 740);
+      setSize(1210, 750);
+      setTitle("Ticket to Ride - In Game: " + name);
       setResizable(false);
       setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
       setVisible(true);
@@ -317,12 +337,12 @@ public class GameClient extends JFrame {
             trainCardCount.setText(Integer.toString(stub.getPlayerTrains(nickname)));
             // Getting the user's destination cards
             ArrayList<DestinationCard> dCards = gb.getDestinationCardsFromPlayer();
-            String destCardsString = "<html>Destination Cards: <br>";
+            String destCardsString = "<html>";
             for (DestinationCard c : dCards) {
                destCardsString += c.toString() + ", <br>";
             }
-            destCardsString += "</html>";
-            jlDestCards.setText(destCardsString);
+   
+            destCards.setText(destCardsString);
 
             ArrayList<String> currentPlayerTrainCards = stub.getPlayerTrainCards(nickname);
             int blackCount = 0;
