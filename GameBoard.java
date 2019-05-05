@@ -38,6 +38,9 @@ public class GameBoard extends JPanel {
    // Vector for the names of the buttons
    private Vector<String> namePaintList = new Vector<String>();
 
+   // ArrayList for claimed routes
+   private ArrayList<String> claimedRoutes = new ArrayList<String>();
+
    // For RMI
    private GameStub stub;
    
@@ -277,6 +280,7 @@ public class GameBoard extends JPanel {
    
       if (!hasClaimedDestCard && !hasClaimedRoute && numCardsClaimed < 2) {
          try {
+            // add a swing InvokeLater here??
             JFrame jfTrain = new JFrame();
             // Asking what destination cards the user wants to have
             JPanel panel = new JPanel();
@@ -458,6 +462,11 @@ public class GameBoard extends JPanel {
                                 currentPlayer + " has less than 3 trains left everyone will get one more turn!");
                         // Keeping track of the last turn for everyone
                      stub.startLastTurnCounter(currentPlayer);
+                     try {
+                        stub.calcScore(currentPlayer);
+                     } catch (Exception ce) {
+                        ce.printStackTrace();
+                     }
                   }
                }
             }
@@ -476,7 +485,12 @@ public class GameBoard extends JPanel {
       if (endPlayerTurn) {
          // sending route to server to be painted on other clients
          try {
+            if(!currentClaimedRoute.equals("")) {
             stub.addRoute(currentPlayer, currentClaimedRoute );
+            // adding route to player's local list of owned routes
+            claimedRoutes.add(currentClaimedRoute);
+            }
+            System.out.println("your currently claimed routes are: " + claimedRoutes);
            // Turning the components off
            toggleComponents(false);
         

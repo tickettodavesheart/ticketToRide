@@ -159,25 +159,32 @@ public class GameClient extends JFrame {
 
       // Game Info in Sidebar
       JPanel gameInfo = new JPanel();
-      gameInfo.setLayout(new GridLayout(0, 1));
+      gameInfo.setPreferredSize(new Dimension(250, 300));
+      gameInfo.setLayout(new BoxLayout(gameInfo, BoxLayout.Y_AXIS));
       gameInfo.setBorder(BorderFactory.createTitledBorder("Game Info"));
 
-      JLabel jlGame = new JLabel("Game: " + name);
+      Dimension fillerSize = new Dimension(0, 10);
+      JLabel jlGame = new JLabel("<html>Game: " + name + "</html>");
       gameInfo.add(jlGame);
+      gameInfo.add(Box.createRigidArea(fillerSize));
 
-      JLabel labelCurrPlayer = new JLabel("Current Player: ");
+      JLabel labelCurrPlayer = new JLabel("<html>Current Player: </html>");
       gameInfo.add(labelCurrPlayer);
+      gameInfo.add(Box.createRigidArea(fillerSize));
 
       currPlayer = new JLabel();
       gameInfo.add(currPlayer);
+      gameInfo.add(Box.createRigidArea(fillerSize));
 
-      JLabel labelPlayerNames = new JLabel("Players: ");
+      JLabel labelPlayerNames = new JLabel("<html>Players: </html>");
       gameInfo.add(labelPlayerNames);
+      gameInfo.add(Box.createRigidArea(fillerSize));
 
       playerNames = new JLabel();
       gameInfo.add(playerNames);
+      gameInfo.add(Box.createRigidArea(fillerSize));
 
-      jlDestCards = new JLabel("<html>Destination Cards: <html>");
+      jlDestCards = new JLabel("<html>Destination Cards: </html>");
       gameInfo.add(jlDestCards);
 
       // add gameInfo to sidebar
@@ -317,9 +324,9 @@ public class GameClient extends JFrame {
             trainCardCount.setText(Integer.toString(stub.getPlayerTrains(nickname)));
             // Getting the user's destination cards
             ArrayList<DestinationCard> dCards = gb.getDestinationCardsFromPlayer();
-            String destCardsString = "<html>Destination Cards: <br>";
+            String destCardsString = "<html>Destination Cards: ";
             for (DestinationCard c : dCards) {
-               destCardsString += c.toString() + ", <br>";
+               destCardsString += "<p>" +c.toString() + "</p>";
             }
             destCardsString += "</html>";
             jlDestCards.setText(destCardsString);
@@ -431,7 +438,7 @@ public class GameClient extends JFrame {
          }
          trains.setIcon(resizeImage(trainDeck, 750, 100));
 
-         trainCountBlue = new JLabel("<html><font color=red>-</font>", JLabel.CENTER);
+         trainCountBlue = new JLabel("<html><font color=red>-</font></", JLabel.CENTER);
          trainCountBlue.setFont(new Font("Arial", Font.BOLD, 30));
          trainCountBlue.setBackground(Color.BLACK);
          trainCountBlue.setOpaque(true);
