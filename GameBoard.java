@@ -126,7 +126,6 @@ public class GameBoard extends JPanel {
    
       // Creating the timer to continually update the gameboard
       Timer time = new Timer();
-      time.schedule(new GameboardUpdate(), 500, 1500);
    
       // set player name
       this.name = name;
@@ -177,6 +176,8 @@ public class GameBoard extends JPanel {
             j++;
          }
       } // End button creation loop
+
+      time.schedule(new GameboardUpdate(), 500, 1500);
    
       // Add End Turn Button
       JButton jbEndTurn = new JButton("End Turn");
