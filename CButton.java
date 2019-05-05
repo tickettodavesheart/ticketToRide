@@ -341,7 +341,13 @@ class RouteAdapter extends MouseAdapter {
          System.out.println(btn.getButtonID());
          System.out.println("gameboard hasclaimedroute = " + ( (GameBoard) btn.getParent() ).getHasClaimedRoute());
 
-         if( !( (GameBoard) btn.getParent() ).getHasClaimedRoute() ) {
+         // if you haven't done anything else this turn, you can select a route
+         if( (!( (GameBoard) btn.getParent() ).getHasClaimedRoute() 
+               && !( (GameBoard) btn.getParent() ).getHasClaimedTrainCard()
+               && !( (GameBoard) btn.getParent() ).getHasClaimedDestCard())
+               || (!( (GameBoard) btn.getParent() ).getHasClaimedRoute() 
+               && !( (GameBoard) btn.getParent() ).getHasClaimedTrainCard()
+               && ( (GameBoard) btn.getParent() ).getTurnNumber() < 1)) {
             try {
                // Giving it the name and color
                btn.toggleRouteClaimed(true);
@@ -375,6 +381,7 @@ class RouteAdapter extends MouseAdapter {
                }
          } else if(btn.getSelected()) {
             try {
+               stub.incrementPlayerTrains(currentPlayer, btn.getButtonID());
                btn.toggleSelected(false);
                ((GameBoard) btn.getParent() ).setHasClaimedRoute(false, "");
                btn.toggleRouteClaimed(false);

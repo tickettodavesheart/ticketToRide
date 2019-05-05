@@ -163,6 +163,7 @@ public class GameClient extends JFrame {
 
 
       JPanel gameInfo = new JPanel();
+     
       gameInfo.setLayout(new GridLayout(0, 2));
       //gameInfo.setPreferredSize(new Dimension(80, 150));
       gameInfo.setBorder(BorderFactory.createTitledBorder("Game Info"));
@@ -173,17 +174,22 @@ public class GameClient extends JFrame {
       JLabel gameName = new JLabel(name);
       gameInfo.add(gameName);
 
-      JLabel labelCurrPlayer = new JLabel("Current Player: ");
+      JLabel labelCurrPlayer = new JLabel("<html>Current Player: </html>");
       gameInfo.add(labelCurrPlayer);
+      gameInfo.add(Box.createRigidArea(fillerSize));
 
       currPlayer = new JLabel();
       gameInfo.add(currPlayer);
+      gameInfo.add(Box.createRigidArea(fillerSize));
 
-      JLabel labelPlayerNames = new JLabel("Players: ");
+      JLabel labelPlayerNames = new JLabel("<html>Players: </html>");
       gameInfo.add(labelPlayerNames);
+      gameInfo.add(Box.createRigidArea(fillerSize));
 
       playerNames = new JLabel();
       gameInfo.add(playerNames);
+      gameInfo.add(Box.createRigidArea(fillerSize));
+
 
       JPanel roundInfo = new JPanel();
       roundInfo.setLayout(new GridLayout(0,2));
@@ -337,9 +343,10 @@ public class GameClient extends JFrame {
             trainCardCount.setText(Integer.toString(stub.getPlayerTrains(nickname)));
             // Getting the user's destination cards
             ArrayList<DestinationCard> dCards = gb.getDestinationCardsFromPlayer();
+           
             String destCardsString = "<html>";
             for (DestinationCard c : dCards) {
-               destCardsString += c.toString() + ", <br>";
+               destCardsString += "<p>" +c.toString() + "</p>";
             }
    
             destCards.setText(destCardsString);
@@ -451,7 +458,7 @@ public class GameClient extends JFrame {
          }
          trains.setIcon(resizeImage(trainDeck, 750, 100));
 
-         trainCountBlue = new JLabel("<html><font color=red>-</font>", JLabel.CENTER);
+         trainCountBlue = new JLabel("<html><font color=red>-</font></", JLabel.CENTER);
          trainCountBlue.setFont(new Font("Arial", Font.BOLD, 30));
          trainCountBlue.setBackground(Color.BLACK);
          trainCountBlue.setOpaque(true);

@@ -25,6 +25,9 @@ public class GameServer implements GameStub {
    private String tokenOwner = "";
    // boolean for the visible train cards deck
    private boolean firstDeal = true;
+
+   // Final score table
+   private Hashtable<String, Integer> finalScores = new Hashtable<String, Integer>();
    // The visible train cards
    private ArrayList<String> visibleTrainCards = new ArrayList<String>();
    // Vector of arraylists with each route and color that it takes
@@ -341,6 +344,26 @@ public class GameServer implements GameStub {
       }
    }
 
+      /**
+    * First gets the weight of the route and increments the number of trains that a
+    * player has
+    * 
+    * @param player the player who needs to increment
+    * @param route  the route the player claimed
+    */
+    @Override
+    public void incrementPlayerTrains(String player, String route) {
+       // Getting the weight of the route
+       int weight = routeDict.getRouteWeight(route);
+    
+       // Getting the index of the player's name
+       try {
+          int playerIndex = playerNames.indexOf(player);
+          trainsLeft[playerIndex] = trainsLeft[playerIndex] + weight;
+       } catch (Exception e) {
+       }
+    }
+
    /**
     * Stub method to get the number of trains that a player has
     * 
@@ -482,11 +505,18 @@ public class GameServer implements GameStub {
     */
    @Override
    public int calcScore(String player) throws Exception {
+      // route points dictionary object to obtain weight scores
       RoutePointsDict rpd = new RoutePointsDict();
+      // desination card check object to verify and add/subtract scores
       DestinationCardCheck dcc = new DestinationCardCheck();
+      // score value to keep track of current calculation
       int score = 0;
+      // ArrayList of the owned routes a player has claimed throughout the game
       ArrayList<String> ownedRoutes = getClaimedRoutes().get(player);
       
+
+      // calculate score obtained from ownership of 
+      // claimed routes
       for(String route : ownedRoutes) {
          if(route.contains("grey")) {
             score += rpd.getRouteWeight(route);
@@ -495,15 +525,27 @@ public class GameServer implements GameStub {
          }
       }
       
+      // get player's destination cards
       ArrayList<DestinationCard> ownedDestinationCards = playerDestinationCards.get(player);
+
+      //iterate through the player's destination cards to verify each one
+      // and award points
       for(DestinationCard dc : ownedDestinationCards) {
          dcc.newCard(dc, ownedRoutes);
       
+         // verify current destination card
+         // add points if it is completed
+         // subtract points if it was not completed
          dcc.verify(dc.getLocationOne());
          if(dcc.isCardCompleted()) {
             score += dc.getPointValue();
+         } else {
+            score -= dc.getPointValue();
          }
       }
+      
+      // add score of player to the final scores table
+      finalScores.put(player, new Integer(score));
       return score;
    }
    

@@ -38,6 +38,9 @@ public class GameBoard extends JPanel {
    // Vector for the names of the buttons
    private Vector<String> namePaintList = new Vector<String>();
 
+   // ArrayList for claimed routes
+   private ArrayList<String> claimedRoutes = new ArrayList<String>();
+
    // For RMI
    private GameStub stub;
    
@@ -53,6 +56,7 @@ public class GameBoard extends JPanel {
 
    // For changing destination card requirement from 2 to 1 after game start
    private boolean beginningCards = true;
+   private int turnNumber = 0;
 
    // Cards that the player has
    private ArrayList<String> cardsList = new ArrayList<String>();
@@ -123,7 +127,6 @@ public class GameBoard extends JPanel {
    
       // Creating the timer to continually update the gameboard
       Timer time = new Timer();
-      time.schedule(new GameboardUpdate(), 500, 1500);
    
       // set player name
       this.name = name;
@@ -174,6 +177,8 @@ public class GameBoard extends JPanel {
             j++;
          }
       } // End button creation loop
+
+      time.schedule(new GameboardUpdate(), 500, 1500);
    
       // Add End Turn Button
       JButton jbEndTurn = new JButton("End Turn");
@@ -199,8 +204,11 @@ public class GameBoard extends JPanel {
     * method to prompt user for destination cards.
     */
    public void getDestinationCards() {
+      System.out.println("Has Claimed Dest Card: " + hasClaimedDestCard);
+      System.out.println("beginning Cards: " + beginningCards);
+      System.out.println("turnNumber: " + turnNumber);
       // Getting the destination cards from the server
-      if (!hasClaimedDestCard && !hasClaimedRoute && !hasClaimedTrainCard) {
+      if ((!hasClaimedDestCard && !hasClaimedRoute && !hasClaimedTrainCard) || (turnNumber < 1 && !hasClaimedRoute && !hasClaimedTrainCard)) {
          try {
             JFrame jfDest = new JFrame();
             // Asking what destination cards the user wants to have
@@ -274,9 +282,12 @@ public class GameBoard extends JPanel {
    }
 
    public void getTrainCards() {
-   
-      if (!hasClaimedDestCard && !hasClaimedRoute && numCardsClaimed < 2) {
+      System.out.println("Has Claimed Dest Card: " + hasClaimedDestCard);
+      System.out.println("beginning Cards: " + beginningCards);
+      System.out.println("turnNumber: " + turnNumber);
+      if ((!hasClaimedDestCard && !hasClaimedRoute && numCardsClaimed < 2) || (turnNumber < 1 && !hasClaimedRoute && numCardsClaimed < 2)) {
          try {
+            // add a swing InvokeLater here??
             JFrame jfTrain = new JFrame();
             // Asking what destination cards the user wants to have
             JPanel panel = new JPanel();
@@ -458,6 +469,11 @@ public class GameBoard extends JPanel {
                                 currentPlayer + " has less than 3 trains left everyone will get one more turn!");
                         // Keeping track of the last turn for everyone
                      stub.startLastTurnCounter(currentPlayer);
+                     try {
+                        stub.calcScore(currentPlayer);
+                     } catch (Exception ce) {
+                        ce.printStackTrace();
+                     }
                   }
                }
             }
@@ -472,11 +488,18 @@ public class GameBoard extends JPanel {
     * Run at end of each users turn to send updates to the server.
     */
    public void endTurn() {
-       System.out.println("\n\n\n\nEndPlayer Turn: " + endPlayerTurn);
+      // increment the turn counter
+      turnNumber++;
+      System.out.println("\n\n\n\nEndPlayer Turn: " + endPlayerTurn);
       if (endPlayerTurn) {
          // sending route to server to be painted on other clients
          try {
+            if(!currentClaimedRoute.equals("")) {
             stub.addRoute(currentPlayer, currentClaimedRoute );
+            // adding route to player's local list of owned routes
+            claimedRoutes.add(currentClaimedRoute);
+            }
+            System.out.println("your currently claimed routes are: " + claimedRoutes);
            // Turning the components off
            toggleComponents(false);
         
@@ -662,6 +685,29 @@ public class GameBoard extends JPanel {
       return this.hasClaimedRoute;
     }
 
+    /**
+    * getHasClaimedTrainCard 
+    * @return boolean true or false if a train has been chosen this turn
+    */
+    public boolean getHasClaimedTrainCard() {
+      return this.hasClaimedTrainCard;
+    }
+
+    /**
+    * getHasClaimedDestCard 
+    * @return boolean true or false if a destination card has been chosen this turn
+    */
+    public boolean getHasClaimedDestCard() {
+       return this.hasClaimedDestCard;
+    }
+
+    /**
+    * getTurnNumber 
+    * @return int number of turns played
+    */
+    public int getTurnNumber() {
+       return this.turnNumber;
+    }
     /**
      * Class for the gameboard update timer.
      */
