@@ -148,17 +148,29 @@ public interface GameStub extends Remote {
    void addPlayerCards(String player, ArrayList<String> cards) throws RemoteException;
 
    /**
-    * Stub method to get all of the players destination cards
-    * 
+    * Stub method to get all of the players train cards.
     * @param player the player to get the list from
     * @return list of player's cards
     * @throws RemoteException when RMI does not work.
     */
    ArrayList<String> getPlayerTrainCards(String player) throws RemoteException;
 
+    /**
+    * Stub method remove player train cards.
+    * @param player the player to get the list from
+    * @throws RemoteException when RMI does not work.
+    */
+    void removePlayerTrainCards(String player) throws RemoteException;
+
+    /**
+    * Stub method to temp store the cards to remove from the train cards of a player.
+    * @param colorsToRemove the color to remove
+    * @throws RemoteException when RMI does not work.
+    */
+    void tempStoreTrainColorCards(ArrayList colorsToRemove) throws RemoteException;
+
    /**
     * Stub method to decrement the number of trains that a player has.
-    * 
     * @param player the player who needs to decrement
     * @param route  the route the player claimed
     * @throws RemoteException if RMI does not work
@@ -220,6 +232,7 @@ public interface GameStub extends Remote {
     * Stub method for calculating player score.
     * @param player name of the player to calculate score of
     * @return calculated score
+    * @throws RemoteException if RMI does not work
     */
    int calcScore(String player) throws Exception;
 

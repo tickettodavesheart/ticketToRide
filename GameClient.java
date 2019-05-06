@@ -46,7 +46,7 @@ public class GameClient extends JFrame {
    private JLabel trainCountGreen;
    private JLabel trainCountNeutral;
    private JLabel trainCountOrange;
-   private JLabel trainCountPink;
+   private JLabel trainCountPURPLE;
    private JLabel trainCountRed;
    private JLabel trainCountWhite;
    private JLabel trainCountYellow;
@@ -55,7 +55,7 @@ public class GameClient extends JFrame {
    private boolean cardsCreated = true;
 
    // For the player's destination cards
-   private JLabel jlDestCards;
+   private JLabel destCards;
 
    /**
      * Constructor for the ChatClient.
@@ -158,15 +158,21 @@ public class GameClient extends JFrame {
       add(sideBar, BorderLayout.EAST);
 
       // Game Info in Sidebar
+      JPanel upperSidebar = new JPanel();
+      upperSidebar.setLayout(new GridLayout(0,1));
+
+
       JPanel gameInfo = new JPanel();
-      gameInfo.setPreferredSize(new Dimension(250, 300));
-      gameInfo.setLayout(new BoxLayout(gameInfo, BoxLayout.Y_AXIS));
+     
+      gameInfo.setLayout(new GridLayout(0, 2));
+      //gameInfo.setPreferredSize(new Dimension(80, 150));
       gameInfo.setBorder(BorderFactory.createTitledBorder("Game Info"));
 
-      Dimension fillerSize = new Dimension(0, 10);
-      JLabel jlGame = new JLabel("<html>Game: " + name + "</html>");
-      gameInfo.add(jlGame);
-      gameInfo.add(Box.createRigidArea(fillerSize));
+      JLabel labelGameName = new JLabel("Game: ");
+      gameInfo.add(labelGameName);
+
+      JLabel gameName = new JLabel(name);
+      gameInfo.add(gameName);
 
       JLabel labelCurrPlayer = new JLabel("<html>Current Player: </html>");
       gameInfo.add(labelCurrPlayer);
@@ -184,11 +190,23 @@ public class GameClient extends JFrame {
       gameInfo.add(playerNames);
       gameInfo.add(Box.createRigidArea(fillerSize));
 
-      jlDestCards = new JLabel("<html>Destination Cards: </html>");
-      gameInfo.add(jlDestCards);
+
+      JPanel roundInfo = new JPanel();
+      roundInfo.setLayout(new GridLayout(0,2));
+      roundInfo.setBorder(BorderFactory.createTitledBorder("Your Hand"));
+
+      roundInfo.add(new JLabel("Destination Cards: "));
+
+      destCards = new JLabel();
+      roundInfo.add(destCards);
 
       // add gameInfo to sidebar
-      sideBar.add(gameInfo, BorderLayout.NORTH);
+      upperSidebar.add(gameInfo);
+
+      upperSidebar.add(roundInfo);
+
+      // add upperSidebar pane to sidebar
+      sideBar.add(upperSidebar, BorderLayout.NORTH);
 
       // Bottom JPanel
       bottomBar.setLayout(new BorderLayout(10, 10));
@@ -230,7 +248,7 @@ public class GameClient extends JFrame {
 
       // cardDecks JPanel
       JPanel cardDecks = new JPanel();
-      cardDecks.setLayout(new FlowLayout(FlowLayout.LEFT, 65, 10));
+      cardDecks.setLayout(new FlowLayout(FlowLayout.LEFT, 40, 10));
 
       // Destination Card Deck Icon
       JLabel destDeckLabel = new JLabel();
@@ -264,7 +282,8 @@ public class GameClient extends JFrame {
       add(bottomBar, BorderLayout.SOUTH);
 
       // Set JFrame sizing
-      setSize(1180, 740);
+      setSize(1210, 750);
+      setTitle("Ticket to Ride - In Game: " + name);
       setResizable(false);
       setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
       setVisible(true);
@@ -324,12 +343,13 @@ public class GameClient extends JFrame {
             trainCardCount.setText(Integer.toString(stub.getPlayerTrains(nickname)));
             // Getting the user's destination cards
             ArrayList<DestinationCard> dCards = gb.getDestinationCardsFromPlayer();
-            String destCardsString = "<html>Destination Cards: ";
+           
+            String destCardsString = "<html>";
             for (DestinationCard c : dCards) {
                destCardsString += "<p>" +c.toString() + "</p>";
             }
-            destCardsString += "</html>";
-            jlDestCards.setText(destCardsString);
+   
+            destCards.setText(destCardsString);
 
             ArrayList<String> currentPlayerTrainCards = stub.getPlayerTrainCards(nickname);
             int blackCount = 0;
@@ -337,7 +357,7 @@ public class GameClient extends JFrame {
             int greenCount = 0;
             int neutralCount = 0;
             int orangeCount = 0;
-            int pinkCount = 0;
+            int PURPLECount = 0;
             int redCount = 0;
             int whiteCount = 0;
             int yellowCount = 0;
@@ -358,8 +378,8 @@ public class GameClient extends JFrame {
                   case "ORANGE":
                      orangeCount++;
                      break;
-                  case "PINK":
-                     pinkCount++;
+                  case "PURPLE":
+                     PURPLECount++;
                      break;
                   case "RED":
                      redCount++;
@@ -383,7 +403,7 @@ public class GameClient extends JFrame {
             trainCountGreen.setText("<html><font color=red>" + Integer.toString(greenCount) + "</font>");
             trainCountNeutral.setText("<html><font color=red>" + Integer.toString(neutralCount) + "</font>");
             trainCountOrange.setText("<html><font color=red>" + Integer.toString(orangeCount) + "</font>");
-            trainCountPink.setText("<html><font color=red>" + Integer.toString(pinkCount) + "</font>");
+            trainCountPURPLE.setText("<html><font color=red>" + Integer.toString(PURPLECount) + "</font>");
             trainCountRed.setText("<html><font color=red>" + Integer.toString(redCount) + "</font>");
             trainCountWhite.setText("<html><font color=red>" + Integer.toString(whiteCount) + "</font>");
             trainCountYellow.setText("<html><font color=red>" + Integer.toString(yellowCount) + "</font>");
@@ -473,12 +493,12 @@ public class GameClient extends JFrame {
          trainCountOrange.setBounds(300, 0, 35, 40);
          trainsPanel.add(trainCountOrange);
 
-         trainCountPink = new JLabel("<html><font color=red>-</font>", JLabel.CENTER);
-         trainCountPink.setFont(new Font("Arial", Font.BOLD, 30));
-         trainCountPink.setBackground(Color.BLACK);
-         trainCountPink.setOpaque(true);
-         trainCountPink.setBounds(375, 0, 35, 40);
-         trainsPanel.add(trainCountPink);
+         trainCountPURPLE = new JLabel("<html><font color=red>-</font>", JLabel.CENTER);
+         trainCountPURPLE.setFont(new Font("Arial", Font.BOLD, 30));
+         trainCountPURPLE.setBackground(Color.BLACK);
+         trainCountPURPLE.setOpaque(true);
+         trainCountPURPLE.setBounds(375, 0, 35, 40);
+         trainsPanel.add(trainCountPURPLE);
 
          trainCountWhite = new JLabel("<html><font color=red>-</font>", JLabel.CENTER);
          trainCountWhite.setFont(new Font("Arial", Font.BOLD, 30));
