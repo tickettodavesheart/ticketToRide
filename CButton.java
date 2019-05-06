@@ -110,9 +110,10 @@ public class CButton extends JButton {
     * Toggles the buttons custom handlers on or off.
     * @param state if they are on or off
     */
-   public void toggleButton(boolean state) {
+   public void toggleButton(boolean state, Hashtable<String, String> selectedFromServer) {
          ml = new RouteAdapter(this, selectedName, stub);
-      if (state && !routeClaimed) {
+         ArrayList<String> selectedRoutes = new ArrayList<String>(selectedFromServer.values());
+      if (state && !routeClaimed && (selectedRoutes.indexOf(getButtonID()) == -1)) {
          MouseListener[] mla = getMouseListeners();
          if (mla.length > 0) {
             for (int j = 0; j < mla.length; j++) {
@@ -146,7 +147,7 @@ public class CButton extends JButton {
             stub.addRoute(playerToAdd, routeName);
 				sendRoutes = false;
 				// No longer can select a route
-            toggleButton(false);
+            toggleButton(false, new Hashtable<String, String>());
          } catch (Exception endTurnE) { 
             endTurnE.printStackTrace();
          }
@@ -395,6 +396,7 @@ class RouteAdapter extends MouseAdapter {
                ((GameBoard) btn.getParent() ).setHasClaimedRoute(false, "");
                btn.toggleRouteClaimed(false);
                btn.repaint();
+               btn.revalidate();
             } catch (RemoteException re) {
                re.printStackTrace();
             }
