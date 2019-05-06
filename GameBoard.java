@@ -520,6 +520,12 @@ public class GameBoard extends JPanel {
     * Run at end of each users turn to send updates to the server.
     */
    public void endTurn() {
+       // decrementing player turn
+       if (!hasClaimedTrainCard) {
+           try {
+               stub.removePlayerTrainCards(currentPlayer);
+           } catch (RemoteException re) { }
+       }
       // increment the turn counter
       turnNumber++;
       System.out.println("\n\n\n\nEndPlayer Turn: " + endPlayerTurn);
@@ -594,7 +600,7 @@ public class GameBoard extends JPanel {
          if (c instanceof CButton) {
                 // Toggling the buttons on or off
             CButton cb = (CButton) c;
-            cb.toggleButton(state, selectedFromServer);
+            cb.toggleButton(state);
          }
       }
    }
