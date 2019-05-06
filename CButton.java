@@ -110,9 +110,10 @@ public class CButton extends JButton {
     * Toggles the buttons custom handlers on or off.
     * @param state if they are on or off
     */
-   public void toggleButton(boolean state) {
+   public void toggleButton(boolean state, Hashtable<String, String> selectedFromServer) {
          ml = new RouteAdapter(this, selectedName, stub);
-      if (state && !routeClaimed) {
+         ArrayList<String> selectedRoutes = new ArrayList<String>(selectedFromServer.values());
+      if (state && !routeClaimed && (selectedRoutes.indexOf(getButtonID()) == -1)) {
          MouseListener[] mla = getMouseListeners();
          if (mla.length > 0) {
             for (int j = 0; j < mla.length; j++) {
@@ -146,7 +147,7 @@ public class CButton extends JButton {
             stub.addRoute(playerToAdd, routeName);
 				sendRoutes = false;
 				// No longer can select a route
-            toggleButton(false);
+            toggleButton(false, new Hashtable<String, String>());
          } catch (Exception endTurnE) { 
             endTurnE.printStackTrace();
          }
@@ -403,6 +404,55 @@ class RouteAdapter extends MouseAdapter {
 					}
 				}
 			}
+         // if you haven't done anything else this turn, you can select a route
+         if( (!( (GameBoard) btn.getParent() ).getHasClaimedRoute() 
+               && !( (GameBoard) btn.getParent() ).getHasClaimedTrainCard()
+               && !( (GameBoard) btn.getParent() ).getHasClaimedDestCard())
+               || (!( (GameBoard) btn.getParent() ).getHasClaimedRoute() 
+               && !( (GameBoard) btn.getParent() ).getHasClaimedTrainCard()
+               && ( (GameBoard) btn.getParent() ).getTurnNumber() < 1)) {
+            try {
+               // Giving it the name and color
+               btn.toggleRouteClaimed(true);
+               selectedName = btn.getButtonID();
+               btn.toggleSelected(true);
+               ((GameBoard) btn.getParent() ).setHasClaimedRoute(true, btn.getButtonID());
+               // Giving it the name and color
+               // getting the current players index for painting
+               // grab the player names from the GameServer stub     
+               Vector<String> playerNames = stub.getPlayerNames();
+               currentPlayer = stub.getTockenOwner();
+               // iterate through the player names list to find the index 
+               // of the current player, and set the color of the road 
+               // to the corresponding color
+               for (int i = 0; i < playerNames.size(); i++) {
+                  if (playerNames.get(i).equals(currentPlayer)) {
+                     // Calling the method to paint the color on the given CButton
+                     btn.colorButton("color" + i);
+                  } 
+               }
+               // Decrementing the player's trains
+               stub.decrementPlayerTrains(currentPlayer, btn.getButtonID());
+               ////btn.toggleSelectedOnce(false);
+               // Ending
+               // Ending the turn
+               //btn.endTurn(btn.getButtonID(), stub.getTockenOwner());
+            } catch (Exception re) {
+                  re.printStackTrace();
+                  System.err.println("[Exception]: A RemoteException has occurred - " + re);
+               }
+         } else if(btn.getSelected()) {
+            try {
+               stub.incrementPlayerTrains(currentPlayer, btn.getButtonID());
+               btn.toggleSelected(false);
+               ((GameBoard) btn.getParent() ).setHasClaimedRoute(false, "");
+               btn.toggleRouteClaimed(false);
+               btn.repaint();
+               btn.revalidate();
+            } catch (RemoteException re) {
+               re.printStackTrace();
+            }
+         }
       }
 
       /**
