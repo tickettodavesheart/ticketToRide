@@ -378,7 +378,7 @@ public class GameBoard extends JPanel {
     */
    public void startTurn() {
 
-      endPlayerTurn = true;
+      
       
       // Checking if this is their last turn
       try {
@@ -436,6 +436,7 @@ public class GameBoard extends JPanel {
                buttonToPaint.colorButton("color" 
                         + currentPlayerIndex);
             }
+            endPlayerTurn = true;
          
          
             // If the last turn has not already started

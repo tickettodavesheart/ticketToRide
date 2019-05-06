@@ -30,7 +30,7 @@ public class CButton extends JButton {
    private boolean selected = false;
 
    // Array of colors for each player
-   private Color[] colors = {Color.GRAY, Color.GREEN, Color.RED, Color.BLUE};
+   private Color[] colors = {new Color(124, 33, 48), new Color(34, 119, 80), new Color(79, 76, 186), new Color(124, 108, 33)};
 
    // Attributes that are placeholders for the selected route
    private String selectedName = "";
