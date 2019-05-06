@@ -276,6 +276,17 @@ public class GameBoard extends JPanel {
                            destinationList.add((DestinationCard)box.getClientProperty("card"));
                            hasClaimedDestCard = true;
                         }
+
+                     }
+                     destCardTurns++;                     
+                  }
+                  if (checklistValid) {
+                     for (JCheckBox box : checkBoxList) {
+                        if (box.isSelected()) {
+                           //box.addActionListener(new RadioActionListener());
+                           destinationList.add((DestinationCard)box.getClientProperty("card"));
+                           hasClaimedDestCard = true;
+                        }
                      }
                      destCardTurns++;                     
                   }
