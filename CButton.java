@@ -351,54 +351,58 @@ class RouteAdapter extends MouseAdapter {
       }
 
       public void mouseClicked(MouseEvent e) {
-         // if you haven't done anything else this turn, you can select a route
-         if( (!( (GameBoard) btn.getParent() ).getHasClaimedRoute() 
-               && !( (GameBoard) btn.getParent() ).getHasClaimedTrainCard()
-               && !( (GameBoard) btn.getParent() ).getHasClaimedDestCard())
-               || (!( (GameBoard) btn.getParent() ).getHasClaimedRoute() 
-               && !( (GameBoard) btn.getParent() ).getHasClaimedTrainCard()
-               && ( (GameBoard) btn.getParent() ).getTurnNumber() < 1)) {
-            try {
-               // Giving it the name and color
-               btn.toggleRouteClaimed(true);
-               selectedName = btn.getButtonID();
-               btn.toggleSelected(true);
-               ((GameBoard) btn.getParent() ).setHasClaimedRoute(true, btn.getButtonID());
-               // Giving it the name and color
-               // getting the current players index for painting
-               // grab the player names from the GameServer stub     
-               Vector<String> playerNames = stub.getPlayerNames();
-               currentPlayer = stub.getTockenOwner();
-               // iterate through the player names list to find the index 
-               // of the current player, and set the color of the road 
-               // to the corresponding color
-               for (int i = 0; i < playerNames.size(); i++) {
-                  if (playerNames.get(i).equals(currentPlayer)) {
-                     // Calling the method to paint the color on the given CButton
-                     btn.colorButton("color" + i);
-                  } 
-               }
-               // Decrementing the player's trains
-               stub.decrementPlayerTrains(currentPlayer, btn.getButtonID());
-               ////btn.toggleSelectedOnce(false);
-               // Ending
-               // Ending the turn
-               //btn.endTurn(btn.getButtonID(), stub.getTockenOwner());
-            } catch (Exception re) {
-                  re.printStackTrace();
-                  System.err.println("[Exception]: A RemoteException has occurred - " + re);
-               }
-         } else if(btn.getSelected()) {
-            try {
-               stub.incrementPlayerTrains(currentPlayer, btn.getButtonID());
-               btn.toggleSelected(false);
-               ((GameBoard) btn.getParent() ).setHasClaimedRoute(false, "");
-               btn.toggleRouteClaimed(false);
-               btn.repaint();
-            } catch (RemoteException re) {
-               re.printStackTrace();
-            }
-         }
+			// if you haven't done anything else this turn, you can select a route
+			
+			// First checking if you can claim the route
+			if (canClaimRoute()) {
+				if( (!( (GameBoard) btn.getParent() ).getHasClaimedRoute() 
+						&& !( (GameBoard) btn.getParent() ).getHasClaimedTrainCard()
+						&& !( (GameBoard) btn.getParent() ).getHasClaimedDestCard())
+						|| (!( (GameBoard) btn.getParent() ).getHasClaimedRoute() 
+						&& !( (GameBoard) btn.getParent() ).getHasClaimedTrainCard()
+						&& ( (GameBoard) btn.getParent() ).getTurnNumber() < 1)) {
+					try {
+						// Giving it the name and color
+						btn.toggleRouteClaimed(true);
+						selectedName = btn.getButtonID();
+						btn.toggleSelected(true);
+						((GameBoard) btn.getParent() ).setHasClaimedRoute(true, btn.getButtonID());
+						// Giving it the name and color
+						// getting the current players index for painting
+						// grab the player names from the GameServer stub     
+						Vector<String> playerNames = stub.getPlayerNames();
+						currentPlayer = stub.getTockenOwner();
+						// iterate through the player names list to find the index 
+						// of the current player, and set the color of the road 
+						// to the corresponding color
+						for (int i = 0; i < playerNames.size(); i++) {
+							if (playerNames.get(i).equals(currentPlayer)) {
+								// Calling the method to paint the color on the given CButton
+								btn.colorButton("color" + i);
+							} 
+						}
+						// Decrementing the player's trains
+						stub.decrementPlayerTrains(currentPlayer, btn.getButtonID());
+						////btn.toggleSelectedOnce(false);
+						// Ending
+						// Ending the turn
+						//btn.endTurn(btn.getButtonID(), stub.getTockenOwner());
+					} catch (Exception re) {
+							re.printStackTrace();
+							System.err.println("[Exception]: A RemoteException has occurred - " + re);
+						}
+				} else if(btn.getSelected()) {
+					try {
+						stub.incrementPlayerTrains(currentPlayer, btn.getButtonID());
+						btn.toggleSelected(false);
+						((GameBoard) btn.getParent() ).setHasClaimedRoute(false, "");
+						btn.toggleRouteClaimed(false);
+						btn.repaint();
+					} catch (RemoteException re) {
+						re.printStackTrace();
+					}
+				}
+			}
       }
 
       /**
@@ -407,6 +411,7 @@ class RouteAdapter extends MouseAdapter {
        * @return if they can claim the route
        */
       public boolean canClaimRoute() {
+			
 			// boolean to return
 			boolean canClaim = false;
          // The counts of each color
@@ -625,23 +630,32 @@ class RouteAdapter extends MouseAdapter {
 					ButtonGroup bgroup = new ButtonGroup();
 
 					boolean displayFrame = true;
+					int matching = 0;
 
 					Set<String> keys = trainColorCountList.keySet();
 					for (String colorCount : keys) {
 							if ((trainColorCountList.get(colorCount)) >= routeWeight) {
+								canClaim = true;
+								System.out.println("in first");
 								JRadioButton jrbColorCount = new JRadioButton(colorCount);
 								jrbColorCount.setActionCommand(colorCount);
 								bgroup.add(jrbColorCount);
 								jpTrainCard.add(jrbColorCount);
+								matching += 1;
 							}
 							else if ((trainColorCountList.get(colorCount) + neutralCount) >= routeWeight) {
+								System.out.println("in second");
+								canClaim = true;
 								JRadioButton jrbColorCount = new JRadioButton(colorCount + " and NEUTRAL");
 								jrbColorCount.setActionCommand(colorCount + " and NEUTRAL");
 								bgroup.add(jrbColorCount);
 								jpTrainCard.add(jrbColorCount);
-							} else {
-								displayFrame = false;
+								matching += 1;
 							}
+					}
+
+					if (matching == 0) {
+						displayFrame = false;
 					}
 
 					JButton jbOK = new JButton("Select");
@@ -686,6 +700,8 @@ class RouteAdapter extends MouseAdapter {
 
 					jfTrainCard.add(buttonPanel, BorderLayout.SOUTH);
 					jfTrainCard.add(jpTrainCard, BorderLayout.CENTER);
+
+					System.out.println("Display" + displayFrame);
 					if (displayFrame) {
 						jfTrainCard.pack();
 						jfTrainCard.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
