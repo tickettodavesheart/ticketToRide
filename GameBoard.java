@@ -72,9 +72,11 @@ public class GameBoard extends JPanel {
 
    // For Restricting Client's turn
    private int numCardsClaimed = 0;
+   private int destCardTurns = 0;
    private boolean hasClaimedTrainCard = false;
    private boolean hasClaimedRoute = false;
    private boolean hasClaimedDestCard = false;
+   private boolean checklistValid = false;
    private String currentClaimedRoute = "";
 
    /**
@@ -204,7 +206,7 @@ public class GameBoard extends JPanel {
     */
    public void getDestinationCards() {
       // Getting the destination cards from the server
-      if ((!hasClaimedDestCard && !hasClaimedRoute && !hasClaimedTrainCard) || (turnNumber < 1 && !hasClaimedRoute && !hasClaimedTrainCard)) {
+      if ((!hasClaimedDestCard && !hasClaimedRoute && !hasClaimedTrainCard) || (turnNumber < 1 && !hasClaimedRoute && !hasClaimedTrainCard && destCardTurns <= 1)) {
          try {
             JFrame jfDest = new JFrame();
             // Asking what destination cards the user wants to have
@@ -213,7 +215,18 @@ public class GameBoard extends JPanel {
             JPanel buttonPanel = new JPanel();
             // Array of checkboxes for validation
             ArrayList<JCheckBox> checkBoxList = new ArrayList<JCheckBox>();
-            
+            ArrayList<DestinationCard> dCardsFromServer = stub.getDestinationCards();
+
+            // Adding the cards to the panel of options
+            for (DestinationCard dCard : dCardsFromServer) {
+               JCheckBox jcb = new JCheckBox(dCard.toString());
+               jcb.putClientProperty("card", dCard);
+               // Adding to the list
+               checkBoxList.add(jcb);
+               panel.add(jcb, BorderLayout.CENTER);
+               //jcb.addActionListener(new RadioActionListener());
+            }
+
             JButton jbOK = new JButton("Select");
             buttonPanel.add(jbOK);
             jbOK.addActionListener(
@@ -232,11 +245,14 @@ public class GameBoard extends JPanel {
                            for (DestinationCard dc : destinationList) {
                               stub.removeDestinationCard(dc);
                            }
+                           checklistValid = true;
                         } catch (RemoteException re) { }
-                        jfDest.dispose();
+                     } else {
+                        checklistValid = false;
                      }
                   } else if (!beginningCards) {
                      if (twoSelected >= 1) {
+                        checklistValid = true;
                         jfDest.dispose();
                      // Removing choosen cards from the server
                         try {
@@ -244,25 +260,48 @@ public class GameBoard extends JPanel {
                               stub.removeDestinationCard(dc);
                            }
                         } catch (RemoteException re) { }
+                     } else {
+                        checklistValid = false;
                      }
+                  }
+                  if (checklistValid) {
+                     for (JCheckBox box : checkBoxList) {
+                        if (box.isSelected()) {
+                           //box.addActionListener(new RadioActionListener());
+                           destinationList.add((DestinationCard)box.getClientProperty("card"));
+                           hasClaimedDestCard = true;
+                        }
+
+                     }
+                     destCardTurns++;                     
+                  }
+                  if (checklistValid) {
+                     for (JCheckBox box : checkBoxList) {
+                        if (box.isSelected()) {
+                           //box.addActionListener(new RadioActionListener());
+                           destinationList.add((DestinationCard)box.getClientProperty("card"));
+                           hasClaimedDestCard = true;
+                        }
+                     }
+                     destCardTurns++;                     
                   }
                   beginningCards = false;
                });
          
-            ArrayList<DestinationCard> dCardsFromServer = stub.getDestinationCards();
+            
          
             txtPanel.add(new JLabel(
                   "Select two or more destination card(s)"));
          
-            // Adding the cards to the panel of options
-            for (DestinationCard dCard : dCardsFromServer) {
-               JCheckBox jcb = new JCheckBox(dCard.toString());
-               jcb.putClientProperty("card", dCard);
-               // Adding to the list
-               checkBoxList.add(jcb);
-               panel.add(jcb, BorderLayout.CENTER);
-               jcb.addActionListener(new RadioActionListener());
-            }
+            // // Adding the cards to the panel of options
+            // for (DestinationCard dCard : dCardsFromServer) {
+            //    JCheckBox jcb = new JCheckBox(dCard.toString());
+            //    jcb.putClientProperty("card", dCard);
+            //    // Adding to the list
+            //    checkBoxList.add(jcb);
+            //    panel.add(jcb, BorderLayout.CENTER);
+            //    // jcb.addActionListener(new RadioActionListener());
+            // }
          
             jfDest.add(txtPanel, BorderLayout.NORTH);
             jfDest.add(panel, BorderLayout.CENTER);
@@ -280,7 +319,7 @@ public class GameBoard extends JPanel {
    }
 
    public void getTrainCards() {
-      if ((!hasClaimedDestCard && !hasClaimedRoute && numCardsClaimed < 2) || (turnNumber < 1 && !hasClaimedRoute && numCardsClaimed < 2)) {
+      if ((!hasClaimedDestCard && !hasClaimedRoute && numCardsClaimed < 2) || (turnNumber < 1 && !hasClaimedRoute && numCardsClaimed < 2 && destCardTurns == 1)) {
          try {
             // add a swing InvokeLater here??
             JFrame jfTrain = new JFrame();
@@ -469,6 +508,14 @@ public class GameBoard extends JPanel {
     * Run at end of each users turn to send updates to the server.
     */
    public void endTurn() {
+      // Removing the train cards that the 
+      // player used that turn if 
+      if (!hasClaimedTrainCard) {
+        try {
+            stub.removePlayerTrainCards(currentPlayer);
+        } catch (RemoteException re) { }
+      }
+
       // increment the turn counter
       turnNumber++;
       if (endPlayerTurn) {
@@ -495,7 +542,7 @@ public class GameBoard extends JPanel {
             int playerIndex = 0;
             for (int i = 0; i < playerNames.size(); i++) {
                 if (playerNames.get(i).equals(currentPlayer)) {
-                playerIndex = i;
+                  playerIndex = i;
                 } 
             }
         
@@ -522,7 +569,7 @@ public class GameBoard extends JPanel {
         } catch (RemoteException re) {
         }
         endPlayerTurn = false;
-    }
+      }
    }
 
     /**
@@ -539,30 +586,6 @@ public class GameBoard extends JPanel {
                 // Toggling the buttons on or off
             CButton cb = (CButton) c;
             cb.toggleButton(state);
-         }
-      }
-   }
-   
-   /**
-    * Action Listener for the destination chooser.
-    */
-   class RadioActionListener implements ActionListener {
-      // for when a button is deselected
-      private boolean turn = true;
-   
-      @Override
-      public void actionPerformed(ActionEvent e) {
-         if (turn) {
-            JCheckBox jrb = (JCheckBox) e.getSource();
-            // Adding the destination to the destination list
-            destinationList.add((DestinationCard)jrb.getClientProperty("card"));
-            hasClaimedDestCard = true;
-            turn = false;
-         } else {
-            JCheckBox jrb = (JCheckBox) e.getSource();
-            // Adding the destination to the destination list
-            destinationList.remove((DestinationCard)jrb.getClientProperty("card"));
-            turn = true;
          }
       }
    }

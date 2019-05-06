@@ -46,7 +46,7 @@ public class GameClient extends JFrame {
    private JLabel trainCountGreen;
    private JLabel trainCountNeutral;
    private JLabel trainCountOrange;
-   private JLabel trainCountPink;
+   private JLabel trainCountPURPLE;
    private JLabel trainCountRed;
    private JLabel trainCountWhite;
    private JLabel trainCountYellow;
@@ -348,7 +348,7 @@ public class GameClient extends JFrame {
             int greenCount = 0;
             int neutralCount = 0;
             int orangeCount = 0;
-            int pinkCount = 0;
+            int PURPLECount = 0;
             int redCount = 0;
             int whiteCount = 0;
             int yellowCount = 0;
@@ -369,8 +369,8 @@ public class GameClient extends JFrame {
                   case "ORANGE":
                      orangeCount++;
                      break;
-                  case "PINK":
-                     pinkCount++;
+                  case "PURPLE":
+                     PURPLECount++;
                      break;
                   case "RED":
                      redCount++;
@@ -394,7 +394,7 @@ public class GameClient extends JFrame {
             trainCountGreen.setText("<html><font color=red>" + Integer.toString(greenCount) + "</font>");
             trainCountNeutral.setText("<html><font color=red>" + Integer.toString(neutralCount) + "</font>");
             trainCountOrange.setText("<html><font color=red>" + Integer.toString(orangeCount) + "</font>");
-            trainCountPink.setText("<html><font color=red>" + Integer.toString(pinkCount) + "</font>");
+            trainCountPURPLE.setText("<html><font color=red>" + Integer.toString(PURPLECount) + "</font>");
             trainCountRed.setText("<html><font color=red>" + Integer.toString(redCount) + "</font>");
             trainCountWhite.setText("<html><font color=red>" + Integer.toString(whiteCount) + "</font>");
             trainCountYellow.setText("<html><font color=red>" + Integer.toString(yellowCount) + "</font>");
@@ -484,12 +484,12 @@ public class GameClient extends JFrame {
          trainCountOrange.setBounds(300, 0, 35, 40);
          trainsPanel.add(trainCountOrange);
 
-         trainCountPink = new JLabel("<html><font color=red>-</font>", JLabel.CENTER);
-         trainCountPink.setFont(new Font("Arial", Font.BOLD, 30));
-         trainCountPink.setBackground(Color.BLACK);
-         trainCountPink.setOpaque(true);
-         trainCountPink.setBounds(375, 0, 35, 40);
-         trainsPanel.add(trainCountPink);
+         trainCountPURPLE = new JLabel("<html><font color=red>-</font>", JLabel.CENTER);
+         trainCountPURPLE.setFont(new Font("Arial", Font.BOLD, 30));
+         trainCountPURPLE.setBackground(Color.BLACK);
+         trainCountPURPLE.setOpaque(true);
+         trainCountPURPLE.setBounds(375, 0, 35, 40);
+         trainsPanel.add(trainCountPURPLE);
 
          trainCountWhite = new JLabel("<html><font color=red>-</font>", JLabel.CENTER);
          trainCountWhite.setFont(new Font("Arial", Font.BOLD, 30));

@@ -11,11 +11,11 @@ public class RoutePointsDict {
    public RoutePointsDict() {
       try {
           ObjectInputStream ois = new ObjectInputStream(new FileInputStream(VALUES));
-      routeValues = (Hashtable<Integer, Integer>)ois.readObject();
+      routeValues = (Hashtable<Integer, Integer>) ois.readObject();
       
       ois = new ObjectInputStream(new FileInputStream(WEIGHTS));
-      routeWeights = (Hashtable<String, Integer>)ois.readObject();
-      
+      routeWeights = (Hashtable<String, Integer>) ois.readObject();
+
       } catch (Exception e) {
           e.printStackTrace();
       }

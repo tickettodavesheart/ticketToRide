@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.awt.event.*;
+import static java.util.stream.Collectors.*;
+import static java.util.Map.Entry.*;
 
 /**
  * Frame displayed when game ends.
@@ -17,48 +19,71 @@ public class EndGame extends JFrame {
    /**
     * EndGame Constructor
     */
-   public EndGame() {
+   public EndGame(HashMap<String, Integer> scoreList) {
 
+      Map<String,Integer> scoreTable = scoreList;
+      Map<String, Integer> sorted = scoreTable
+            .entrySet()
+            .stream()
+            .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+            .collect(
+               toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2,
+                   LinkedHashMap::new));
+
+      Object[] keys = sorted.keySet().toArray();
+
+      
       // Set frame layout manager to BorderLayout
       setLayout(new BorderLayout(5,5));
 
       // Create a JPanel containing all game info
       JPanel infoPanel = new JPanel();
-      infoPanel.setLayout(new FlowLayout());
+      infoPanel.setLayout(new GridLayout(0,1));
       
       // title of Frame that says "Game Over"
       JLabel paneTitle = new JLabel("<html><center><font size=+2 align=center color=red>Game Over!");
+      paneTitle.setHorizontalAlignment(JLabel.CENTER);
+      paneTitle.setPreferredSize(new Dimension(500, 20));
 
       // Variables to score winner info, such as name and score
-      String winnerName = "WINNER NAME";
-      int winnerScore = 1000;
+      String winnerName = ((String) keys[0]).toUpperCase();
+      int winnerScore = sorted.get(keys[0]);
 
       // JLabel displaying the player's score
       JLabel winner = new JLabel("<html><font size=+1>" + String.format("%s has won the game with %,d points.", winnerName, winnerScore));
+      winner.setHorizontalAlignment(JLabel.CENTER);
+      winner.setPreferredSize(new Dimension(500, 20));
+
+      JLabel scoresTitle = new JLabel("<html><font size=><u>Final Scores:");
+      scoresTitle.setHorizontalAlignment(JLabel.CENTER);
 
       // add objects to infoPanel
       infoPanel.add(paneTitle);
       infoPanel.add(winner);
+      infoPanel.add(scoresTitle);
+
       
       JPanel scorePanel = new JPanel();
-      scorePanel.setLayout(new GridLayout(0,1));
+      scorePanel.setLayout(new GridLayout(0,2));
       
       // Scores
-      ArrayList<String> scoreList = new ArrayList<String>();
       
       // DO SOMETHING HERE THAT TAKES SCORES AND STORES THEM INTO ARRAY LIST
+      
       
       // Display scores
       
       // Heading of scores pane
-      JLabel scoresTitle = new JLabel("<html><font size=><u>Final Scores:");
-      scoresTitle.setHorizontalAlignment(JLabel.CENTER);
-      scorePanel.add(scoresTitle);
 
       // Add each score in the scoreList to the frame as a label
-      for (String score : scoreList) {
-         JLabel scoreLabel = new JLabel(score);
-         scoreLabel.setHorizontalAlignment(JLabel.CENTER);
+      for (Object key : keys) {
+         String player = (String) key;
+         String playerScore = sorted.get(key).toString();
+         JLabel playerLabel = new JLabel(player + " \t \t \t ");
+         JLabel scoreLabel = new JLabel(" \t \t \t " + playerScore);
+         scoreLabel.setHorizontalAlignment(JLabel.LEFT);
+         playerLabel.setHorizontalAlignment(JLabel.RIGHT);
+         scorePanel.add(playerLabel);
          scorePanel.add(scoreLabel);
       }
       // add the score pane to the JFrame
@@ -93,10 +118,6 @@ public class EndGame extends JFrame {
       setLocationRelativeTo(null);
       setUndecorated(true);
       setVisible(true);
-   }
-
-   public static void main(String[] args) {
-      new EndGame();
    }
 
    class ButtonListener implements ActionListener {

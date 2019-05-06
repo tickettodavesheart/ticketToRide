@@ -3,6 +3,7 @@ import java.util.*;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.event.*;
+import java.util.Hashtable;
 
 // RMI
 import java.rmi.registry.LocateRegistry;
@@ -54,8 +55,6 @@ public class CButton extends JButton {
 
    // boolean to limit the selection of a route to once
    private boolean routeClaimed = false;
-
-   //
 
 
    /**
@@ -304,7 +303,23 @@ public class CButton extends JButton {
        */
       public boolean isRouteClaimed() {
             return routeClaimed;
-      }
+		}
+		
+		/** 
+		 * Gets the name of the button.
+		 * @return name of the button
+		 */
+	   public String getButtonName() {
+			return nameButton;
+		}
+		
+		/** 
+		 * Gets the current player name.
+		 * @return name of the player
+		 */
+	   public String getCurrentPlayer() {
+			return currentPlayer;
+		}
 
 
 } // end CButton class
@@ -314,12 +329,15 @@ class RouteAdapter extends MouseAdapter {
       private CButton btn;
       private String selectedName;
       private GameStub stub;
-      private String currentPlayer;
+		private String currentPlayer;
+		private String nameButton;
 
       public RouteAdapter(CButton btn, String selectedName, GameStub stub) {
             this.btn = btn;
             this.selectedName = selectedName;
-            this.stub = stub; 
+				this.stub = stub; 
+				this.nameButton = btn.getButtonName();
+				this.currentPlayer = btn.getCurrentPlayer();
       }
 
       public void mouseEntered(MouseEvent e) {
@@ -381,5 +399,309 @@ class RouteAdapter extends MouseAdapter {
                re.printStackTrace();
             }
          }
+      }
+
+      /**
+       * Checks to see if the user can claim
+       * the given route.
+       * @return if they can claim the route
+       */
+      public boolean canClaimRoute() {
+			// boolean to return
+			boolean canClaim = false;
+         // The counts of each color
+         int blackCount = 0;
+			int blueCount = 0;
+			int greenCount = 0;
+			int neutralCount = 0;
+			int orangeCount = 0;
+			int PURPLECount = 0;
+			int redCount = 0;
+			int whiteCount = 0;
+			int yellowCount = 0;
+         // Getting the current player's trains
+         try {
+				ArrayList<String> currentListOfTrainCards = stub.getPlayerTrainCards(currentPlayer);
+            for (String color : currentListOfTrainCards) {
+               switch (color) {
+                  case "BLACK":
+                     blackCount++;
+                     break;
+                  case "BLUE":
+                     blueCount++;
+                     break;
+                  case "GREEN":
+                     greenCount++;
+                     break;
+                  case "NEUTRAL":
+                     neutralCount++;
+                     break;
+                  case "ORANGE":
+                     orangeCount++;
+                     break;
+                  case "PURPLE":
+                     PURPLECount++;
+                     break;
+                  case "RED":
+                     redCount++;
+                     break;
+                  case "WHITE":
+                     whiteCount++;
+                     break;
+                  case "YELLOW":
+                     yellowCount++;
+                     break;
+               }
+            }
+			} catch (RemoteException re) { }
+
+			// Adding the counts to an arraylist
+			Hashtable<String, Integer> trainColorCountList = new Hashtable<String, Integer>();
+			trainColorCountList.put("BLACK", blackCount);
+			trainColorCountList.put("BLUE", blueCount);
+			trainColorCountList.put("GREEN", greenCount);
+			trainColorCountList.put("ORANGE", orangeCount);
+			trainColorCountList.put("PURPLE", PURPLECount);
+			trainColorCountList.put("RED", redCount);
+			trainColorCountList.put("WHITE", whiteCount);
+			trainColorCountList.put("YELLOW", yellowCount);
+			
+			// Getting the weights of the routes
+			RoutePointsDict rpd = new RoutePointsDict();
+			int routeWeight = rpd.getRouteWeight(nameButton);
+			// Getting the route color
+			String[] buttonNameSplit = nameButton.split("_");
+			String buttonWeightColor = buttonNameSplit[0];
+			ArrayList<String> tempColors = new ArrayList<String>();
+			switch (buttonWeightColor.toUpperCase()) {
+				case "BLACK":
+					if ((blackCount + neutralCount) >= routeWeight) {
+						canClaim = true;
+						if (neutralCount == 0 || blackCount == routeWeight) {
+							for (int i = 0; i < routeWeight; i++) {
+								tempColors.add("BLACK");
+							}
+						} else {
+							int neutralColorsNeeded = routeWeight - blackCount;
+							for (int i = 0; i < blackCount; i++) {
+								tempColors.add("BLACK");
+							}
+							for (int i = 0; i < neutralColorsNeeded; i++) {
+								tempColors.add("NEUTRAL");
+							}
+						}
+					}
+					break;
+				case "BLUE":
+					if ((blueCount + neutralCount) >= routeWeight) {
+						canClaim = true;
+						if (neutralCount == 0 || blueCount == routeWeight) {
+							for (int i = 0; i < routeWeight; i++) {
+								tempColors.add("BLUE");
+							}
+						} else {
+							int neutralColorsNeeded = routeWeight - blueCount;
+							for (int i = 0; i < blueCount; i++) {
+								tempColors.add("BLUE");
+							}
+							for (int i = 0; i < neutralColorsNeeded; i++) {
+								tempColors.add("NEUTRAL");
+							}
+						}
+					}
+					break;
+				case "GREEN":
+					if ((greenCount + neutralCount) >= routeWeight) {
+						canClaim = true;
+						if (neutralCount == 0 || greenCount == routeWeight) {
+							for (int i = 0; i < routeWeight; i++) {
+								tempColors.add("GREEN");
+							}
+						} else {
+							int neutralColorsNeeded = routeWeight - blackCount;
+							for (int i = 0; i < greenCount; i++) {
+								tempColors.add("GREEN");
+							}
+							for (int i = 0; i < neutralColorsNeeded; i++) {
+								tempColors.add("NEUTRAL");
+							}
+						}
+					}
+					break;
+				case "ORANGE":
+					if ((orangeCount + neutralCount) >= routeWeight) {
+						canClaim = true;
+						if (neutralCount == 0 || orangeCount == routeWeight) {
+							for (int i = 0; i < routeWeight; i++) {
+								tempColors.add("ORANGE");
+							}
+						} else {
+							int neutralColorsNeeded = routeWeight - blackCount;
+							for (int i = 0; i < orangeCount; i++) {
+								tempColors.add("ORANGE");
+							}
+							for (int i = 0; i < neutralColorsNeeded; i++) {
+								tempColors.add("NEUTRAL");
+							}
+						}
+					}
+					break;
+				case "PURPLE":
+					if ((PURPLECount + neutralCount) >= routeWeight) {
+						canClaim = true;
+						if (neutralCount == 0 || PURPLECount == routeWeight) {
+							for (int i = 0; i < routeWeight; i++) {
+								tempColors.add("PURPLE");
+							}
+						} else {
+							int neutralColorsNeeded = routeWeight - PURPLECount;
+							for (int i = 0; i < PURPLECount; i++) {
+								tempColors.add("PURPLE");
+							}
+							for (int i = 0; i < neutralColorsNeeded; i++) {
+								tempColors.add("NEUTRAL");
+							}
+						}
+					}
+					break;
+				case "RED":
+					if ((redCount + neutralCount) >= routeWeight) {
+						canClaim = true;
+						if (neutralCount == 0 || redCount == routeWeight) {
+							for (int i = 0; i < routeWeight; i++) {
+								tempColors.add("RED");
+							}
+						} else {
+							int neutralColorsNeeded = routeWeight - redCount;
+							for (int i = 0; i < redCount; i++) {
+								tempColors.add("RED");
+							}
+							for (int i = 0; i < neutralColorsNeeded; i++) {
+								tempColors.add("NEUTRAL");
+							}
+						}
+					}
+					break;
+				case "WHITE":
+					if ((whiteCount + neutralCount) >= routeWeight) {
+						canClaim = true;
+						if (neutralCount == 0 || whiteCount == routeWeight) {
+							for (int i = 0; i < routeWeight; i++) {
+								tempColors.add("WHITE");
+							}
+						} else {
+							int neutralColorsNeeded = routeWeight - whiteCount;
+							for (int i = 0; i < whiteCount; i++) {
+								tempColors.add("WHITE");
+							}
+							for (int i = 0; i < neutralColorsNeeded; i++) {
+								tempColors.add("NEUTRAL");
+							}
+						}
+					}
+					break;
+				case "YELLOW":
+					if ((yellowCount + neutralCount) >= routeWeight) {
+						canClaim = true;
+						if (neutralCount == 0 || yellowCount == routeWeight) {
+							for (int i = 0; i < routeWeight; i++) {
+								tempColors.add("YELLOW");
+							}
+						} else {
+							int neutralColorsNeeded = routeWeight - yellowCount;
+							for (int i = 0; i < yellowCount; i++) {
+								tempColors.add("YELLOW");
+							}
+							for (int i = 0; i < neutralColorsNeeded; i++) {
+								tempColors.add("NEUTRAL");
+							}
+						}
+					}
+					break;
+				case "GREY":
+					JFrame jfTrainCard = new JFrame();
+					JPanel jpTrainCard = new JPanel();
+					JPanel buttonPanel = new JPanel();
+					ButtonGroup bgroup = new ButtonGroup();
+
+					boolean displayFrame = true;
+
+					Set<String> keys = trainColorCountList.keySet();
+					for (String colorCount : keys) {
+							if ((trainColorCountList.get(colorCount)) >= routeWeight) {
+								JRadioButton jrbColorCount = new JRadioButton(colorCount);
+								jrbColorCount.setActionCommand(colorCount);
+								bgroup.add(jrbColorCount);
+								jpTrainCard.add(jrbColorCount);
+							}
+							else if ((trainColorCountList.get(colorCount) + neutralCount) >= routeWeight) {
+								JRadioButton jrbColorCount = new JRadioButton(colorCount + " and NEUTRAL");
+								jrbColorCount.setActionCommand(colorCount + " and NEUTRAL");
+								bgroup.add(jrbColorCount);
+								jpTrainCard.add(jrbColorCount);
+							} else {
+								displayFrame = false;
+							}
+					}
+
+					JButton jbOK = new JButton("Select");
+					buttonPanel.add(jbOK);
+
+					// Action listener for the okay button
+					jbOK.addActionListener(
+						e -> {
+							// Getting the choosen button in the group
+							String selectedText = bgroup.getSelection().getActionCommand();
+							// Getting the main color to take from 
+							String[] jrbSplitSelection = selectedText.split(" ");
+							String mainColor = jrbSplitSelection[0];
+							int mainNumber = 0;
+							// Finding the main color in the arralylist of colors
+							Set<String> jrbKeys = trainColorCountList.keySet();
+							for (String currentCount : jrbKeys) {
+									if (currentCount.equals(mainColor)) {
+										mainNumber = trainColorCountList.get(currentCount);
+									}
+							}	
+							if (selectedText.contains("NEUTRAL")) {
+								int neutralColorsNeeded = routeWeight - mainNumber;
+								for (int i = 0; i < mainNumber; i++) {
+									tempColors.add(mainColor);
+								}
+								for (int i = 0; i < neutralColorsNeeded; i++) {
+									tempColors.add("NEUTRAL");
+								}
+							} else {
+								for (int i = 0; i < routeWeight; i++) {
+									tempColors.add(mainColor);
+								}
+							}
+							jfTrainCard.dispose();
+
+							// Adding to the temp color
+							try {
+								stub.tempStoreTrainColorCards(tempColors);
+							} catch (RemoteException re) { }
+						});
+
+					jfTrainCard.add(buttonPanel, BorderLayout.SOUTH);
+					jfTrainCard.add(jpTrainCard, BorderLayout.CENTER);
+					if (displayFrame) {
+						jfTrainCard.pack();
+						jfTrainCard.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+						jfTrainCard.setVisible(true);
+						jfTrainCard.setLocationRelativeTo(null);
+					}
+
+					break;
+			}
+
+			// Adding to the temp color
+			try {
+				stub.tempStoreTrainColorCards(tempColors);
+			} catch (RemoteException re) { }
+
+			return canClaim;
+
       }
    } // end MouseListener
