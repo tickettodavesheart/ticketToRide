@@ -303,7 +303,7 @@ public class GameServer implements GameStub {
    }
 
    /**
-    * Stub method to get all of the players destination cards
+    * Stub method to get all of the players train cards
     * 
     * @param player the player to get the list from
     * @return list of player's cards
