@@ -48,7 +48,8 @@
 <h3>Game Board</h3>
 <a href="https://ncdn0.daysofwonder.com/tickettoride/en/img/tt_rules_2015_en.pdf"><img src="https://user-images.githubusercontent.com/13056414/57227484-84540600-6fdf-11e9-8ce6-7f3ea7228e2e.png" alt="Game Board" width="500px"></a>
 <h3>Game Lobby</h3>
-<img src="https://user-images.githubusercontent.com/30247155/57205279-88eecf00-6f8b-11e9-9eee-6466f86278be.PNG" alt="Game Lobby" width="500px">
+<img src="https://user-images.githubusercontent.com/13056414/57229364-e282e800-6fe3-11e9-812b-d00eb8c86393.png" alt="Game Lobby" width="500px">
+<h3>End of Game Scores</h3>
 <img width="500px" alt="End of Game" src="https://user-images.githubusercontent.com/13056414/57229244-9637a800-6fe3-11e9-8598-ec9f4e573465.png">
 
 <br><br>
