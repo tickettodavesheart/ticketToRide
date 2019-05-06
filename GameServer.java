@@ -38,8 +38,8 @@ public class GameServer implements GameStub {
           "BLUE", "BLUE", "BLUE", "BLUE", "BLUE", "BLUE", "BLUE", "BLUE", "GREEN", "GREEN", "GREEN", "GREEN", "GREEN",
           "GREEN", "GREEN", "GREEN", "GREEN", "GREEN", "GREEN", "GREEN", "NEUTRAL", "NEUTRAL", "NEUTRAL", "NEUTRAL",
           "NEUTRAL", "NEUTRAL", "NEUTRAL", "NEUTRAL", "NEUTRAL", "NEUTRAL", "NEUTRAL", "NEUTRAL", "ORANGE", "ORANGE",
-          "ORANGE", "ORANGE", "ORANGE", "ORANGE", "ORANGE", "ORANGE", "ORANGE", "ORANGE", "ORANGE", "ORANGE", "PINK",
-          "PINK", "PINK", "PINK", "PINK", "PINK", "PINK", "PINK", "PINK", "PINK", "PINK", "PINK", "RED", "RED", "RED",
+          "ORANGE", "ORANGE", "ORANGE", "ORANGE", "ORANGE", "ORANGE", "ORANGE", "ORANGE", "ORANGE", "ORANGE", "PURPLE",
+          "PURPLE", "PURPLE", "PURPLE", "PURPLE", "PURPLE", "PURPLE", "PURPLE", "PURPLE", "PURPLE", "PURPLE", "PURPLE", "RED", "RED", "RED",
           "RED", "RED", "RED", "RED", "RED", "RED", "RED", "RED", "RED", "WHITE", "WHITE", "WHITE", "WHITE", "WHITE",
           "WHITE", "WHITE", "WHITE", "WHITE", "WHITE", "WHITE", "WHITE", "YELLOW", "YELLOW", "YELLOW", "YELLOW",
           "YELLOW", "YELLOW", "YELLOW", "YELLOW", "YELLOW", "YELLOW", "YELLOW", "YELLOW"));
@@ -62,6 +62,10 @@ public class GameServer implements GameStub {
 
    // Hastable of player's train cards
    private Hashtable<String, ArrayList<String>> playerTrainCards = new Hashtable<String, ArrayList<String>>();
+
+   // temp store of the color train cards to remove
+   // removed after end turn method
+   private ArrayList<String> tempColorsToRemove;
 
    // Document builders for XML parsing
    private DocumentBuilder builder;
@@ -323,6 +327,39 @@ public class GameServer implements GameStub {
       System.out.println(returnList);
       return returnList;
    }
+ 
+    /**
+    * Method remove player train cards.
+    * @param player the player to get the list from
+    * @param colorToRemove the color to remove
+    * @throws RemoteException when RMI does not work.
+    */
+    public void removePlayerTrainCards(String player) {
+        Set<String> keys = playerTrainCards.keySet();
+        System.out.println(keys);
+        for (String key : keys) {
+           System.out.println(key);
+           if (key.equals(player)) {
+              ArrayList<String> currentListOfTrainCards = playerTrainCards.get(key);
+              for (String colorToRemove : tempColorsToRemove) {
+                currentListOfTrainCards.remove(colorToRemove);  
+                System.out.println("Removed: " + colorToRemove + " from " + player);     
+              }
+              System.out.println(playerTrainCards.get(key));
+           }
+        }
+    }
+
+    /**
+    * Method to temp store the cards to remove from the train cards of a player.
+    * @param colorsToRemove the color to remove
+    * @throws RemoteException when RMI does not work.
+    */
+    public void tempStoreTrainColorCards(ArrayList colorsToRemove) {
+        // Setting the temp color arraylist
+        tempColorsToRemove = colorsToRemove;
+        System.out.println("Colors to remove temp: " + tempColorsToRemove);
+    }
 
    /**
     * First gets the weight of the route and decrements the number of trains that a

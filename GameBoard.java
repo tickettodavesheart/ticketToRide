@@ -276,6 +276,17 @@ public class GameBoard extends JPanel {
                            destinationList.add((DestinationCard)box.getClientProperty("card"));
                            hasClaimedDestCard = true;
                         }
+
+                     }
+                     destCardTurns++;                     
+                  }
+                  if (checklistValid) {
+                     for (JCheckBox box : checkBoxList) {
+                        if (box.isSelected()) {
+                           //box.addActionListener(new RadioActionListener());
+                           destinationList.add((DestinationCard)box.getClientProperty("card"));
+                           hasClaimedDestCard = true;
+                        }
                      }
                      destCardTurns++;                     
                   }
@@ -517,6 +528,14 @@ public class GameBoard extends JPanel {
     * Run at end of each users turn to send updates to the server.
     */
    public void endTurn() {
+      // Removing the train cards that the 
+      // player used that turn if 
+      if (!hasClaimedTrainCard) {
+        try {
+            stub.removePlayerTrainCards(currentPlayer);
+        } catch (RemoteException re) { }
+      }
+
       // increment the turn counter
       turnNumber++;
       System.out.println("\n\n\n\nEndPlayer Turn: " + endPlayerTurn);

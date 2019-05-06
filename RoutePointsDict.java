@@ -11,14 +11,11 @@ public class RoutePointsDict {
    public RoutePointsDict() {
       try {
           ObjectInputStream ois = new ObjectInputStream(new FileInputStream(VALUES));
-      routeValues = (Hashtable<Integer, Integer>)ois.readObject();
+      routeValues = (Hashtable<Integer, Integer>) ois.readObject();
       
       ois = new ObjectInputStream(new FileInputStream(WEIGHTS));
-      routeWeights = (Hashtable<String, Integer>)ois.readObject();
-      
-      System.out.println("Values : " + routeValues);
-      
-      System.out.println("Weights: " + routeWeights);
+      routeWeights = (Hashtable<String, Integer>) ois.readObject();
+
       } catch (Exception e) {
           e.printStackTrace();
       }
@@ -33,7 +30,6 @@ public class RoutePointsDict {
       int weight;
       
       weight = routeWeights.get(route);
-      System.out.println("Returned weight: " + weight);
       return weight;
    }
     
