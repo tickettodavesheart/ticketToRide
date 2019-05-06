@@ -27,7 +27,7 @@ public class GameServer implements GameStub {
    private boolean firstDeal = true;
 
    // Final score table
-   private Hashtable<String, Integer> finalScores = new Hashtable<String, Integer>();
+   private HashMap<String, Integer> finalScores = new HashMap<String, Integer>();
    // The visible train cards
    private ArrayList<String> visibleTrainCards = new ArrayList<String>();
    // Vector of arraylists with each route and color that it takes
