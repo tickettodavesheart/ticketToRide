@@ -16,9 +16,6 @@ public class RoutePointsDict {
       ois = new ObjectInputStream(new FileInputStream(WEIGHTS));
       routeWeights = (Hashtable<String, Integer>)ois.readObject();
       
-      System.out.println("Values : " + routeValues);
-      
-      System.out.println("Weights: " + routeWeights);
       } catch (Exception e) {
           e.printStackTrace();
       }
@@ -33,7 +30,6 @@ public class RoutePointsDict {
       int weight;
       
       weight = routeWeights.get(route);
-      System.out.println("Returned weight: " + weight);
       return weight;
    }
     

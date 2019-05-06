@@ -18,7 +18,7 @@ public class ServerGUI extends JFrame {
     */
    public ServerGUI(String localhost) {
 
-      System.out.println(localhost);
+      System.out.println("[INFO] Server is ready at " + localhost);
 
       setLayout(new BorderLayout(10, 10));
 

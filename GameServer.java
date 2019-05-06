@@ -93,7 +93,7 @@ public class GameServer implements GameStub {
     */
    @Override
    public void sendMessage(String message) {
-      System.out.println("New message: " + message);
+      System.out.println("[INFO] Message from Chat: " + message);
       messages.add(message);
    }
 
@@ -312,15 +312,11 @@ public class GameServer implements GameStub {
    public ArrayList<String> getPlayerTrainCards(String player) {
       ArrayList<String> returnList = null;
       Set<String> keys = playerTrainCards.keySet();
-      System.out.println(keys);
       for (String key : keys) {
-         System.out.println(key);
          if (key.equals(player)) {
-            System.out.println("in key return");
             returnList = playerTrainCards.get(key);
          }
       }
-      System.out.println(returnList);
       return returnList;
    }
 
@@ -392,7 +388,6 @@ public class GameServer implements GameStub {
       // Setting last turn to the
       lastTurnCounter = playerNames.indexOf(player);
       lastTurnHasNotStarted = false;
-      System.out.println("Started countdown");
    }
 
    /**
@@ -404,7 +399,6 @@ public class GameServer implements GameStub {
    public void isItLastTurn(String player) {
       // TODO: change this to the end of game JFRame
       if (playerNames.indexOf(player) == lastTurnCounter) {
-         System.out.println("They are equal exiting");
          System.exit(0);
          // End Game Here
       }
@@ -430,7 +424,6 @@ public class GameServer implements GameStub {
    public void isGameOver(String player) {
       // TODO: change this to the end of game JFRame
       if (playerNames.indexOf(player) == lastTurnCounter) {
-         System.out.println("They are equal exiting");
          System.exit(0);
          // End Game Here
          // End Game Here

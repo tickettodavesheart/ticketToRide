@@ -112,7 +112,6 @@ public class CButton extends JButton {
     * @param state if they are on or off
     */
    public void toggleButton(boolean state) {
-         //System.out.println(getButtonID() + " claimed = " + routeClaimed);
          ml = new RouteAdapter(this, selectedName, stub);
       if (state && !routeClaimed) {
          MouseListener[] mla = getMouseListeners();
@@ -139,20 +138,16 @@ public class CButton extends JButton {
     * Method that is called when the user's turn is over.
     */
    public void endTurn(String routeName, String playerToAdd) {
-      System.out.println("\n\n\n" + routeName + " " + routeClaimed + "\n\n\n");
          try {
             if(getSelected() && !this.routeClaimed){
                this.routeClaimed = true;
-               System.out.println("\n\n\n" + routeName + " " + routeClaimed + "\n\n\n");
             }
             // Sending the selected route and name to the 
             // server to paint on the next client
             stub.addRoute(playerToAdd, routeName);
-            System.out.println("Added: " + playerToAdd + " to route: " + routeName);
 				sendRoutes = false;
 				// No longer can select a route
             toggleButton(false);
-            System.out.println(routeName + "claimed = " + this.routeClaimed);
          } catch (Exception endTurnE) { 
             endTurnE.printStackTrace();
          }
@@ -338,9 +333,6 @@ class RouteAdapter extends MouseAdapter {
       }
 
       public void mouseClicked(MouseEvent e) {
-         System.out.println(btn.getButtonID());
-         System.out.println("gameboard hasclaimedroute = " + ( (GameBoard) btn.getParent() ).getHasClaimedRoute());
-
          // if you haven't done anything else this turn, you can select a route
          if( (!( (GameBoard) btn.getParent() ).getHasClaimedRoute() 
                && !( (GameBoard) btn.getParent() ).getHasClaimedTrainCard()
@@ -370,14 +362,13 @@ class RouteAdapter extends MouseAdapter {
                }
                // Decrementing the player's trains
                stub.decrementPlayerTrains(currentPlayer, btn.getButtonID());
-               System.out.println(btn.getButtonID());
                ////btn.toggleSelectedOnce(false);
                // Ending
                // Ending the turn
                //btn.endTurn(btn.getButtonID(), stub.getTockenOwner());
             } catch (Exception re) {
                   re.printStackTrace();
-                  System.out.println(re);
+                  System.err.println("[Exception]: A RemoteException has occurred - " + re);
                }
          } else if(btn.getSelected()) {
             try {
