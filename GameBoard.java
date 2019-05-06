@@ -41,6 +41,9 @@ public class GameBoard extends JPanel {
    // ArrayList for claimed routes
    private ArrayList<String> claimedRoutes = new ArrayList<String>();
 
+   // selected routes from server
+   private Hashtable<String, String> selectedFromServer = new Hashtable<String, String>();
+
    // For RMI
    private GameStub stub;
    
@@ -440,7 +443,7 @@ public class GameBoard extends JPanel {
             // Sending a message out who's turn it is
             stub.sendMessage(currentPlayer + " is playing");
             // Getting all the new selected routes and setting them
-            Hashtable<String, String> selectedFromServer = stub.updateRoutes();
+            selectedFromServer = stub.updateRoutes();
             Object[] keys = selectedFromServer.keySet().toArray();
          
             // Creating the default player index
@@ -577,7 +580,7 @@ public class GameBoard extends JPanel {
      * 
      * @param state true or false to toggle
      */
-   public void toggleComponents(boolean state) {
+   public void toggleComponents(boolean state) throws RemoteException{
       Component[] components = getComponents();
       for (Component c : components) {
          c.setEnabled(state);
@@ -585,7 +588,7 @@ public class GameBoard extends JPanel {
          if (c instanceof CButton) {
                 // Toggling the buttons on or off
             CButton cb = (CButton) c;
-            cb.toggleButton(state);
+            cb.toggleButton(state, selectedFromServer);
          }
       }
    }
