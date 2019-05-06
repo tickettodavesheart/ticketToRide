@@ -41,6 +41,7 @@
 <strong>0.07</strong> Started to add start and end of turn sequences<br>
 <strong>0.07</strong> Calculated the longest path for the end of game<br>
 <strong>0.07</strong> A gameboard in a single JFrame<br>
+<strong>1.0</strong> Initial Release<br>
 
 <br><br>
 <h1>Todo</h1>
@@ -51,7 +52,7 @@
 <br><br>
 <h1>Screenshots</h1>
 <h3>Game Board</h3>
-<a href="https://ncdn0.daysofwonder.com/tickettoride/en/img/tt_rules_2015_en.pdf"><img src="https://user-images.githubusercontent.com/30247155/57205266-5a70f400-6f8b-11e9-8915-dad73340a817.PNG" alt="Game Board" width="500px"></a>
+<a href="https://ncdn0.daysofwonder.com/tickettoride/en/img/tt_rules_2015_en.pdf"><img src="https://user-images.githubusercontent.com/13056414/57227484-84540600-6fdf-11e9-8ce6-7f3ea7228e2e.png" alt="Game Board" width="500px"></a>
 <h3>Game Lobby</h3>
 <img src="https://user-images.githubusercontent.com/30247155/57205279-88eecf00-6f8b-11e9-9eee-6466f86278be.PNG" alt="Game Lobby" width="500px">
 
