@@ -111,8 +111,9 @@ public class GameBoard extends JPanel {
          // if they are starting the token with them
          if (stub.getPlayerNames().size() == 0) {
             stub.setTokenOwner(currentPlayer);
+            System.out.println("Set token owner: " + stub.getTockenOwner());
          } else {
-
+            System.out.println("Current token owner: " + stub.getTockenOwner());
          }
          // Adding the player to the list of players on the server
          stub.addName(nickname);
@@ -123,7 +124,7 @@ public class GameBoard extends JPanel {
          stub.addPlayerCards(nickname, dealtCards);
          for (String card : dealtCards) {
             cardsList.add(card);
-
+            System.out.println("Card: " + card);
          }
       
       
@@ -208,6 +209,9 @@ public class GameBoard extends JPanel {
     * method to prompt user for destination cards.
     */
    public void getDestinationCards() {
+      System.out.println("Has Claimed Dest Card: " + hasClaimedDestCard);
+      System.out.println("beginning Cards: " + beginningCards);
+      System.out.println("turnNumber: " + turnNumber);
       // Getting the destination cards from the server
       if ((!hasClaimedDestCard && !hasClaimedRoute && !hasClaimedTrainCard) || (turnNumber < 1 && !hasClaimedRoute && !hasClaimedTrainCard && destCardTurns <= 1)) {
          try {
@@ -243,7 +247,8 @@ public class GameBoard extends JPanel {
                   }
                   if (beginningCards) {
                      if (twoSelected >= 2) {
-                        // Removing choosen cards from the server
+                        jfDest.dispose();
+                     // Removing choosen cards from the server
                         try {
                            for (DestinationCard dc : destinationList) {
                               stub.removeDestinationCard(dc);
@@ -266,17 +271,6 @@ public class GameBoard extends JPanel {
                      } else {
                         checklistValid = false;
                      }
-                  }
-                  if (checklistValid) {
-                     for (JCheckBox box : checkBoxList) {
-                        if (box.isSelected()) {
-                           //box.addActionListener(new RadioActionListener());
-                           destinationList.add((DestinationCard)box.getClientProperty("card"));
-                           hasClaimedDestCard = true;
-                        }
-
-                     }
-                     destCardTurns++;                     
                   }
                   if (checklistValid) {
                      for (JCheckBox box : checkBoxList) {
@@ -312,8 +306,6 @@ public class GameBoard extends JPanel {
          
             jfDest.pack();
             jfDest.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-            jfDest.setResizable(false);
-            jfDest.setTitle("Select Destination Cards");
             jfDest.setVisible(true);
             jfDest.setLocationRelativeTo(null);
             
@@ -322,6 +314,9 @@ public class GameBoard extends JPanel {
    }
 
    public void getTrainCards() {
+      System.out.println("Has Claimed Dest Card: " + hasClaimedDestCard);
+      System.out.println("beginning Cards: " + beginningCards);
+      System.out.println("turnNumber: " + turnNumber);
       if ((!hasClaimedDestCard && !hasClaimedRoute && numCardsClaimed < 2) || (turnNumber < 1 && !hasClaimedRoute && numCardsClaimed < 2 && destCardTurns == 1)) {
          try {
             // add a swing InvokeLater here??
@@ -347,6 +342,7 @@ public class GameBoard extends JPanel {
                //if (beginningCards) {
                   if (selectedTrains == 1) {
                      for (String s : cardsList) {
+                        System.out.println(s);
                      }
                      jfTrain.dispose();
                   // Removing choosen card from the server
@@ -357,6 +353,7 @@ public class GameBoard extends JPanel {
                });
          
             visibleTrainCards = stub.getVisibleTrainCards();
+            System.out.println("Grabbed visibleTrainCards from server. Count: " + visibleTrainCards.size());
             int rainbowCount = 0;
             for (String s: visibleTrainCards) {
                if (s.equals("NEUTRAL")) {
@@ -371,6 +368,7 @@ public class GameBoard extends JPanel {
                }
                visibleTrainCards.clear();
                visibleTrainCards = stub.getVisibleTrainCards();
+               System.out.println("visibleTrainCards cleared. Reset to size: " + visibleTrainCards.size());
             }
             
          
@@ -420,7 +418,7 @@ public class GameBoard extends JPanel {
     */
    public void startTurn() {
 
-      
+      endPlayerTurn = true;
       
       // Checking if this is their last turn
       try {
@@ -434,6 +432,7 @@ public class GameBoard extends JPanel {
       try {
          if (sendPlayer) {
             toggleComponents(true);
+            System.out.println("SendPlayer If");
          
             // reset controls
             hasClaimedTrainCard = false;
@@ -448,9 +447,16 @@ public class GameBoard extends JPanel {
          
             // Creating the default player index
             int currentPlayerIndex = 0;
+
+            System.out.println(selectedFromServer.toString());
+            System.out.println("Keys length: " + keys.length);
+         
+            System.out.println("above for loop");
          
             // Iterating over the vector to see which ones need to be repainted
             for (Object key : keys) {
+               System.out.println("in the t");
+               System.out.println((String) key);
                // Parsing the id into color and names
                // 0 is the color
                String[] parsed = ((String) key).split("_");
@@ -465,7 +471,9 @@ public class GameBoard extends JPanel {
                // getting the current players index for painting
                playerNames = stub.getPlayerNames();
                for (int j = 0; j < playerNames.size(); j++) {
+                  System.out.println("we in the for");
                   if (playerNames.get(j).equals(selectedFromServer.get(key))) {
+                     System.out.println("in the if");
                      currentPlayerIndex = j;
                   }
                }
@@ -473,12 +481,13 @@ public class GameBoard extends JPanel {
                // iterate through the player names list to find the index 
                // of the current player, and set the color of the road 
                // to the corresponding color
+               System.out.println("Printing w player index: " 
+                     + selectedFromServer.get(key));
                // Calling the method to paint the color
                // on the given CButton
                buttonToPaint.colorButton("color" 
                         + currentPlayerIndex);
             }
-            endPlayerTurn = true;
          
          
             // If the last turn has not already started
@@ -511,16 +520,9 @@ public class GameBoard extends JPanel {
     * Run at end of each users turn to send updates to the server.
     */
    public void endTurn() {
-      // Removing the train cards that the 
-      // player used that turn if 
-      if (!hasClaimedTrainCard) {
-        try {
-            stub.removePlayerTrainCards(currentPlayer);
-        } catch (RemoteException re) { }
-      }
-
       // increment the turn counter
       turnNumber++;
+      System.out.println("\n\n\n\nEndPlayer Turn: " + endPlayerTurn);
       if (endPlayerTurn) {
          // sending route to server to be painted on other clients
          try {
@@ -529,6 +531,7 @@ public class GameBoard extends JPanel {
             // adding route to player's local list of owned routes
             claimedRoutes.add(currentClaimedRoute);
             }
+            System.out.println("your currently claimed routes are: " + claimedRoutes);
            // Turning the components off
            toggleComponents(false);
         
@@ -555,6 +558,9 @@ public class GameBoard extends JPanel {
             } else {
                 stub.setTokenOwner(playerNames.get(0));
             }
+            System.out.println("Token changed to: " + stub.getTockenOwner());
+        
+            System.out.println("Current Player: " + currentPlayer);
         
             // If the last turn has not already started
             if (stub.lastTurnStarted()) {
@@ -625,14 +631,18 @@ public class GameBoard extends JPanel {
                   ArrayList<String> randomCard = stub.dealCards(1);
                   card = randomCard.get(0);
                   numCardsClaimed++;
+                  System.out.println("numCardsClaimed incremented with random");
                } else if (card.equals("NEUTRAL")) {
                   if (numCardsClaimed >= 1) {
                      cardsList.remove(card);
                   } else {
                      numCardsClaimed = numCardsClaimed + 2;
+                     System.out.println("numCardsClaimed incremented by 2");
                   }
                } else {
                   numCardsClaimed++;
+                  System.out.println("numCardsClaimed incremented by default");
+               
                }
                cardsList.add(card);
                stub.removeTrainCard(card);
@@ -640,6 +650,7 @@ public class GameBoard extends JPanel {
                stub.setUsedVisibleTrainCards(visibleTrainCards);
                hasClaimedTrainCard = true;
                turn = false;
+               System.out.println("numCardsClaimed: " + numCardsClaimed);
             
                // Adding to the server
                stub.addPlayerCards(currentPlayer, cardsList);
@@ -671,6 +682,7 @@ public class GameBoard extends JPanel {
       } else {
          currentClaimedRoute = "";
       }
+      System.out.println(currentPlayer + " has claimed " + routeName + " set to " + toggle);
    }
 
    /**
