@@ -467,65 +467,6 @@ public class GameServer implements GameStub {
       }
    }
 
-   /**
-    * Given the route gets the weight of the route
-    * 
-    * @param route the route to check
-    * @return the weight of the route
-    */
-   public int getRouteWeight(String route) {
-      // Creating the hashtable of all the routes
-      // and weights
-      try {
-         generateHashTable();
-      } catch (Exception e) {
-      }
-   
-      // Searching the hashtable for the supplied route
-      // and returning the weight
-      return hashedRoutes.get(route);
-   }
-
-   /**
-    * Parses an XML file and generates a hashtable for it.
-    * 
-    * @throws SAXException                 for SAX error
-    * @throws IOException                  for IO exception
-    * @throws XPathExpressionException     for XPATH error
-    * @throws ParserConfigurationException when can't configure the XML parser
-    */
-   public void generateHashTable()
-           throws SAXException, IOException, XPathExpressionException, ParserConfigurationException {
-      // Builing the parser
-      DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
-      builder = dbfactory.newDocumentBuilder();
-      XPathFactory xpfactory = XPathFactory.newInstance();
-      path = xpfactory.newXPath();
-   
-      // Getting the XML to build the DOM
-      File f = new File("data/routes.xml");
-      Document doc = builder.parse(f);
-   
-      // Getting the city count
-      int cityCount = Integer.parseInt(path.evaluate("count(/routes/city)", doc));
-   
-      // Strings
-      int currentWeight = -1;
-      String currentRoute = "";
-   
-      for (int i = 1; i <= cityCount; i++) {
-         int routeCount = Integer.parseInt(path.evaluate("count(/routes/city[" + i + "]/route)", doc));
-         for (int j = 1; j <= routeCount; j++) {
-            currentRoute = path.evaluate("/routes/city[" + i + "]" + "/route[" + j + "]/id", doc);
-            currentWeight = Integer
-                   .parseInt(path.evaluate("/routes/city[" + i + "]" + "/route[" + j + "]/weight", doc));
-         
-            hashedRoutes.put(currentRoute, currentWeight);
-         }
-      
-      }
-   
-   }
    
    
    /**

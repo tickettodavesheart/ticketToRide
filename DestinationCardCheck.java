@@ -33,7 +33,7 @@ public class DestinationCardCheck {
      */
    public DestinationCardCheck() {
       try {
-         ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File("resources/MAP_HASHED.obj")));
+         ObjectInputStream ois = new ObjectInputStream(getClass().getResourceAsStream("resources/MAP_HASHED.obj"));
          MASTER_LIST = (Hashtable<String, Hashtable<String, ArrayList<String>>>)ois.readObject();
          ois.close();
       } catch(Exception E) {

@@ -14,14 +14,14 @@ public class DestinationDeck {
   // arraylist deck of cards
    ArrayList<DestinationCard> deck = null;
   // file to be read in as the deck
-   private final File DECK_FILE = new File("resources/DestinationDeck.obj");
+   private final String DECK_FILE = "resources/DestinationDeck.obj";
   
   /**
    * DestinationDeck constructor - reads in deck file and creates the deck.
    */
    public DestinationDeck() {
       try {
-         this.ois = new ObjectInputStream(new FileInputStream(DECK_FILE));
+         this.ois = new ObjectInputStream(getClass().getResourceAsStream(DECK_FILE));
          this.deck = (ArrayList<DestinationCard>)ois.readObject();
       } catch(Exception e) {
          this.deck = new ArrayList<DestinationCard>();
