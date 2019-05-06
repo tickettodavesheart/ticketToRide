@@ -112,7 +112,22 @@ public class CButton extends JButton {
     */
    public void toggleButton(boolean state, Hashtable<String, String> selectedFromServer) {
          ml = new RouteAdapter(this, selectedName, stub);
-         ArrayList<String> selectedRoutes = new ArrayList<String>(selectedFromServer.values());
+         Hashtable<String, String> routes = null;
+         try {
+            routes = stub.updateRoutes();
+            //System.out.print(routes);
+         } catch (Exception e) {
+            System.out.println(e);
+         }
+         ArrayList<String> selectedRoutes = new ArrayList<String>();
+         Object[] c = routes.keySet().toArray();
+
+         for(Object o : c) {
+            selectedRoutes.add((String) o);
+         }
+
+         System.out.println(selectedRoutes);
+         System.out.println(getButtonID() + "index of = " + selectedRoutes.indexOf(getButtonID()));
       if (state && !routeClaimed && (selectedRoutes.indexOf(getButtonID()) == -1)) {
          MouseListener[] mla = getMouseListeners();
          if (mla.length > 0) {
