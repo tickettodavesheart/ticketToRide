@@ -135,12 +135,13 @@ public class GameClient extends JFrame {
       // Sidebar JPanel
       JPanel sideBar = new JPanel();
       sideBar.setLayout(new BorderLayout(10, 10));
+      sideBar.setPreferredSize(new Dimension(325, 10));
 
       setLayout(new BorderLayout(10, 10));
 
       Thread chatThread = new Thread(new Runnable() {
          public void run() {
-            sideBar.add(new ChatClient(ip, stubID, name, nickname), BorderLayout.CENTER);
+            sideBar.add(new ChatClient(ip, stubID, name, nickname), BorderLayout.SOUTH);
          }
       });
       Thread gameThread = new Thread(new Runnable() {
@@ -161,39 +162,37 @@ public class GameClient extends JFrame {
       JPanel upperSidebar = new JPanel();
       upperSidebar.setLayout(new GridLayout(0,1));
 
-
       JPanel gameInfo = new JPanel();
      
       gameInfo.setLayout(new GridLayout(0, 2));
-      //gameInfo.setPreferredSize(new Dimension(80, 150));
       gameInfo.setBorder(BorderFactory.createTitledBorder("Game Info"));
 
-      JLabel labelGameName = new JLabel("Game: ");
-      gameInfo.add(labelGameName);
+      gameInfo.add(new JLabel("Game: "));
 
       JLabel gameName = new JLabel(name);
       gameInfo.add(gameName);
 
-      JLabel labelCurrPlayer = new JLabel("<html>Current Player: </html>");
-      gameInfo.add(labelCurrPlayer);
-      gameInfo.add(Box.createRigidArea(fillerSize));
+      gameInfo.add(new JLabel("Current Player: "));
 
       currPlayer = new JLabel();
       gameInfo.add(currPlayer);
-      gameInfo.add(Box.createRigidArea(fillerSize));
 
-      JLabel labelPlayerNames = new JLabel("<html>Players: </html>");
-      gameInfo.add(labelPlayerNames);
-      gameInfo.add(Box.createRigidArea(fillerSize));
+      gameInfo.add(new JLabel("Players: "));
 
       playerNames = new JLabel();
       gameInfo.add(playerNames);
-      gameInfo.add(Box.createRigidArea(fillerSize));
 
 
       JPanel roundInfo = new JPanel();
       roundInfo.setLayout(new GridLayout(0,2));
       roundInfo.setBorder(BorderFactory.createTitledBorder("Your Hand"));
+      
+      // Train Card Count
+      trainCardCount = new JLabel("45");
+
+      //cardInfo.add(trainIconLabel);
+      roundInfo.add(new JLabel("Train Cards: "));
+      roundInfo.add(trainCardCount);
 
       roundInfo.add(new JLabel("Destination Cards: "));
 
@@ -206,7 +205,7 @@ public class GameClient extends JFrame {
       upperSidebar.add(roundInfo);
 
       // add upperSidebar pane to sidebar
-      sideBar.add(upperSidebar, BorderLayout.NORTH);
+      sideBar.add(upperSidebar, BorderLayout.CENTER);
 
       // Bottom JPanel
       bottomBar.setLayout(new BorderLayout(10, 10));
@@ -237,18 +236,13 @@ public class GameClient extends JFrame {
       ImageIcon trainIcon = new ImageIcon(trainImg);
       trainIconLabel.setIcon(trainIcon);
 
-      // Train Card Count
-      trainCardCount = new JLabel("45");
-
-      cardInfo.add(trainIconLabel);
-      cardInfo.add(trainCardCount);
 
       // Add cardInfo to bottomBar
       bottomBar.add(cardInfo, BorderLayout.WEST);
 
       // cardDecks JPanel
       JPanel cardDecks = new JPanel();
-      cardDecks.setLayout(new FlowLayout(FlowLayout.LEFT, 40, 10));
+      cardDecks.setLayout(new FlowLayout(FlowLayout.LEFT, 60, 10));
 
       // Destination Card Deck Icon
       JLabel destDeckLabel = new JLabel();
@@ -282,7 +276,7 @@ public class GameClient extends JFrame {
       add(bottomBar, BorderLayout.SOUTH);
 
       // Set JFrame sizing
-      setSize(1210, 750);
+      setSize(1250, 750);
       setTitle("Ticket to Ride - In Game: " + name);
       setResizable(false);
       setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -299,7 +293,6 @@ public class GameClient extends JFrame {
                try {
                   // Shutdown messages
                   stub.sendMessage(nickname + " has left the game.");
-                  System.out.println("Starting shutdown");
 
                   // Locating the Registry
                   Registry registry = LocateRegistry.getRegistry(ip);
@@ -307,10 +300,8 @@ public class GameClient extends JFrame {
                   // Looking up the ServerStub class
                   ServerStub serverStub = (ServerStub) registry.lookup("ServerStub");
 
-                  System.out.println("Connected to the server");
-
                   // Calling the shutdown method on the server
-                  System.out.println(serverStub.shutdownClient(name));
+                  serverStub.shutdownClient(name);
 
                   // Getting rid of the client
                   dispose();

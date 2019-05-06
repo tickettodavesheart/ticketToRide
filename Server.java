@@ -315,7 +315,7 @@ public class Server implements ServerStub {
             // If a new game is being created, bind a stub to a
             // new port
             if (toBind) {
-                System.out.println("\n\n\nPort: " + port);
+               //System.out.println("\n\n\nPort: " + port);
                // Starting the RMI registry at port as generated
                LocateRegistry.createRegistry(port);
 
@@ -334,16 +334,16 @@ public class Server implements ServerStub {
                registry.bind("GameStub" + GENERATED_PORT, stub);
             }   
 
-            System.out.println("New Game Created on port " + port);
+            System.out.println("[INFO] New game created on port " + port);
 
             InetAddress iAddress = InetAddress.getLocalHost();
             CURRENT_IP = iAddress.getHostAddress();
 
          } catch (RemoteException re) {
-            System.err.println("Server exception: " + re.toString());
+            System.err.println("[WARNING] Server exception: " + re.toString());
             re.printStackTrace();
          } catch (Exception e) {
-            System.err.println("Server exception: " + e.toString());
+            System.err.println("[WARNING] Server exception: " + e.toString());
             e.printStackTrace();
          }
       }
@@ -354,6 +354,8 @@ public class Server implements ServerStub {
     * @param args for command line input
     */
    public static void main(String[] args) {
+
+      System.out.println("\nTicket To Ride Server\n2019 - Lucas Kohorst, Michael Vasile, Joshua Bugryn, Daniel Sause\n");
 
       try {
          
@@ -376,16 +378,16 @@ public class Server implements ServerStub {
          // Bind the remote object's stub in the registry
          registry.bind("ServerStub", stub);
 
-         System.err.println("Server ready");
+         System.out.println("[INFO] Server has loaded successfully.");
 
          ServerGUI gui = new ServerGUI(InetAddress.getLocalHost().toString());
          
          
       } catch (RemoteException re) {
-         System.err.println("Server exception: " + re.toString());
+         System.err.println("[WARNING] Server exception: " + re.toString());
          re.printStackTrace();
       } catch (Exception e) {
-         System.err.println("Server exception: " + e.toString());
+         System.err.println("[WARNING] Server exception: " + e.toString());
          e.printStackTrace();
       }
 

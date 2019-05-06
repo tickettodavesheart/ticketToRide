@@ -66,7 +66,7 @@ public class ChatClient extends JPanel {
       setLayout(new BorderLayout(5, 10));
 
       // JTextArea for Chat
-      chatArea = new JTextArea(30, 10);
+      chatArea = new JTextArea(15, 10);
       chatArea.setLineWrap(true);
       chatArea.setEditable(false);
 

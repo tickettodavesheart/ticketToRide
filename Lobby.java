@@ -59,8 +59,6 @@ public class Lobby extends JFrame {
          ip = txt.getText();
       }   
 
-      System.out.println(ip);
-
       // Connecting to the main Server
       connectMainServer(ip);
 
@@ -123,15 +121,13 @@ public class Lobby extends JFrame {
 
       Runtime.getRuntime().addShutdownHook(new Thread() {
          public void run() {
-            System.out.println("Starting shutdown");
             // Get the game that the client is running
             // create registry and bind to the main server
             // Creating the registry
             try {
-               System.out.println("Connected to the server on Shutdown Hook");
 
                // Calling the shutdown method on the server
-               System.out.println(stub.shutdownClient(selectedGame));
+               stub.shutdownClient(selectedGame);
 
             } catch (Exception oe) {
                System.err.println("Login exception: " + oe.toString());
@@ -181,7 +177,7 @@ public class Lobby extends JFrame {
          }
 
       } catch (RemoteException re) {
-         System.out.println("Remote Exception: " + re);
+         System.err.println("[Exception]: A RemoteException has occurred - " + re);
       }
    }
    
@@ -203,7 +199,7 @@ public class Lobby extends JFrame {
          String nameOfGame = txt.getText();
 
          // Creating the new game with the given name
-         System.out.println(stub.newGame(nameOfGame));
+         stub.newGame(nameOfGame);
 
          // Getting the server's IP
          // the name and stubID for
@@ -235,7 +231,7 @@ public class Lobby extends JFrame {
          if (playersInGame != -1) {
 
             // Entering the game
-            System.out.println(stub.enterGame(gameToEnter));
+            stub.enterGame(gameToEnter);
 
             // Getting the server's IP
             // the name and stubID for
@@ -259,7 +255,7 @@ public class Lobby extends JFrame {
                   JOptionPane.INFORMATION_MESSAGE);
          }   
       } catch (RemoteException re) {
-         System.out.println("Remote Exception: " + re);
+         System.err.println("[Exception]: A RemoteException has occurred - " + re);
       }
    }
 
@@ -273,18 +269,11 @@ public class Lobby extends JFrame {
          // Creating the Registry with the specific port of the game
          Registry registry = LocateRegistry.getRegistry(ip);
 
-         System.out.println("Locating Registry");
-
-         System.out.println("Looking up Stub");
-
          // Looking up the Stub class
          stub = (ServerStub) registry.lookup("ServerStub");
-         System.out.println(stub);
-
-         System.out.println("Connected to Main Server");
 
       } catch (Exception e) {
-         System.err.println("Client exception: " + e.toString());
+         System.err.println("[Exception] an Exception occured - " + e.toString());
          e.printStackTrace();
          JOptionPane.showMessageDialog(null, "Client exception: "
                 + e.toString(), "Connection Failed", 

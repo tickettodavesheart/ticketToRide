@@ -36,8 +36,6 @@ public class DestinationCardCheck {
          ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File("resources/MAP_HASHED.obj")));
          MASTER_LIST = (Hashtable<String, Hashtable<String, ArrayList<String>>>)ois.readObject();
          ois.close();
-         //System.out.println(MASTER_LIST);
-         //System.out.println(MASTER_LIST.keySet().size());
       } catch(Exception E) {
          System.err.println("Cannot find MAP_HASHED.obj");
       }
@@ -80,7 +78,6 @@ public class DestinationCardCheck {
               owner's controlled routes.
     */
    public void verify(String currentCity) {
-      //System.out.println(MASTER_LIST.get(currentCity));
       Object[] currentRouteSet = MASTER_LIST.get(currentCity).keySet().toArray();
       for(int i = 0; i < currentRouteSet.length; i++) {
          String tempRoute = (String)currentRouteSet[i];
@@ -88,8 +85,6 @@ public class DestinationCardCheck {
       
          
          if(ownedRoutes.indexOf(tempRoute) > -1) {
-            //System.out.println("TempRoute: " + tempRoute);
-            //System.out.println("TempDest: " + tempDest);
             ownedRoutes.remove(tempRoute);
             if(tempDest.equals(endingCity)) {
                destTwoVisited = true;
